@@ -11,7 +11,7 @@ window.InnovI18N = {
     promo_eye: "Featured", promo_h: "Featured collections", promo_btn: "View collection",
     vel_eye: "More candles", vel_h: "Discover our candles",
     foot_desc: "Hand-poured decorative & scented soy candles, home fragrance and candle-making supplies. Handmade with love between Paraguay and the USA.",
-    foot_shop: "Shop", foot_contact: "Contact", foot_made: "Made with love", foot_follow: "Follow",
+    foot_shop: "Shop", foot_contact: "Contact", foot_made: "Made by Neura", foot_follow: "Follow",
 
     hero_eye: "Handmade soy candles",
     hero_h1: "The art of<br>light &amp; scent", hero_h1b: "The art of light & scent",
