@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  .foot a { color:#6B5D51; text-decoration:none; transition:color .3s ease; font-family:'Jost',sans-serif; }
+  .foot a:hover { color:#F6EFE7; }
+</style>
+</helmet>
+
+<footer class="foot" id="contacto" style="background:#EAD5CC; color:#6B5D51;">
+  <div style="max-width:1320px; margin:0 auto; padding:80px 40px 40px; display:grid; grid-template-columns:1.5fr 1fr 1.2fr; gap:50px;">
+    <div>
+      <div style="font-family:'Cormorant Garamond',serif; font-size:34px; font-weight:600; color:#7E5A52; line-height:1;">InnovArte</div>
+      <div style="font-size:10px; letter-spacing:.42em; text-transform:uppercase; color:#9C7A50; margin-top:5px;">Handmade · Candles · EC</div>
+      <p style="color:#6B5D51; font-weight:300; font-size:15px; line-height:1.75; margin-top:22px; max-width:340px;" data-i18n="foot_desc">Velas de soya decorativas y aromáticas, fragancia para el hogar e insumos para hacer velas. Hechas a mano con amor entre Paraguay y Estados Unidos.</p>
+    </div>
+    <div>
+      <div style="font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:#7E5A52; margin-bottom:20px;" data-i18n="foot_shop">Tienda</div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-weight:300;">
+        <a href="catalogo.dc.html" data-i18n="nav_shop">Tienda</a>
+        <a href="historia.dc.html" data-i18n="nav_hist">Historia</a>
+        <a href="personalizacion.dc.html" data-i18n="nav_pers">Personalización</a>
+        <a href="galeria.dc.html" data-i18n="nav_gal">Galería</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:#7E5A52; margin-bottom:20px;" data-i18n="foot_contact">Contacto</div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-weight:300;">
+        <a href="mailto:innovartecandles@gmail.com">innovartecandles@gmail.com</a>
+        <a href="https://www.instagram.com/innovartecandles" target="_blank" rel="noopener">Instagram · @innovartecandles</a>
+        <span style="color:#6B5D51;">Paraguay & Estados Unidos</span>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1320px; margin:0 auto; padding:22px 40px; border-top:1px solid rgba(126,90,82,.18); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:12px; color:#9C7A50; letter-spacing:.06em;">
+    <span>© 2025 InnovArte Handmade. All rights reserved.</span>
+    <span data-i18n="foot_made">Hecho con cariño</span>
+  </div>
+</footer>
+</x-dc>
+</body>
+</html>

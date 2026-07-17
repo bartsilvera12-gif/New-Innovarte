@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="cart-store.js"></script>
+<script src="i18n.js"></script>
+<style>
+  .innav a { font-family:'Jost',sans-serif; }
+  .navlink { position:relative; color:#39302A; }
+  .navlink::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:#9C7A50; transition:width .4s cubic-bezier(.22,.61,.36,1); }
+  .navlink:hover::after { width:100%; }
+  .navlink:hover { color:#39302A; }
+  .innav .logo-link img { transition:transform .5s cubic-bezier(.22,.61,.36,1), filter .5s ease; }
+  .innav .logo-link:hover img { transform:scale(1.06); filter:drop-shadow(0 6px 14px rgba(200,154,140,.4)); }
+  .icon-btn { transition:opacity .3s ease; }
+  .icon-btn:hover { opacity:.6; }
+  .cart-x:hover { color:#C89A8C; }
+  .co-btn { transition:background .4s ease, letter-spacing .4s ease; }
+  .co-btn:hover { background:#B98979 !important; letter-spacing:.24em !important; }
+</style>
+</helmet>
+
+<div class="innav">
+  <div style="background:#EAD5CC; color:#6B5D51; text-align:center; font-size:11.5px; letter-spacing:.26em; text-transform:uppercase; padding:11px 20px;" data-i18n="ann">Hecho a mano con amor · Cera de soya 100% natural · Bajo pedido</div>
+
+  <nav style="position:sticky; top:0; z-index:60; background:rgba(240,231,215,.92); backdrop-filter:blur(14px); border-bottom:1px solid rgba(156,122,80,.18);">
+    <div style="max-width:1320px; margin:0 auto; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+      <a href="InnovArte%20Handmade.dc.html" class="logo-link" style="display:flex; align-items:center;">
+        <img src="https://static.wixstatic.com/media/c78faf_6406c07728144968971366602127833a~mv2.png/v1/crop/x_61,y_135,w_396,h_208/fill/w_350,h_184,al_c,q_90,enc_auto/logo.png" alt="InnovArte Handmade" style="height:66px; width:auto; display:block;">
+      </a>
+      <div style="display:flex; align-items:center; gap:32px; font-size:12px; letter-spacing:.18em; text-transform:uppercase;">
+        <a class="navlink" href="InnovArte%20Handmade.dc.html" data-i18n="nav_home">Inicio</a>
+        <a class="navlink" href="catalogo.dc.html" data-i18n="nav_shop">Tienda</a>
+        <a class="navlink" href="historia.dc.html" data-i18n="nav_hist">Historia</a>
+        <a class="navlink" href="personalizacion.dc.html" data-i18n="nav_pers">Personalización</a>
+        <a class="navlink" href="galeria.dc.html" data-i18n="nav_gal">Galería</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:18px;">
+        <button class="icon-btn" onClick="{{ toggleLang }}" style="background:none; border:1px solid rgba(156,122,80,.4); color:#39302A; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.12em; padding:7px 11px; cursor:pointer; border-radius:2px;" data-lang-label>EN</button>
+        <button class="icon-btn" onClick="{{ toggleCart }}" style="position:relative; background:none; border:none; cursor:pointer; color:#39302A; display:flex; align-items:center;">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+          <sc-if value="{{ hasCart }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; top:-8px; right:-9px; background:#C89A8C; color:#fff; font-size:10px; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; font-weight:500;">{{ cartCount }}</span></sc-if>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div data-cart-overlay onClick="{{ toggleCart }}" style="position:fixed; inset:0; background:rgba(57,48,42,.4); backdrop-filter:blur(2px); z-index:90; opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease;"></div>
+  <aside data-cart-drawer style="position:fixed; top:0; right:0; height:100%; width:min(420px,92vw); background:#F3EBDC; z-index:100; transform:translateX(100%); transition:transform .5s cubic-bezier(.4,0,.1,1); display:flex; flex-direction:column; box-shadow:-30px 0 60px -30px rgba(57,48,42,.5);">
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:24px 26px; border-bottom:1px solid rgba(156,122,80,.2);">
+      <div style="font-family:'Cormorant Garamond',serif; font-size:26px; color:#39302A;" data-i18n="cart_title">Tu carrito</div>
+      <button class="cart-x" onClick="{{ toggleCart }}" style="background:none; border:none; cursor:pointer; color:#39302A; font-size:26px; line-height:1;">×</button>
+    </div>
+    <div style="flex:1; overflow-y:auto; padding:8px 26px;">
+      <sc-if value="{{ cartEmpty }}" hint-placeholder-val="{{ true }}">
+        <div style="text-align:center; padding:64px 20px; color:#9C7A50;">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin-bottom:14px;"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:21px; color:#6B5D51;" data-i18n="cart_empty">Tu carrito está vacío</div>
+          <div style="font-size:13px; font-weight:300; margin-top:6px;" data-i18n="cart_empty_sub">Añade tus piezas favoritas para solicitarlas.</div>
+        </div>
+      </sc-if>
+      <sc-for list="{{ cart }}" as="item" hint-placeholder-count="0">
+        <div style="display:flex; gap:15px; align-items:center; padding:16px 0; border-bottom:1px solid rgba(156,122,80,.15);">
+          <div style="width:56px; height:56px; border-radius:3px; overflow:hidden; flex-shrink:0; background:#ECDDD2;"><img src="{{ item.img }}" alt="{{ item.name }}" style="width:100%; height:100%; object-fit:cover;"></div>
+          <div style="flex:1;">
+            <div style="font-family:'Cormorant Garamond',serif; font-size:19px; color:#39302A; line-height:1.1;">{{ item.name }}</div>
+            <div style="display:flex; align-items:center; gap:11px; margin-top:8px;">
+              <button data-id="{{ item.id }}" onClick="{{ decItem }}" style="width:25px; height:25px; border:1px solid rgba(57,48,42,.35); background:none; color:#39302A; cursor:pointer; border-radius:2px; font-size:15px;">−</button>
+              <span style="min-width:18px; text-align:center; font-size:15px;">{{ item.qty }}</span>
+              <button data-id="{{ item.id }}" onClick="{{ incItem }}" style="width:25px; height:25px; border:1px solid rgba(57,48,42,.35); background:none; color:#39302A; cursor:pointer; border-radius:2px; font-size:15px;">+</button>
+            </div>
+          </div>
+          <button data-id="{{ item.id }}" onClick="{{ removeItem }}" style="background:none; border:none; color:#9C7A50; cursor:pointer; font-size:11px; letter-spacing:.1em; text-transform:uppercase;" data-i18n="cart_remove">Quitar</button>
+        </div>
+      </sc-for>
+    </div>
+    <div style="padding:20px 26px 26px; border-top:1px solid rgba(156,122,80,.2);">
+      <div style="display:flex; justify-content:space-between; font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; color:#6B5D51; margin-bottom:15px;">
+        <span data-i18n="cart_items">Artículos</span><span>{{ cartCount }}</span>
+      </div>
+      <button class="co-btn" onClick="{{ checkout }}" style="width:100%; background:#C89A8C; color:#fff; border:none; padding:17px 0; font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="cart_checkout">Pedir por correo</button>
+      <div style="text-align:center; font-size:11.5px; color:#9C7A50; margin-top:11px; font-weight:300;" data-i18n="cart_note">Confirmamos precio y disponibilidad por correo.</div>
+    </div>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { cart: [], open: false };
+
+  componentDidMount(){
+    if(window.InnovCart){
+      this.setState({ cart: InnovCart.get() });
+      InnovCart.sub((c)=>this.setState({ cart:c }));
+      InnovCart.onRemote((msg)=>{
+        if(msg && msg.type==='open') this.setState({ open:true, cart:InnovCart.get() });
+        else this.setState({ cart:InnovCart.get() });
+      });
+    }
+    if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
+    this.sync();
+  }
+  componentDidUpdate(){ this.sync(); if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); }
+
+  sync(){
+    const ov=document.querySelector('[data-cart-overlay]'); const dr=document.querySelector('[data-cart-drawer]');
+    if(ov){ ov.style.opacity=this.state.open?'1':'0'; ov.style.visibility=this.state.open?'visible':'hidden'; }
+    if(dr){ dr.style.transform=this.state.open?'translateX(0)':'translateX(100%)'; }
+  }
+
+  toggleCart=()=>{ this.setState(s=>({ open:!s.open })); }
+  toggleLang=()=>{ if(window.InnovI18N){ InnovI18N.toggle(); this.forceUpdate(); } }
+  incItem=(e)=>{ InnovCart.inc(e.currentTarget.getAttribute('data-id')); }
+  decItem=(e)=>{ InnovCart.dec(e.currentTarget.getAttribute('data-id')); }
+  removeItem=(e)=>{ InnovCart.remove(e.currentTarget.getAttribute('data-id')); }
+
+  checkout=()=>{
+    const cart=this.state.cart; if(!cart.length) return;
+    const en=window.InnovI18N && InnovI18N.lang==='en';
+    const subject=en?'Order — InnovArte Handmade':'Pedido — InnovArte Handmade';
+    const head=en?'Hello! I would like to request:':'¡Hola! Me gustaría solicitar:';
+    const lines=cart.map(i=>`• ${i.name} x${i.qty}`).join('\n');
+    const foot=en?'\nName:\nCity:\nPreferred scent/color:':'\nNombre:\nCiudad:\nAroma/color preferido:';
+    const body=encodeURIComponent(head+'\n\n'+lines+'\n'+foot);
+    window.location.href='mailto:innovartecandles@gmail.com?subject='+encodeURIComponent(subject)+'&body='+body;
+  }
+
+  renderVals(){
+    const cart=this.state.cart;
+    const cartCount=cart.reduce((n,i)=>n+i.qty,0);
+    return { cart, cartCount, hasCart:cartCount>0, cartEmpty:cart.length===0,
+      toggleCart:this.toggleCart, toggleLang:this.toggleLang,
+      incItem:this.incItem, decItem:this.decItem, removeItem:this.removeItem, checkout:this.checkout };
+  }
+}
+</script>
+</body>
+</html>

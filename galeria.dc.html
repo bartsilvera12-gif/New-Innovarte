@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="cart-store.js"></script>
+<script src="i18n.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:#F9EBEB; color:#39302A; font-family:'Jost',sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#9C7A50; text-decoration:none; }
+  ::selection { background:#E7CFC6; color:#39302A; }
+  .btn-ghost { transition:all .4s ease; }
+  .btn-ghost:hover { background:#C89A8C !important; color:#fff !important; border-color:#C89A8C !important; }
+  .gcell { overflow:hidden; border-radius:4px; background:#ECDDD2; position:relative; }
+  .gcell img { width:100%; height:100%; object-fit:cover; transition:transform 1.2s cubic-bezier(.22,.61,.36,1); }
+  .gcell:hover img { transform:scale(1.07); }
+</style>
+</helmet>
+
+<div style="overflow-x:hidden;">
+  <dc-import name="SiteNav" hint-size="100%,120px"></dc-import>
+
+  <section style="max-width:1000px; margin:0 auto; padding:88px 40px 56px; text-align:center;">
+    <div style="font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:#9C7A50; margin-bottom:18px;" data-i18n="galpg_eye">Galería</div>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(44px,6vw,80px); line-height:1.03; color:#39302A;" data-i18n="galpg_h">Momentos de luz</h1>
+    <p style="max-width:540px; margin:22px auto 0; color:#6B5D51; font-weight:300; font-size:17px; line-height:1.7;" data-i18n="galpg_sub">Un vistazo a nuestras piezas, nuestro taller y los hogares donde ahora viven.</p>
+  </section>
+
+  <section style="max-width:1320px; margin:0 auto; padding:20px 40px 40px;">
+    <div data-reveal style="display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:230px; gap:16px;">
+      <div class="gcell" style="grid-row:span 2;"><img src="https://static.wixstatic.com/media/c78faf_1d1585f6443548209782d1603a66652c~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_3d45f6132195430a8d7cbfaa1b3d9344~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_be7271a11aaa4d7d9c777aecb122788f~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell" style="grid-row:span 2;"><img src="https://static.wixstatic.com/media/c78faf_90f99b4512ba4a218f6845b79cb555a2~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_2b9a7710b6754ae0aecd346c3845e84a~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_eb01eb031f7e41ababf562f368836c4a~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_a0bb096ce4c244cd9b90c0775c371f2f~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_005c6cb762774100bc755c18a8e4e33b~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell" style="grid-row:span 2;"><img src="https://static.wixstatic.com/media/c78faf_a9465894389047dfb0ddf453276c0d9e~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_7d60223e9e354f06a9c7bc82bbc22683~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_fc21ecf1b8d14ccdaca318a1e7b7f7d9~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_c4a6f74e11c74863ba3ce68d723a09a6~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_eb6c540246c3478b891d3b8d76724065~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell" style="grid-row:span 2;"><img src="https://static.wixstatic.com/media/c78faf_4e5180be2d5a4310bdff00342c134eae~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_753cc176c10e4a05ad1929afe6387b7e~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_2f22f61ab5884e9dbc3ce31a60c0c352~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_345da3bb2fc541789859077808654a76~mv2.jpg" alt="" loading="lazy"></div>
+      <div class="gcell"><img src="https://static.wixstatic.com/media/c78faf_dbbe8b6198624ffab14dd268621313c3~mv2.jpg" alt="" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section style="max-width:1320px; margin:0 auto; padding:30px 40px 100px; text-align:center;">
+    <a href="https://www.instagram.com/innovartecandles" target="_blank" rel="noopener" class="btn-ghost" style="display:inline-block; border:1px solid #9C7A50; color:#39302A; padding:16px 40px; font-size:12px; letter-spacing:.2em; text-transform:uppercase;" data-i18n="gal_follow">Seguir en Instagram</a>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,320px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  componentDidMount(){
+    if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
+    this._io=new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='none'; this._io.unobserve(e.target);} }); },{ threshold:0.06 });
+    document.querySelectorAll('[data-reveal]').forEach(el=>{ el.style.opacity='0'; el.style.transform='translateY(24px)'; el.style.transition='opacity 1s cubic-bezier(.22,.61,.36,1), transform 1s cubic-bezier(.22,.61,.36,1)'; this._io.observe(el); });
+  }
+  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); }
+  renderVals(){ return {}; }
+}
+</script>
+</body>
+</html>

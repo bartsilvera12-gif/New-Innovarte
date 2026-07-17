@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  .promo-card img { transition:transform .65s cubic-bezier(.22,.61,.36,1); }
+  .promo-card:hover img { transform:scale(1.04); }
+  .promo-card .pc-ov { transition:background .6s ease; }
+  .promo-card:hover .pc-ov { background:linear-gradient(to bottom, rgba(70,40,42,.6) 0%, rgba(70,40,42,.28) 40%, rgba(70,40,42,.12) 75%); }
+  .promo-card .pc-content { transition:transform .6s cubic-bezier(.22,.61,.36,1); }
+  .promo-card:hover .pc-content { transform:translateY(-6px); }
+  .promo-card .pc-btn { transition:background .55s ease, color .55s ease, letter-spacing .55s ease; }
+  .promo-card:hover .pc-btn { background:#7E3B44; color:#fff; letter-spacing:.28em; }
+  .promo-card:focus-visible { outline:2px solid #7E3B44; outline-offset:3px; }
+</style>
+</helmet>
+<a class="promo-card" href="{{ href }}" aria-label="{{ title }}" style="position:relative; display:block; width:100%; height:100%; border-radius:8px; overflow:hidden; color:#fff; text-decoration:none; background:#ECDDD2;">
+  <img src="{{ img }}" alt="{{ alt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+  <div class="pc-ov" style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(70,40,42,.46) 0%, rgba(70,40,42,.16) 38%, rgba(70,40,42,.06) 72%);"></div>
+  <div class="pc-content" style="position:absolute; top:0; left:0; right:0; padding:46px 26px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:16px;">
+    <div style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(28px,2.4vw,36px); line-height:1.04; text-shadow:0 2px 14px rgba(55,35,36,.4);">{{ title }}</div>
+    <div style="font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:400; font-size:17px; max-width:250px; line-height:1.5; color:#FBEEEE; text-shadow:0 1px 10px rgba(55,35,36,.4);">{{ desc }}</div>
+    <span class="pc-btn" style="margin-top:8px; background:#FBF4E7; color:#7E3B44; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; padding:13px 26px; border-radius:2px;" data-i18n="promo_btn">Ver colección</span>
+  </div>
+</a>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:420,&quot;height&quot;:620},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Rosa Serena&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;desc&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Aroma a rosas, peonías y vainilla suave.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;img&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;alt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;href&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;catalogo.dc.html&quot;,&quot;tsType&quot;:&quot;string&quot;}}"></script>
+</body>
+</html>

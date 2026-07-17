@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="cart-store.js"></script>
+<script src="i18n.js"></script>
+<script src="image-slot.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:#F9EBEB; color:#39302A; font-family:'Jost',sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#9C7A50; text-decoration:none; }
+  ::selection { background:#E7CFC6; color:#39302A; }
+  image-slot { --is-bg:#ECDDD2; }
+  .fld { width:100%; font-family:'Jost',sans-serif; font-size:15px; font-weight:300; color:#39302A; background:#F5EEDF; border:1px solid rgba(156,122,80,.3); border-radius:3px; padding:14px 16px; transition:border-color .3s ease; }
+  .fld:focus { outline:none; border-color:#C89A8C; }
+  .fld::placeholder { color:#B0A395; }
+  .send-btn { transition:background .4s ease, letter-spacing .4s ease; }
+  .send-btn:hover { background:#B98979 !important; letter-spacing:.24em !important; }
+</style>
+</helmet>
+
+<div style="overflow-x:hidden;">
+  <dc-import name="SiteNav" hint-size="100%,120px"></dc-import>
+
+  <section style="position:relative; background:linear-gradient(160deg,#F8E8E8 0%,#F0DBDC 100%);">
+    <div style="max-width:960px; margin:0 auto; padding:104px 40px 96px; text-align:center;">
+      <div style="font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:#9C7A50; margin-bottom:20px;" data-i18n="perspg_eye">Pedidos a medida</div>
+      <h1 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(44px,6vw,84px); line-height:1.03; color:#39302A;" data-i18n="perspg_h">Diseñadas contigo</h1>
+      <p style="max-width:540px; margin:26px auto 0; color:#6B5D51; font-weight:300; font-size:18px; line-height:1.7;" data-i18n="perspg_lead">Velas y detalles creados para tus momentos más especiales.</p>
+    </div>
+  </section>
+
+  <!-- Steps -->
+  <section style="max-width:1200px; margin:0 auto; padding:100px 40px 60px;">
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:30px;">
+      <div data-reveal>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:40px; color:#C89A8C; line-height:1;">01</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:24px; margin-top:12px; color:#39302A;" data-i18n="step1_h">Elige la ocasión</div>
+        <p style="color:#6B5D51; font-weight:300; font-size:15px; line-height:1.7; margin-top:8px;" data-i18n="step1_p">Boda, cumpleaños, evento corporativo o un regalo personal — cuéntanos el momento.</p>
+      </div>
+      <div data-reveal>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:40px; color:#C89A8C; line-height:1;">02</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:24px; margin-top:12px; color:#39302A;" data-i18n="step2_h">Forma, color y aroma</div>
+        <p style="color:#6B5D51; font-weight:300; font-size:15px; line-height:1.7; margin-top:8px;" data-i18n="step2_p">Te guiamos entre formas, tonos pastel y fragancias para tu idea.</p>
+      </div>
+      <div data-reveal>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:40px; color:#C89A8C; line-height:1;">03</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:24px; margin-top:12px; color:#39302A;" data-i18n="step3_h">Etiqueta personalizada</div>
+        <p style="color:#6B5D51; font-weight:300; font-size:15px; line-height:1.7; margin-top:8px;" data-i18n="step3_p">Nombres, fechas o tu marca — diseñamos una etiqueta solo para ti.</p>
+      </div>
+      <div data-reveal>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:40px; color:#C89A8C; line-height:1;">04</div>
+        <div style="font-family:'Cormorant Garamond',serif; font-size:24px; margin-top:12px; color:#39302A;" data-i18n="step4_h">Creamos y entregamos</div>
+        <p style="color:#6B5D51; font-weight:300; font-size:15px; line-height:1.7; margin-top:8px;" data-i18n="step4_p">Vertimos tu lote a mano y lo entregamos listo para regalar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <section style="max-width:1120px; margin:0 auto; padding:40px 40px 110px;">
+    <div data-reveal style="display:grid; grid-template-columns:1fr 1fr; gap:0; border-radius:6px; overflow:hidden; box-shadow:0 40px 80px -50px rgba(57,48,42,.5);">
+      <div style="position:relative; min-height:480px; background:#ECDDD2;"><image-slot id="pers-img" shape="rect" fit="cover" src="https://static.wixstatic.com/media/c78faf_3b86c2a9982e4691bfdb796f16906774~mv2.jpg" placeholder="Foto"></image-slot></div>
+      <div style="background:#F5EEDF; padding:clamp(36px,4vw,56px);">
+        <h2 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(28px,3vw,40px); color:#39302A;" data-i18n="form_h">Solicita tu cotización</h2>
+        <div style="display:flex; flex-direction:column; gap:14px; margin-top:26px;">
+          <input id="f-name" class="fld" placeholder="Nombre" data-i18n-ph="Nombre|Name">
+          <input id="f-contact" class="fld" placeholder="Correo / Teléfono" data-i18n-ph="Correo / Teléfono|Email / Phone">
+          <input id="f-type" class="fld" placeholder="Tipo de evento" data-i18n-ph="Tipo de evento|Type of event">
+          <input id="f-qty" class="fld" placeholder="Cantidad aproximada" data-i18n-ph="Cantidad aproximada|Approx. quantity">
+          <textarea id="f-msg" class="fld" rows="4" placeholder="Cuéntanos tu idea" data-i18n-ph="Cuéntanos tu idea|Tell us your idea" style="resize:vertical;"></textarea>
+          <button class="send-btn" onClick="{{ send }}" style="margin-top:6px; background:#C89A8C; color:#fff; border:none; padding:16px 0; font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="form_send">Enviar por correo</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,320px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  componentDidMount(){
+    if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
+    this._io=new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='none'; this._io.unobserve(e.target);} }); },{ threshold:0.12, rootMargin:'0px 0px -6% 0px' });
+    document.querySelectorAll('[data-reveal]').forEach((el,i)=>{ el.style.opacity='0'; el.style.transform='translateY(28px)'; el.style.transition='opacity 1s cubic-bezier(.22,.61,.36,1) '+((i%4)*0.06)+'s, transform 1s cubic-bezier(.22,.61,.36,1) '+((i%4)*0.06)+'s'; this._io.observe(el); });
+  }
+  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); }
+
+  send=()=>{
+    const g=id=>{ const el=document.getElementById(id); return el?el.value.trim():''; };
+    const en=window.InnovI18N && InnovI18N.lang==='en';
+    const L=en?{name:'Name',contact:'Email/Phone',type:'Event',qty:'Quantity',idea:'Idea'}:{name:'Nombre',contact:'Correo/Teléfono',type:'Evento',qty:'Cantidad',idea:'Idea'};
+    const subject=en?'Custom order — InnovArte Handmade':'Pedido personalizado — InnovArte Handmade';
+    const head=en?'Hello! I would like a custom order:':'¡Hola! Quisiera un pedido personalizado:';
+    const body=encodeURIComponent(head+'\n\n'+L.name+': '+g('f-name')+'\n'+L.contact+': '+g('f-contact')+'\n'+L.type+': '+g('f-type')+'\n'+L.qty+': '+g('f-qty')+'\n'+L.idea+': '+g('f-msg'));
+    window.location.href='mailto:innovartecandles@gmail.com?subject='+encodeURIComponent(subject)+'&body='+body;
+  }
+
+  renderVals(){ return { send:this.send }; }
+}
+</script>
+</body>
+</html>

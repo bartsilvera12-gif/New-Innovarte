@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="cart-store.js"></script>
+<script src="i18n.js"></script>
+<script src="products.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:#F9EBEB; color:#39302A; font-family:'Jost',sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#9C7A50; text-decoration:none; }
+  ::selection { background:#E7CFC6; color:#39302A; }
+  @keyframes riseIn { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  .prodcard { background:#F3EBDC; border-radius:12px; overflow:hidden; box-shadow:0 14px 34px -26px rgba(57,48,42,.4); padding-bottom:20px; transition:transform .55s cubic-bezier(.22,.61,.36,1), box-shadow .55s ease; }
+  .prodcard:hover { transform:translateY(-7px); box-shadow:0 36px 56px -30px rgba(200,154,140,.6); }
+  .prodcard > *:not(.pm) { padding-left:20px; padding-right:20px; }
+  .prodcard .pm { border-radius:0 !important; }
+  .prodcard .pm img { transition:transform 1.2s cubic-bezier(.22,.61,.36,1); }
+  .prodcard:hover .pm img { transform:scale(1.07); }
+  .addbtn { transition:all .4s ease; background:#FBF4E7 !important; color:#39302A !important; border:1px solid rgba(156,122,80,.35) !important; border-radius:40px !important; }
+  .addbtn:hover { background:#EAD5CC !important; color:#39302A !important; border-color:#EAD5CC !important; letter-spacing:.26em !important; }
+  .filt { transition:all .35s ease; cursor:pointer; }
+  .filt:hover { color:#39302A; }
+</style>
+</helmet>
+
+<div style="overflow-x:hidden;">
+  <dc-import name="SiteNav" hint-size="100%,120px"></dc-import>
+
+  <section style="max-width:1320px; margin:0 auto; padding:80px 40px 40px; text-align:center;">
+    <div style="font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:#9C7A50; margin-bottom:16px;" data-i18n="catpg_eye">La colección completa</div>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(42px,5.5vw,74px); color:#39302A; line-height:1.02;" data-i18n="catpg_h">Tienda</h1>
+    <p style="max-width:580px; margin:20px auto 0; color:#6B5D51; font-weight:300; font-size:16px; line-height:1.7;" data-i18n="catpg_sub">Cada pieza se vierte a mano en lotes pequeños con cera de soya natural. Añade tus favoritas y solicítalas por mensaje.</p>
+  </section>
+
+  <div style="position:sticky; top:0; z-index:40; background:rgba(240,231,215,.94); backdrop-filter:blur(12px); border-bottom:1px solid rgba(156,122,80,.16);">
+    <div style="max-width:1320px; margin:0 auto; padding:16px 40px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+      <button class="filt" data-cat="all" onClick="{{ setFilter }}" style="border:1px solid; padding:10px 20px; border-radius:40px; font-family:'Jost',sans-serif; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; background:transparent;" data-i18n="filter_all">Todo</button>
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+        <button class="filt" data-cat="{{ c.id }}" onClick="{{ setFilter }}" style="border:1px solid; padding:10px 20px; border-radius:40px; font-family:'Jost',sans-serif; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; background:transparent;">{{ c.name }}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <section style="max-width:1320px; margin:0 auto; padding:48px 40px 100px;">
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:36px 26px;">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="12">
+        <div class="prodcard" style="display:flex; flex-direction:column;">
+          <div class="pm" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#ECDDD2;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></div>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px; color:#39302A;">{{ p.name }}</div>
+          <div style="color:#9C7A50; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">{{ p.sub }}</div>
+          <button class="addbtn" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #39302A; color:#39302A; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,320px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:1000}}">
+class Component extends DCLogic {
+  state = { filter: 'all' };
+
+  componentDidMount(){
+    const h=(window.location.hash||'').replace('#','');
+    const cats=(window.INNOV_CATS||[]).map(c=>c.id);
+    if(h && cats.indexOf(h)>=0) this.setState({ filter:h });
+    if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
+    this.syncFilter();
+  }
+  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); this.syncFilter(); }
+
+  syncFilter(){
+    document.querySelectorAll('.filt').forEach(b=>{
+      const on=b.getAttribute('data-cat')===this.state.filter;
+      b.style.background=on?'#C89A8C':'transparent';
+      b.style.color=on?'#fff':'#6B5D51';
+      b.style.borderColor=on?'#C89A8C':'rgba(57,48,42,.28)';
+    });
+  }
+
+  setFilter=(e)=>{ this.setState({ filter:e.currentTarget.getAttribute('data-cat') }); }
+
+  addToCart=(e)=>{
+    const b=e.currentTarget;
+    if(window.InnovCart){ InnovCart.add(b.getAttribute('data-id'), b.getAttribute('data-name'), b.getAttribute('data-img')); InnovCart.openCart(); }
+  }
+
+  renderVals(){
+    const all=window.INNOV_PRODUCTS||[];
+    const products=this.state.filter==='all'?all:all.filter(p=>p.cat===this.state.filter);
+    return { cats:window.INNOV_CATS||[], products, setFilter:this.setFilter, addToCart:this.addToCart };
+  }
+}
+</script>
+</body>
+</html>

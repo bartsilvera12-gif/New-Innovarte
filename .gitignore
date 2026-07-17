@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor / local config
+.claude/settings.local.json
+.vscode/
+.idea/
+
+# Dependencies / build
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Env
+.env
+.env.*
