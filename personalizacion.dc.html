@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="responsive.css">
 <script src="cart-store.js"></script>
 <script src="i18n.js"></script>
 <script src="image-slot.js"></script>
@@ -30,7 +31,7 @@
 </style>
 </helmet>
 
-<div style="overflow-x:hidden;">
+<div class="rr-page" style="overflow-x:hidden;">
   <dc-import name="SiteNav" hint-size="100%,120px"></dc-import>
 
   <section style="position:relative; background:linear-gradient(160deg,#F8E8E8 0%,#F0DBDC 100%);">
@@ -43,7 +44,7 @@
 
   <!-- Steps -->
   <section style="max-width:1200px; margin:0 auto; padding:100px 40px 60px;">
-    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:30px;">
+    <div class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:30px;">
       <div data-reveal>
         <div style="font-family:'Cormorant Garamond',serif; font-size:40px; color:#C89A8C; line-height:1;">01</div>
         <div style="font-family:'Cormorant Garamond',serif; font-size:24px; margin-top:12px; color:#39302A;" data-i18n="step1_h">Elige la ocasión</div>
@@ -69,7 +70,7 @@
 
   <!-- Form -->
   <section style="max-width:1120px; margin:0 auto; padding:40px 40px 110px;">
-    <div data-reveal style="display:grid; grid-template-columns:1fr 1fr; gap:0; border-radius:6px; overflow:hidden; box-shadow:0 40px 80px -50px rgba(57,48,42,.5);">
+    <div data-reveal class="rr-g2" style="display:grid; grid-template-columns:1fr 1fr; gap:0; border-radius:6px; overflow:hidden; box-shadow:0 40px 80px -50px rgba(57,48,42,.5);">
       <div style="position:relative; min-height:480px; background:#ECDDD2;"><image-slot id="pers-img" shape="rect" fit="cover" src="https://static.wixstatic.com/media/c78faf_3b86c2a9982e4691bfdb796f16906774~mv2.jpg" placeholder="Foto"></image-slot></div>
       <div style="background:#F5EEDF; padding:clamp(36px,4vw,56px);">
         <h2 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(28px,3vw,40px); color:#39302A;" data-i18n="form_h">Solicita tu cotización</h2>

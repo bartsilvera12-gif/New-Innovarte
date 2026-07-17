@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="responsive.css">
 <script src="cart-store.js"></script>
 <script src="i18n.js"></script>
 <script src="image-slot.js"></script>
@@ -91,7 +92,7 @@
 </style>
 </helmet>
 
-<div style="overflow-x:hidden;">
+<div class="rr-page" style="overflow-x:hidden;">
   <dc-import name="SiteNav" hint-size="100%,120px"></dc-import>
 
   <!-- HERO -->
@@ -131,7 +132,7 @@
       </div>
     </div>
     <!-- Variant 2: editorial split -->
-    <div data-hero="2" style="display:none; min-height:600px; height:88vh; grid-template-columns:1fr 1fr;">
+    <div data-hero="2" class="rr-g2" style="display:none; min-height:600px; height:88vh; grid-template-columns:1fr 1fr;">
       <div style="display:flex; flex-direction:column; justify-content:center; padding:6vw 5vw; background:#EFE6D5;">
         <div style="font-size:12px; letter-spacing:.44em; text-transform:uppercase; color:#9C7A50; margin-bottom:22px;" data-i18n="hero_eye">Velas de soya artesanales · Hechas a mano</div>
         <h1 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(42px,5vw,80px); line-height:1.02; color:#39302A;" data-i18n="hero_h1">El arte de la<br>luz y el aroma</h1>
@@ -214,7 +215,7 @@
       <h2 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(36px,4.5vw,58px); color:#39302A; line-height:1.05;" data-i18n="col_h">Nuestras colecciones</h2>
       <p style="max-width:540px; margin:18px auto 0; color:#6B5D51; font-weight:300; font-size:16px; line-height:1.7;" data-i18n="col_sub">Cuatro mundos de arte hecho a mano, de las velas escultóricas a las herramientas para crearlas.</p>
     </div>
-    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
+    <div class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
       <a href="catalogo.dc.html#signature" class="col-card" data-reveal>
         <img src="https://static.wixstatic.com/media/c78faf_32737f49c38a4b958effb92e55b9e90c~mv2.jpg" alt="Signature Candles">
         <div class="col-scrim"></div>
@@ -259,7 +260,7 @@
       </div>
       <a href="catalogo.dc.html" style="color:#9C7A50; font-size:12px; letter-spacing:.18em; text-transform:uppercase; border-bottom:1px solid rgba(156,122,80,.4); padding-bottom:4px;" data-i18n="see_all">Ver toda la tienda</a>
     </div>
-    <div data-reveal style="display:grid; grid-template-columns:repeat(4,1fr); gap:30px 26px;">
+    <div data-reveal class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:30px 26px;">
       <div class="prodcard" style="display:flex; flex-direction:column;">
         <div class="pm" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#ECDDD2;"><img src="https://static.wixstatic.com/media/c78faf_1d1585f6443548209782d1603a66652c~mv2.jpg" alt="Rose Cascade" style="width:100%; height:100%; object-fit:cover;"></div>
         <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Rose Cascade</div>
@@ -289,7 +290,7 @@
 
   <!-- ABOUT TEASER -->
   <section style="background:#EFE6D5; margin-top:50px;">
-    <div style="max-width:1320px; margin:0 auto; padding:104px 40px; display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center;">
+    <div class="rr-g2 rr-pad" style="max-width:1320px; margin:0 auto; padding:104px 40px; display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center;">
       <div data-reveal style="aspect-ratio:4/5; border-radius:4px; overflow:hidden; box-shadow:0 40px 70px -40px rgba(57,48,42,.5);"><image-slot id="about-home" shape="rect" fit="cover" src="https://static.wixstatic.com/media/c78faf_be7271a11aaa4d7d9c777aecb122788f~mv2.jpg" placeholder="Foto del taller"></image-slot></div>
       <div data-reveal>
         <div style="font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:#9C7A50; margin-bottom:16px;" data-i18n="about_eye">Nuestra historia</div>
@@ -320,7 +321,7 @@
       <div style="font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:#9C7A50; margin-bottom:13px;" data-i18n="gal_eye">@innovartecandles</div>
       <h2 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(32px,4vw,52px); color:#39302A;" data-i18n="gal_h">Desde nuestro taller</h2>
     </div>
-    <div data-reveal style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">
+    <div data-reveal class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px;">
       <a href="galeria.dc.html" class="gal-item" style="aspect-ratio:1; overflow:hidden; border-radius:3px; display:block; background:#ECDDD2;"><img src="https://static.wixstatic.com/media/c78faf_3d45f6132195430a8d7cbfaa1b3d9344~mv2.jpg" alt="" style="width:100%; height:100%; object-fit:cover;"></a>
       <a href="galeria.dc.html" class="gal-item" style="aspect-ratio:1; overflow:hidden; border-radius:3px; display:block; background:#ECDDD2;"><img src="https://static.wixstatic.com/media/c78faf_2b9a7710b6754ae0aecd346c3845e84a~mv2.jpg" alt="" style="width:100%; height:100%; object-fit:cover;"></a>
       <a href="galeria.dc.html" class="gal-item" style="aspect-ratio:1; overflow:hidden; border-radius:3px; display:block; background:#ECDDD2;"><img src="https://static.wixstatic.com/media/c78faf_005c6cb762774100bc755c18a8e4e33b~mv2.jpg" alt="" style="width:100%; height:100%; object-fit:cover;"></a>

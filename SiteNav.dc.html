@@ -26,18 +26,37 @@
   .cart-x:hover { color:#C89A8C; }
   .co-btn { transition:background .4s ease, letter-spacing .4s ease; }
   .co-btn:hover { background:#B98979 !important; letter-spacing:.24em !important; }
+  /* --- Menú móvil (hamburguesa) --- */
+  .nav-burger { display:none; flex-direction:column; justify-content:center; gap:5px; width:40px; height:40px; background:none; border:none; cursor:pointer; padding:8px; }
+  .nav-burger span { display:block; width:23px; height:2px; background:#39302A; border-radius:2px; transition:transform .35s cubic-bezier(.22,.61,.36,1), opacity .25s ease; }
+  .nav-burger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .nav-burger.open span:nth-child(2) { opacity:0; }
+  .nav-burger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .mobile-overlay { position:fixed; inset:0; background:rgba(57,48,42,.42); backdrop-filter:blur(2px); z-index:94; opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease; }
+  .mobile-panel { position:fixed; top:0; right:0; height:100%; width:min(330px,86vw); background:#F0E7D7; z-index:95; transform:translateX(100%); transition:transform .45s cubic-bezier(.4,0,.1,1); display:flex; flex-direction:column; padding:26px 28px; box-shadow:-30px 0 60px -30px rgba(57,48,42,.5); }
+  .mobile-panel .mp-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .mobile-panel a { font-family:'Jost',sans-serif; font-size:15px; letter-spacing:.16em; text-transform:uppercase; color:#39302A; padding:17px 2px; border-bottom:1px solid rgba(156,122,80,.16); transition:color .3s ease, padding-left .3s ease; }
+  .mobile-panel a:hover { color:#9C7A50; padding-left:8px; }
+  @media (max-width:900px) {
+    .nav-desktop { display:none !important; }
+    .nav-burger { display:flex; }
+    .nav-inner { padding:12px 20px !important; gap:14px !important; }
+    .innav .logo-link img { height:50px !important; }
+    .innav .ann-bar { font-size:10px !important; letter-spacing:.16em !important; padding:9px 14px !important; }
+  }
+  @media (min-width:901px) { .mobile-panel, .mobile-overlay { display:none; } }
 </style>
 </helmet>
 
 <div class="innav">
-  <div style="background:#EAD5CC; color:#6B5D51; text-align:center; font-size:11.5px; letter-spacing:.26em; text-transform:uppercase; padding:11px 20px;" data-i18n="ann">Hecho a mano con amor · Cera de soya 100% natural · Bajo pedido</div>
+  <div class="ann-bar" style="background:#EAD5CC; color:#6B5D51; text-align:center; font-size:11.5px; letter-spacing:.26em; text-transform:uppercase; padding:11px 20px;" data-i18n="ann">Hecho a mano con amor · Cera de soya 100% natural · Bajo pedido</div>
 
   <nav style="position:sticky; top:0; z-index:60; background:rgba(240,231,215,.92); backdrop-filter:blur(14px); border-bottom:1px solid rgba(156,122,80,.18);">
-    <div style="max-width:1320px; margin:0 auto; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+    <div class="nav-inner" style="max-width:1320px; margin:0 auto; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
       <a href="index.html" class="logo-link" style="display:flex; align-items:center;">
         <img src="https://static.wixstatic.com/media/c78faf_6406c07728144968971366602127833a~mv2.png/v1/crop/x_61,y_135,w_396,h_208/fill/w_350,h_184,al_c,q_90,enc_auto/logo.png" alt="InnovArte Handmade" style="height:66px; width:auto; display:block;">
       </a>
-      <div style="display:flex; align-items:center; gap:32px; font-size:12px; letter-spacing:.18em; text-transform:uppercase;">
+      <div class="nav-desktop" style="display:flex; align-items:center; gap:32px; font-size:12px; letter-spacing:.18em; text-transform:uppercase;">
         <a class="navlink" href="index.html" data-i18n="nav_home">Inicio</a>
         <a class="navlink" href="catalogo.dc.html" data-i18n="nav_shop">Tienda</a>
         <a class="navlink" href="historia.dc.html" data-i18n="nav_hist">Historia</a>
@@ -50,9 +69,25 @@
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
           <sc-if value="{{ hasCart }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; top:-8px; right:-9px; background:#C89A8C; color:#fff; font-size:10px; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; font-weight:500;">{{ cartCount }}</span></sc-if>
         </button>
+        <button class="nav-burger" data-burger onClick="{{ toggleMenu }}" aria-label="Menú">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </nav>
+
+  <div class="mobile-overlay" data-mobile-overlay onClick="{{ closeMenu }}"></div>
+  <aside class="mobile-panel" data-mobile-menu>
+    <div class="mp-head">
+      <span style="font-family:'Cormorant Garamond',serif; font-size:23px; color:#39302A;" data-i18n="nav_menu">Menú</span>
+      <button class="cart-x" onClick="{{ closeMenu }}" style="background:none; border:none; cursor:pointer; color:#39302A; font-size:28px; line-height:1;">×</button>
+    </div>
+    <a href="index.html" onClick="{{ closeMenu }}" data-i18n="nav_home">Inicio</a>
+    <a href="catalogo.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_shop">Tienda</a>
+    <a href="historia.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_hist">Historia</a>
+    <a href="personalizacion.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_pers">Personalización</a>
+    <a href="galeria.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_gal">Galería</a>
+  </aside>
 
   <div data-cart-overlay onClick="{{ toggleCart }}" style="position:fixed; inset:0; background:rgba(57,48,42,.4); backdrop-filter:blur(2px); z-index:90; opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease;"></div>
   <aside data-cart-drawer style="position:fixed; top:0; right:0; height:100%; width:min(420px,92vw); background:#F3EBDC; z-index:100; transform:translateX(100%); transition:transform .5s cubic-bezier(.4,0,.1,1); display:flex; flex-direction:column; box-shadow:-30px 0 60px -30px rgba(57,48,42,.5);">
@@ -95,7 +130,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { cart: [], open: false };
+  state = { cart: [], open: false, menu: false };
 
   componentDidMount(){
     if(window.InnovCart){
@@ -115,9 +150,16 @@ class Component extends DCLogic {
     const ov=document.querySelector('[data-cart-overlay]'); const dr=document.querySelector('[data-cart-drawer]');
     if(ov){ ov.style.opacity=this.state.open?'1':'0'; ov.style.visibility=this.state.open?'visible':'hidden'; }
     if(dr){ dr.style.transform=this.state.open?'translateX(0)':'translateX(100%)'; }
+    const mo=document.querySelector('[data-mobile-overlay]'); const mp=document.querySelector('[data-mobile-menu]'); const bg=document.querySelector('[data-burger]');
+    if(mo){ mo.style.opacity=this.state.menu?'1':'0'; mo.style.visibility=this.state.menu?'visible':'hidden'; }
+    if(mp){ mp.style.transform=this.state.menu?'translateX(0)':'translateX(100%)'; }
+    if(bg){ bg.classList.toggle('open', !!this.state.menu); }
+    if(typeof document!=='undefined'&&document.body){ document.body.style.overflow=(this.state.open||this.state.menu)?'hidden':''; }
   }
 
-  toggleCart=()=>{ this.setState(s=>({ open:!s.open })); }
+  toggleCart=()=>{ this.setState(s=>({ open:!s.open, menu:false })); }
+  toggleMenu=()=>{ this.setState(s=>({ menu:!s.menu, open:false })); }
+  closeMenu=()=>{ this.setState({ menu:false }); }
   toggleLang=()=>{ if(window.InnovI18N){ InnovI18N.toggle(); this.forceUpdate(); } }
   incItem=(e)=>{ InnovCart.inc(e.currentTarget.getAttribute('data-id')); }
   decItem=(e)=>{ InnovCart.dec(e.currentTarget.getAttribute('data-id')); }
@@ -139,6 +181,7 @@ class Component extends DCLogic {
     const cartCount=cart.reduce((n,i)=>n+i.qty,0);
     return { cart, cartCount, hasCart:cartCount>0, cartEmpty:cart.length===0,
       toggleCart:this.toggleCart, toggleLang:this.toggleLang,
+      toggleMenu:this.toggleMenu, closeMenu:this.closeMenu,
       incItem:this.incItem, decItem:this.decItem, removeItem:this.removeItem, checkout:this.checkout };
   }
 }
