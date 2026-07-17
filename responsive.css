@@ -6,6 +6,11 @@
    Puntos de quiebre: 820px (tablet/móvil), 560px, 430px.
    ============================================================ */
 
+/* --- Fija la barra: 'clip' recorta el desborde horizontal SIN crear un
+   contenedor de scroll (a diferencia de 'hidden'), lo que permite que
+   position:sticky del nav funcione. --- */
+.rr-page { overflow-x: clip !important; }
+
 /* --- Colapso de cuadrículas --- */
 @media (max-width: 820px) {
   .rr-g4  { grid-template-columns: repeat(2, 1fr) !important; gap: 24px 16px !important; }
