@@ -87,8 +87,18 @@
   @keyframes sway { 0%,100% { transform:translateX(0) scaleX(1); } 50% { transform:translateX(-9px) scaleX(1.04); } }
   .cine-curtain { position:absolute; top:0; right:0; width:26%; height:100%; pointer-events:none; z-index:4; background:linear-gradient(90deg, rgba(255,245,235,0) 0%, rgba(255,238,228,.32) 68%, rgba(249,229,221,.55) 100%); transform-origin:right center; animation:sway 8.5s ease-in-out infinite; }
   .petals { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:5; }
-  @keyframes petal { 0% { top:-6%; transform:translateX(0) rotate(0deg); opacity:0; } 10% { opacity:.95; } 90% { opacity:.95; } 100% { top:106%; transform:translateX(var(--dx,30px)) rotate(360deg); opacity:0; } }
-  .petal { position:absolute; top:-6%; width:26px; height:32px; background:linear-gradient(135deg,#ffd9de 0%,#e58c99 60%,#cf6f7f 100%); border-radius:60% 40% 55% 45% / 66% 56% 44% 34%; box-shadow:0 4px 10px rgba(150,70,85,.3); opacity:.95; animation:petal 14s linear infinite; }
+  @keyframes petal { 0% { transform:translate3d(0,-40px,0) rotate(0deg); opacity:0; } 10% { opacity:.95; } 90% { opacity:.95; } 100% { transform:translate3d(var(--dx,30px),90vh,0) rotate(360deg); opacity:0; } }
+  .petal { position:absolute; top:0; width:26px; height:32px; background:linear-gradient(135deg,#ffd9de 0%,#e58c99 60%,#cf6f7f 100%); border-radius:60% 40% 55% 45% / 66% 56% 44% 34%; box-shadow:0 4px 10px rgba(150,70,85,.3); opacity:.95; animation:petal 14s linear infinite; will-change:transform; }
+  /* --- Rendimiento: aligera decoraciones pesadas en móvil --- */
+  @media (max-width:820px) {
+    .cine-rays, .cine-curtain, .petals { display:none !important; }
+    .cine-pan, .kb, .flame, .flame-glow { animation:none !important; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior:auto; }
+    .cine-rays, .cine-curtain, .petals { display:none !important; }
+    .kb, .cine-pan, .flame, .flame-glow, .scrollcue, .rise1, .rise2, .rise3, .rise4, [class*="marquee"] { animation:none !important; }
+  }
 </style>
 </helmet>
 

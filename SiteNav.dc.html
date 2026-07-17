@@ -32,7 +32,7 @@
   .nav-burger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
   .nav-burger.open span:nth-child(2) { opacity:0; }
   .nav-burger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
-  .mobile-overlay { position:fixed; inset:0; background:rgba(57,48,42,.42); backdrop-filter:blur(2px); z-index:94; opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease; }
+  .mobile-overlay { position:fixed; inset:0; background:rgba(57,48,42,.42); z-index:94; opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease; }
   .mobile-panel { position:fixed; top:0; right:0; height:100%; width:min(330px,86vw); background:#F0E7D7; z-index:95; transform:translateX(100%); transition:transform .45s cubic-bezier(.4,0,.1,1); display:flex; flex-direction:column; padding:26px 28px; box-shadow:-30px 0 60px -30px rgba(57,48,42,.5); }
   .mobile-panel .mp-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
   .mobile-panel a { font-family:'Jost',sans-serif; font-size:15px; letter-spacing:.16em; text-transform:uppercase; color:#39302A; padding:17px 2px; border-bottom:1px solid rgba(156,122,80,.16); transition:color .3s ease, padding-left .3s ease; }
@@ -51,7 +51,7 @@
 <div class="innav">
   <div class="ann-bar" style="background:#EAD5CC; color:#6B5D51; text-align:center; font-size:11.5px; letter-spacing:.26em; text-transform:uppercase; padding:11px 20px;" data-i18n="ann">Hecho a mano con amor · Cera de soya 100% natural · Bajo pedido</div>
 
-  <nav style="position:sticky; top:0; z-index:60; background:rgba(240,231,215,.92); backdrop-filter:blur(14px); border-bottom:1px solid rgba(156,122,80,.18);">
+  <nav style="position:sticky; top:0; z-index:60; background:rgba(240,231,215,.97); border-bottom:1px solid rgba(156,122,80,.18);">
     <div class="nav-inner" style="max-width:1320px; margin:0 auto; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
       <a href="index.html" class="logo-link" style="display:flex; align-items:center;">
         <img src="https://static.wixstatic.com/media/c78faf_6406c07728144968971366602127833a~mv2.png/v1/crop/x_61,y_135,w_396,h_208/fill/w_350,h_184,al_c,q_90,enc_auto/logo.png" alt="InnovArte Handmade" style="height:66px; width:auto; display:block;">
@@ -89,7 +89,7 @@
     <a href="galeria.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_gal">Galería</a>
   </aside>
 
-  <div data-cart-overlay onClick="{{ toggleCart }}" style="position:fixed; inset:0; background:rgba(57,48,42,.4); backdrop-filter:blur(2px); z-index:90; opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease;"></div>
+  <div data-cart-overlay onClick="{{ toggleCart }}" style="position:fixed; inset:0; background:rgba(57,48,42,.4); z-index:90; opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease;"></div>
   <aside data-cart-drawer style="position:fixed; top:0; right:0; height:100%; width:min(420px,92vw); background:#F3EBDC; z-index:100; transform:translateX(100%); transition:transform .5s cubic-bezier(.4,0,.1,1); display:flex; flex-direction:column; box-shadow:-30px 0 60px -30px rgba(57,48,42,.5);">
     <div style="display:flex; align-items:center; justify-content:space-between; padding:24px 26px; border-bottom:1px solid rgba(156,122,80,.2);">
       <div style="font-family:'Cormorant Garamond',serif; font-size:26px; color:#39302A;" data-i18n="cart_title">Tu carrito</div>
