@@ -15,6 +15,16 @@
 <script src="i18n.js"></script>
 <style>
   .innav a { font-family:'Jost',sans-serif; }
+  .ann-inner { display:block; text-align:center; font-size:11.5px; letter-spacing:.26em; padding:11px 20px; }
+  .ann-dup { display:none; }
+  @keyframes annMarquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  @media (max-width:560px) {
+    .ann-bar { white-space:nowrap; }
+    .ann-inner { display:inline-flex; text-align:left; padding:9px 0; white-space:nowrap; will-change:transform; animation:annMarquee 20s linear infinite; }
+    .ann-inner > span { padding:0 22px; }
+    .ann-dup { display:inline; }
+  }
+  @media (prefers-reduced-motion: reduce) { .ann-inner { animation:none !important; } }
   .navlink { position:relative; color:#39302A; }
   .navlink::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:#9C7A50; transition:width .4s cubic-bezier(.22,.61,.36,1); }
   .navlink:hover::after { width:100%; }
@@ -30,7 +40,7 @@
   .nav-inner { transition:padding-top .3s cubic-bezier(.22,.61,.36,1), padding-bottom .3s cubic-bezier(.22,.61,.36,1); }
   .innav nav { transition:box-shadow .35s ease; }
   .innav.nav-shrink .nav-inner { padding-top:8px !important; padding-bottom:8px !important; }
-  .innav.nav-shrink .logo-link img { height:46px !important; }
+  .innav.nav-shrink .logo-link img { height:56px !important; }
   .innav.nav-shrink nav { box-shadow:0 6px 22px -14px rgba(57,48,42,.4); }
   /* --- Menú móvil (hamburguesa) --- */
   .nav-burger { display:none; flex-direction:column; justify-content:center; gap:5px; width:40px; height:40px; background:none; border:none; cursor:pointer; padding:8px; }
@@ -47,26 +57,32 @@
     .nav-desktop { display:none !important; }
     .nav-burger { display:flex; }
     .nav-inner { padding:12px 20px !important; gap:14px !important; }
-    .innav .logo-link img { height:50px !important; }
-    .innav.nav-shrink .logo-link img { height:40px !important; }
+    .innav .logo-link img { height:60px !important; }
+    .innav.nav-shrink .logo-link img { height:46px !important; }
     .innav.nav-shrink .nav-inner { padding-top:7px !important; padding-bottom:7px !important; }
-    .innav .ann-bar { font-size:10px !important; letter-spacing:.16em !important; padding:9px 14px !important; }
+    .innav .ann-inner { font-size:10px !important; letter-spacing:.16em !important; padding-top:9px !important; padding-bottom:9px !important; }
   }
   @media (min-width:901px) { .mobile-panel, .mobile-overlay { display:none; } }
 </style>
 </helmet>
 
 <div class="innav">
-  <div class="ann-bar" style="background:#EAD5CC; color:#6B5D51; text-align:center; font-size:11.5px; letter-spacing:.26em; text-transform:uppercase; padding:11px 20px;" data-i18n="ann">Hecho a mano con amor · Cera de soya 100% natural · Bajo pedido</div>
+  <div class="ann-bar" style="background:#EAD5CC; color:#6B5D51; text-transform:uppercase; overflow:hidden;">
+    <div class="ann-inner">
+      <span data-i18n="ann">Diseño artesanal para tu hogar · Velas · Cerámica · Concreto decorativo · Aromatizadores</span>
+      <span class="ann-dup" aria-hidden="true" data-i18n="ann">Diseño artesanal para tu hogar · Velas · Cerámica · Concreto decorativo · Aromatizadores</span>
+    </div>
+  </div>
 
   <nav style="position:sticky; top:0; z-index:60; background:rgba(240,231,215,.97); border-bottom:1px solid rgba(156,122,80,.18);">
     <div class="nav-inner" style="max-width:1320px; margin:0 auto; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
       <a href="index.html" class="logo-link" style="display:flex; align-items:center;">
-        <img src="https://static.wixstatic.com/media/c78faf_6406c07728144968971366602127833a~mv2.png/v1/crop/x_61,y_135,w_396,h_208/fill/w_350,h_184,al_c,q_90,enc_auto/logo.png" alt="InnovArte Handmade" style="height:66px; width:auto; display:block;">
+        <img src="https://static.wixstatic.com/media/c78faf_6406c07728144968971366602127833a~mv2.png/v1/crop/x_61,y_135,w_396,h_208/fill/w_350,h_184,al_c,q_90,enc_auto/logo.png" alt="InnovArte Handmade" style="height:80px; width:auto; display:block;">
       </a>
       <div class="nav-desktop" style="display:flex; align-items:center; gap:32px; font-size:12px; letter-spacing:.18em; text-transform:uppercase;">
         <a class="navlink" href="index.html" data-i18n="nav_home">Inicio</a>
         <a class="navlink" href="catalogo.dc.html" data-i18n="nav_shop">Tienda</a>
+        <a class="navlink" href="insumos.dc.html" data-i18n="nav_insumos">Insumos</a>
         <a class="navlink" href="historia.dc.html" data-i18n="nav_hist">Historia</a>
         <a class="navlink" href="personalizacion.dc.html" data-i18n="nav_pers">Personalización</a>
         <a class="navlink" href="galeria.dc.html" data-i18n="nav_gal">Galería</a>
@@ -92,6 +108,7 @@
     </div>
     <a href="index.html" onClick="{{ closeMenu }}" data-i18n="nav_home">Inicio</a>
     <a href="catalogo.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_shop">Tienda</a>
+    <a href="insumos.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_insumos">Insumos</a>
     <a href="historia.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_hist">Historia</a>
     <a href="personalizacion.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_pers">Personalización</a>
     <a href="galeria.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_gal">Galería</a>

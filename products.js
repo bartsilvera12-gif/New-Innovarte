@@ -1,25 +1,46 @@
 /* Catálogo real recuperado de innovartehandmadec.wixsite.com — imágenes desde el CDN de Wix */
 (function () {
   var M = 'https://static.wixstatic.com/media/';
-  function P(id, name, cat, sub, media) { return { id: id, name: name, cat: cat, sub: sub, img: M + media }; }
 
+  // Mapa de categorías antiguas -> nueva taxonomía de marca (home decor).
+  // Los insumos se separan en su propia "línea" para no mezclarlos con la decoración.
+  var CATMAP = { signature: 'velas', souvenirs: 'velas', fragrance: 'aromatizadores', supplies: 'insumos' };
+  function P(id, name, cat, sub, media) {
+    var c = CATMAP[cat] || cat;
+    return { id: id, name: name, cat: c, linea: (c === 'insumos' ? 'insumos' : 'decor'), sub: sub, img: M + media };
+  }
+
+  // Categorías del catálogo decorativo. Editables: nombre, slug, orden, activa,
+  // destacada y descripción. (Cerámica, Concreto y Resina aún sin productos.)
   window.INNOV_CATS = [
-    { id: 'signature', name: 'Signature Candles', es: 'Velas Signature', en: 'Signature Candles',
-      descEs: 'Velas de soya esculpidas a mano: flores, figuras, perlas y formas clásicas.',
-      descEn: 'Hand-sculpted soy candles: flowers, figures, pearls and classic shapes.',
-      img: M + 'c78faf_1d1585f6443548209782d1603a66652c~mv2.jpg' },
-    { id: 'souvenirs', name: 'Souvenirs', es: 'Souvenirs', en: 'Souvenirs',
-      descEs: 'Pequeños detalles para regalar en cada ocasión especial.',
-      descEn: 'Little gifts to give on every special occasion.',
-      img: M + 'c78faf_eb01eb031f7e41ababf562f368836c4a~mv2.jpg' },
-    { id: 'fragrance', name: 'Home Fragrance', es: 'Fragancia para el Hogar', en: 'Home Fragrance',
-      descEs: 'Difusores, sprays, wax melts y recipientes para perfumar tu espacio.',
-      descEn: 'Diffusers, sprays, wax melts and vessels to scent your space.',
+    { id: 'velas', slug: 'velas', name: 'Velas', es: 'Velas', en: 'Candles',
+      order: 1, active: true, featured: true,
+      descEs: 'Velas artesanales de cera de soja, esculpidas a mano.',
+      descEn: 'Handcrafted soy wax candles, sculpted by hand.',
+      img: M + 'c78faf_32737f49c38a4b958effb92e55b9e90c~mv2.jpg' },
+    { id: 'aromatizadores', slug: 'aromatizadores', name: 'Aromatizadores', es: 'Aromatizadores', en: 'Home Fragrance',
+      order: 2, active: true, featured: true,
+      descEs: 'Difusores de varillas, home sprays y aromatizadores textiles.',
+      descEn: 'Reed diffusers, home sprays and textile fresheners.',
       img: M + 'c78faf_c4a6f74e11c74863ba3ce68d723a09a6~mv2.jpg' },
-    { id: 'supplies', name: 'Candle Making Supplies', es: 'Insumos para Velas', en: 'Candle Making Supplies',
-      descEs: 'Todo lo que necesitas para crear tus propias velas artesanales.',
-      descEn: 'Everything you need to craft your own artisanal candles.',
-      img: M + 'c78faf_655300d79ced4f9dad2d7d316f86b4e4~mv2.jpg' }
+    // Cerámica: desactivada hasta tener piezas cargadas (poner active:true para mostrarla).
+    { id: 'ceramica', slug: 'ceramica', name: 'Cerámica', es: 'Cerámica', en: 'Ceramics',
+      order: 3, active: false, featured: false,
+      descEs: 'Piezas decorativas de cerámica, hechas a mano.',
+      descEn: 'Handmade decorative ceramic pieces.',
+      img: M + 'c78faf_be7271a11aaa4d7d9c777aecb122788f~mv2.jpg' },
+    // Concreto: desactivada hasta tener piezas cargadas (poner active:true para mostrarla).
+    { id: 'concreto', slug: 'concreto', name: 'Concreto', es: 'Concreto', en: 'Concrete',
+      order: 4, active: false, featured: false,
+      descEs: 'Piezas decorativas de concreto, de diseño sobrio.',
+      descEn: 'Decorative concrete pieces with a sober design.',
+      img: M + 'c78faf_345da3bb2fc541789859077808654a76~mv2.jpg' },
+    // Resina: desactivada hasta tener piezas cargadas (poner active:true para mostrarla).
+    { id: 'resina', slug: 'resina', name: 'Resina', es: 'Resina', en: 'Resin',
+      order: 5, active: false, featured: false,
+      descEs: 'Piezas artesanales en resina.',
+      descEn: 'Handcrafted resin pieces.',
+      img: M + 'c78faf_dcc35e71fbf04865868d42a6da27e4bc~mv2.jpg' }
   ];
 
   window.INNOV_PRODUCTS = [

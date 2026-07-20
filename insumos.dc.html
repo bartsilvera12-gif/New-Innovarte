@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>Insumos — Innovarte | Próximamente</title>
+<meta name="description" content="Próximamente: insumos seleccionados para tus propias creaciones. Cera, aromas, moldes y herramientas para crear tus piezas artesanales con Innovarte.">
+<meta property="og:title" content="Insumos — Innovarte">
+<meta property="og:description" content="Próximamente: insumos seleccionados para tus propias creaciones.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://static.wixstatic.com/media/c78faf_655300d79ced4f9dad2d7d316f86b4e4~mv2.jpg">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="responsive.css">
+<script src="cart-store.js"></script>
+<script src="i18n.js"></script>
+<script src="products.js"></script>
+<script src="content.js"></script>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:#F9EBEB; color:#39302A; font-family:'Jost',sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#9C7A50; text-decoration:none; }
+  ::selection { background:#E7CFC6; color:#39302A; }
+  .prodcard { background:#F3EBDC; border-radius:12px; overflow:hidden; box-shadow:0 14px 34px -26px rgba(57,48,42,.4); padding-bottom:20px; transition:transform .55s cubic-bezier(.22,.61,.36,1), box-shadow .55s ease; }
+  .prodcard:hover { transform:translateY(-7px); box-shadow:0 36px 56px -30px rgba(200,154,140,.5); }
+  .btn-fill { transition:background .4s ease, letter-spacing .4s ease; }
+  .btn-fill:hover { background:#B98979 !important; letter-spacing:.24em !important; }
+  .addbtn:hover { background:#EAD5CC !important; }
+</style>
+</helmet>
+
+<div class="rr-page" style="overflow-x:hidden;">
+  <dc-import name="SiteNav" hint-size="100%,120px"></dc-import>
+
+  <section style="max-width:1320px; margin:0 auto; padding:80px 40px 24px; text-align:center;">
+    <div style="font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:#9C7A50; margin-bottom:16px;" data-i18n="insumos_eye">Insumos</div>
+    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(42px,5.5vw,74px); color:#39302A; line-height:1.02;" data-i18n="insumos_pagetitle">Insumos para crear</h1>
+  </section>
+
+  <!-- Estado PRÓXIMAMENTE (mientras insumos.publicado sea false en content.js) -->
+  <sc-if value="{{ soon }}" hint-placeholder-val="{{ true }}">
+    <section style="max-width:820px; margin:0 auto; padding:20px 40px 110px; text-align:center;">
+      <div data-reveal style="background:#EFE6D5; border-radius:8px; padding:clamp(50px,7vw,88px) 32px;">
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#C89A8C" stroke-width="1.1" aria-hidden="true" style="margin-bottom:18px;"><path d="M12 3c1.6 2.2 3.2 3.5 3.2 5.4a3.2 3.2 0 0 1-6.4 0C8.8 6.5 10.4 5.2 12 3z"/><rect x="7.5" y="11.5" width="9" height="9.5" rx="1.6"/></svg>
+        <h2 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(25px,3.3vw,38px); color:#39302A; line-height:1.2; max-width:560px; margin:0 auto;" data-i18n="insumos_p">Próximamente: insumos seleccionados para tus propias creaciones.</h2>
+        <p style="max-width:460px; margin:16px auto 0; color:#6B5D51; font-weight:300; font-size:15.5px; line-height:1.75;" data-i18n="insumos_note">Estamos preparando una línea de insumos para que crees tus propias piezas. Dejanos un mensaje y te avisamos cuando esté disponible.</p>
+        <a href="mailto:innovartecandles@gmail.com?subject=Insumos%20Innovarte" class="btn-fill" style="display:inline-block; margin-top:28px; background:#C89A8C; color:#fff; padding:15px 36px; font-size:12px; letter-spacing:.2em; text-transform:uppercase;" data-i18n="insumos_cta">Quiero que me avisen</a>
+      </div>
+    </section>
+  </sc-if>
+
+  <!-- Estado PUBLICADO (grilla de insumos, cuando insumos.publicado sea true y haya productos) -->
+  <sc-if value="{{ published }}" hint-placeholder-val="{{ false }}">
+    <section style="max-width:1320px; margin:0 auto; padding:40px 40px 100px;">
+      <div class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:36px 26px;">
+        <sc-for list="{{ items }}" as="p" hint-placeholder-count="8">
+          <div class="prodcard" style="display:flex; flex-direction:column;">
+            <div style="aspect-ratio:1; overflow:hidden; background:#ECDDD2;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></div>
+            <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px; padding:0 20px; color:#39302A;">{{ p.name }}</div>
+            <div style="color:#9C7A50; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px; padding:0 20px;">{{ p.sub }}</div>
+            <button class="addbtn" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" onClick="{{ addToCart }}" style="margin:14px 20px 0; background:#FBF4E7; border:1px solid rgba(156,122,80,.35); color:#39302A; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:40px;" data-i18n="add">Añadir</button>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+  </sc-if>
+
+  <dc-import name="SiteFooter" hint-size="100%,320px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  componentDidMount(){
+    if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
+    this._io=new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='none'; this._io.unobserve(e.target);} }); },{ threshold:0.12 });
+    document.querySelectorAll('[data-reveal]').forEach(el=>{ el.style.opacity='0'; el.style.transform='translateY(24px)'; el.style.transition='opacity .9s cubic-bezier(.22,.61,.36,1), transform .9s cubic-bezier(.22,.61,.36,1)'; this._io.observe(el); });
+  }
+  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); }
+  addToCart=(e)=>{ const b=e.currentTarget; if(window.InnovCart){ InnovCart.add(b.getAttribute('data-id'), b.getAttribute('data-name'), b.getAttribute('data-img')); InnovCart.openCart(); } }
+  renderVals(){
+    const pub=!!(window.INNOV_CONTENT && window.INNOV_CONTENT.insumos && window.INNOV_CONTENT.insumos.publicado);
+    const items=(window.INNOV_PRODUCTS||[]).filter(p=>p.linea==='insumos');
+    const show=pub && items.length>0;
+    return { published: show, soon: !show, items, addToCart:this.addToCart };
+  }
+}
+</script>
+</body>
+</html>

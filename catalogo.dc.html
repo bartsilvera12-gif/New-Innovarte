@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>Tienda — Innovarte | Velas, aromatizadores, cerámica y concreto</title>
+<meta name="description" content="Explorá la colección de Innovarte: velas artesanales de cera de soja, aromatizadores, difusores y piezas decorativas de cerámica y concreto, hechas a mano.">
+<meta property="og:title" content="Tienda — Innovarte">
+<meta property="og:description" content="Velas, aromatizadores y piezas decorativas de cerámica y concreto, hechas a mano.">
+<meta property="og:type" content="website">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -56,6 +61,12 @@
   </div>
 
   <section style="max-width:1320px; margin:0 auto; padding:48px 40px 100px;">
+    <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+      <div style="text-align:center; padding:70px 24px 90px; color:#9C7A50;">
+        <div style="font-family:'Cormorant Garamond',serif; font-size:clamp(26px,3.4vw,38px); color:#6B5D51; line-height:1.2;" data-i18n="cat_empty_h">Próximamente</div>
+        <p style="max-width:460px; margin:16px auto 0; font-size:15px; font-weight:300; line-height:1.7;" data-i18n="cat_empty_p">Estamos preparando piezas nuevas para esta categoría. Muy pronto vas a poder descubrirlas aquí.</p>
+      </div>
+    </sc-if>
     <div class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:36px 26px;">
       <sc-for list="{{ products }}" as="p" hint-placeholder-count="12">
         <div class="prodcard" style="display:flex; flex-direction:column;">
@@ -101,9 +112,11 @@ class Component extends DCLogic {
   }
 
   renderVals(){
-    const all=window.INNOV_PRODUCTS||[];
+    // Solo productos de la línea decorativa (los insumos viven en su propia página).
+    const all=(window.INNOV_PRODUCTS||[]).filter(p=>(p.linea||'decor')==='decor');
+    const cats=(window.INNOV_CATS||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
     const products=this.state.filter==='all'?all:all.filter(p=>p.cat===this.state.filter);
-    return { cats:window.INNOV_CATS||[], products, setFilter:this.setFilter, addToCart:this.addToCart };
+    return { cats, products, empty:products.length===0, setFilter:this.setFilter, addToCart:this.addToCart };
   }
 }
 </script>
