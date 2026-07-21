@@ -334,6 +334,40 @@
 
   function guardar(){ pintarTodo(); }   // los cambios ya se guardan en Supabase
 
+  /* ---------- subida de imágenes al almacenamiento ---------- */
+  async function subirImagen(file){
+    var ext = (file.name.split('.').pop()||'jpg').toLowerCase();
+    var base = slugify(file.name.replace(/\.[^.]+$/,'')) || 'imagen';
+    var nombre = base + '-' + Date.now() + '.' + ext;
+    var r = await sb.storage.from(window.INNOV_SB.bucket)
+              .upload(nombre, file, { cacheControl:'31536000', upsert:false });
+    if(r.error) throw new Error(r.error.message);
+    // Guardamos una dirección relativa al propio dominio: así funciona en el sitio
+    // publicado (por HTTPS) sin depender de la IP del servidor de Supabase.
+    return '/api.php/storage/v1/object/public/' + window.INNOV_SB.bucket + '/' + nombre;
+  }
+
+  /* Conecta un campo de texto con un selector de archivo y su vista previa. */
+  function campoImagen(idTexto, idArchivo, idPrev, idEstado){
+    var txt=$(idTexto), file=$(idArchivo), prev=$(idPrev), est=$(idEstado);
+    function pintar(){
+      var v=txt.value.trim();
+      prev.innerHTML = v ? '<img src="'+esc(v)+'" alt="" style="max-height:130px;border-radius:8px;border:1px solid var(--borde)">' : '';
+    }
+    txt.addEventListener('input', pintar); pintar();
+    file.addEventListener('change', async function(){
+      var f=this.files[0]; if(!f) return;
+      if(f.size > 8*1024*1024){ est.innerHTML='<div class="error">La imagen supera 8 MB. Comprimila un poco.</div>'; this.value=''; return; }
+      est.innerHTML='<div class="ayuda">Subiendo imagen…</div>';
+      try{
+        txt.value = await subirImagen(f);
+        est.innerHTML='<div class="ayuda" style="color:#3F6B45">Imagen subida ✓</div>';
+        pintar();
+      }catch(e){ est.innerHTML='<div class="error">No se pudo subir: '+esc(e.message)+'</div>'; }
+      this.value='';
+    });
+  }
+
   async function conError(promesa, exito){
     try{ var r=await promesa; if(r && r.error) throw new Error(r.error.message);
          if(exito) aviso(exito); return true; }
@@ -436,7 +470,11 @@
       '<div class="fila"><div class="campo"><label for="c-slug">Slug (URL)</label><input type="text" id="c-slug" value="'+esc(c.slug||c.id)+'"><div class="ayuda">Se genera solo si lo dejás vacío</div></div>'+
       '<div class="campo"><label for="c-order">Orden</label><input type="text" id="c-order" value="'+(c.order||0)+'"></div></div>'+
       '<div class="campo"><label for="c-desc">Descripción</label><textarea id="c-desc">'+esc(c.descEs||'')+'</textarea></div>'+
-      '<div class="campo"><label for="c-img">Imagen de portada</label><input type="text" id="c-img" value="'+esc(c.img||'')+'"></div>'+
+      '<div class="campo"><label for="c-img">Imagen de portada</label>'+
+        '<input type="text" id="c-img" value="'+esc(c.img||'')+'" placeholder="Subí un archivo o pegá una dirección">'+
+        '<div class="ayuda">O elegí una imagen de tu computadora:</div>'+
+        '<input type="file" id="c-file" accept="image/*" style="margin-top:7px;font-size:12.5px">'+
+        '<div id="c-estado"></div><div id="c-prev" style="margin-top:10px"></div></div>'+
       '<div class="check"><input type="checkbox" id="c-act" '+(c.active!==false?'checked':'')+'><label for="c-act">Visible en la tienda</label></div>'+
       '<div class="check"><input type="checkbox" id="c-fea" '+(c.featured?'checked':'')+'><label for="c-fea">Categoría destacada</label></div>'+
       '<div id="c-err"></div>',
@@ -454,7 +492,8 @@
         if(r.error){ $('#c-err').innerHTML='<div class="error">'+esc(r.error.message)+'</div>'; return false; }
         await cargarDatos(); pintarTodo();
         aviso(nuevo?'Categoría creada':'Categoría actualizada'); return true;
-      });
+      },
+      function(){ campoImagen('#c-img','#c-file','#c-prev','#c-estado'); });
   }
 
   $('#btn-nueva-cat').addEventListener('click',function(){formCat(null);});
@@ -524,10 +563,11 @@
           '<option value="insumos" '+(p.linea==='insumos'?'selected':'')+'>Insumos</option>'+
         '</select></div></div>'+
       '<div class="campo"><label for="p-sub">Subtítulo</label><input type="text" id="p-sub" value="'+esc(p.sub||'')+'" placeholder="Ej. Colección Floral"></div>'+
-      '<div class="campo"><label for="p-img">Imagen *</label><input type="text" id="p-img" value="'+esc(p.img||'')+'" placeholder="uploads/mi-foto.jpeg">'+
-        '<div class="ayuda">Elegí el archivo para completar la ruta automáticamente:</div>'+
+      '<div class="campo"><label for="p-img">Imagen *</label>'+
+        '<input type="text" id="p-img" value="'+esc(p.img||'')+'" placeholder="Subí un archivo o pegá una dirección">'+
+        '<div class="ayuda">O elegí una imagen de tu computadora:</div>'+
         '<input type="file" id="p-file" accept="image/*" style="margin-top:7px;font-size:12.5px">'+
-        '<div id="p-prev" style="margin-top:10px"></div></div>'+
+        '<div id="p-estado"></div><div id="p-prev" style="margin-top:10px"></div></div>'+
       '<div id="p-err"></div>',
       async function(){
         var name=$('#p-name').value.trim(), img=$('#p-img').value.trim();
@@ -544,11 +584,7 @@
         await cargarDatos(); pintarTodo();
         aviso(nuevo?'Producto creado':'Producto actualizado'); return true;
       },
-      function(){   // al abrir
-        var prev=function(){ var v=$('#p-img').value.trim(); $('#p-prev').innerHTML = v?'<img src="'+esc(v)+'" alt="" style="max-height:130px;border-radius:8px;border:1px solid var(--borde)">':''; };
-        $('#p-img').addEventListener('input',prev); prev();
-        $('#p-file').addEventListener('change',function(){ if(this.files[0]){ $('#p-img').value='uploads/'+this.files[0].name; prev(); } });
-      });
+      function(){ campoImagen('#p-img','#p-file','#p-prev','#p-estado'); });
   }
 
   $('#btn-nuevo-prod').addEventListener('click',function(){ if(!S.cats.length){aviso('Creá una categoría primero',true);return;} formProd(null); });
