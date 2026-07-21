@@ -1,5 +1,8 @@
 /* Catálogo real recuperado de innovartehandmadec.wixsite.com — imágenes desde el CDN de Wix */
 (function () {
+  // Si los datos ya llegaron desde Supabase, no los sobrescribimos.
+  if (window.INNOV_REMOTO) return;
+
   var M = 'https://static.wixstatic.com/media/';
 
   // Mapa de categorías antiguas -> nueva taxonomía de marca (home decor).

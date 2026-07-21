@@ -11,6 +11,9 @@
    - Fechas de colección: formato 'AAAA-MM-DD' (ej. '2026-12-01').
    ============================================================================ */
 (function () {
+  // Si el contenido ya llegó desde Supabase, no lo sobrescribimos.
+  if (window.INNOV_REMOTO) return;
+
   var U = 'uploads/';                                   // carpeta local de medios
   var CDN = 'https://static.wixstatic.com/media/';      // CDN de imágenes existente
 
