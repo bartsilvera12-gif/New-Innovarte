@@ -47,7 +47,7 @@
       { id: 'aromas',   order: 2, active: true,
         title: 'Aromatizadores', subtitle: 'Difusores, home sprays y textiles',
         video: U + 'WhatsApp Video 2026-07-20 at 13.32.10.mp4', videoMobile: '',
-        poster: U + 'WhatsApp Image 2026-07-20 at 13.32.04.jpeg',
+        poster: U + 'WhatsApp Image 2026-07-20 at 13.32.08.jpeg',
         href: 'catalogo.dc.html#aromatizadores' },
 
       { id: 'ceramica', order: 3, active: true,
@@ -86,6 +86,56 @@
     insumos: {
       publicado: false,
       mensaje: 'Próximamente: insumos seleccionados para tus propias creaciones.'
+    },
+
+    /* ---------------------------------------------------------------------
+       5) TEXTOS DEL SITIO
+       Se editan desde el panel (admin.html > Textos e Historia).
+       'es' es lo que se ve por defecto; 'en' son las traducciones al inglés
+       (si una clave no está en 'en', se usa el diccionario de i18n.js).
+       --------------------------------------------------------------------- */
+    textos: {
+      es: {
+        // Franja superior
+        ann: 'Diseño artesanal para tu hogar · Velas · Cerámica · Concreto decorativo · Aromatizadores',
+        // Portada
+        hero_eye: 'Diseño artesanal para el hogar',
+        hero_h1: 'Inspiramos hogares con diseño, aroma y arte.',
+        hero_sub: 'En Innovarte convertimos materiales nobles en piezas que cuentan historias. Creamos velas artesanales de cera de soja, aromatizadores para el hogar, difusores de varillas y piezas decorativas de cerámica y concreto, elaboradas una a una con pasión y dedicación.',
+        cta_shop: 'Explorar la colección',
+        cta_story: 'Nuestra historia',
+        // Nuestra Colección
+        ncol_eye: 'Nuestra colección',
+        ncol_h: 'Piezas que transforman tu hogar',
+        ncol_sub: 'Velas, aromatizadores, cerámica y concreto decorativo — creados a mano, pieza por pieza.',
+        // Sobre la marca
+        marca_eye: 'Sobre Innovarte',
+        marca_h: 'Creamos espacios que inspiran calma, belleza y bienestar.',
+        marca_sub: 'Velas artesanales • Home Decor • Aromatizadores • Piezas de cerámica y concreto decorativo',
+        marca_p: 'En Innovarte diseñamos y elaboramos a mano cada pieza para transformar tu hogar. Descubre nuestras velas de cera de soja, difusores de varillas, home sprays, aromatizadores textiles y piezas decorativas de cerámica y concreto, además de detalles únicos creados con dedicación para regalar o disfrutar cada día.',
+        marca_cta1: 'Explorar la colección',
+        marca_cta2: 'Conoce nuestra historia',
+        // Insumos
+        insumos_pagetitle: 'Insumos para crear',
+        insumos_p: 'Próximamente: insumos seleccionados para tus propias creaciones.',
+        insumos_note: 'Estamos preparando una línea de insumos para que crees tus propias piezas. Dejanos un mensaje y te avisamos cuando esté disponible.',
+        insumos_cta: 'Quiero que me avisen',
+        // Pie de página
+        foot_desc: 'Velas artesanales de cera de soja, aromatizadores, difusores y piezas decorativas de cerámica y concreto para transformar tu hogar. Hechas a mano entre Paraguay y Estados Unidos.',
+        foot_ship: 'Envíos a todo EE. UU.',
+        // Página "Nuestra historia"
+        marcapg_eye: 'Sobre la marca',
+        marcapg_h: 'Creamos espacios que inspiran',
+        marcapg_sub: 'Velas artesanales • Home Decor • Aromatizadores • Piezas de cerámica y concreto decorativo',
+        founder_eye: 'Nuestra historia',
+        founder_h: 'La historia detrás de Innovarte',
+        founder_p1: 'Soy Adriana Saieg, fundadora de Innovarte. Nací en Paraguay y actualmente vivo en Estados Unidos. Innovarte nació del deseo de crear objetos que transformen los espacios y despierten emociones.',
+        founder_p2: 'Lo que comenzó con velas artesanales fue creciendo con el tiempo. Hoy Innovarte reúne una colección de velas aromáticas, difusores de varillas, home sprays, aromatizadores textiles y piezas decorativas de cerámica, todos elaborados cuidadosamente a mano.',
+        founder_p3: 'Cada producto está diseñado para aportar armonía, belleza y personalidad a tu hogar. Creemos que los pequeños detalles tienen el poder de hacer que un espacio se sienta más cálido, acogedor y especial.',
+        founder_p4: 'Más que vender productos, en Innovarte buscamos crear experiencias, acompañar momentos importantes y ofrecer piezas que combinen diseño, calidad y artesanía.',
+        founder_quote: 'En Innovarte creemos que un hogar no solo se decora… se siente. Cada aroma, cada textura y cada pieza están creados para convertir los momentos cotidianos en recuerdos inolvidables.'
+      },
+      en: {}
     }
   };
 

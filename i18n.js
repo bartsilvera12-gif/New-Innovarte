@@ -88,11 +88,19 @@ window.InnovI18N = {
     this.lang = lang;
     try { localStorage.setItem('innov_lang', lang); } catch (e) {}
     var self = this;
+    // Textos editables desde el panel (content.js > textos). Tienen prioridad sobre el HTML.
+    var ov = (window.INNOV_CONTENT && window.INNOV_CONTENT.textos) || {};
+    var esOv = ov.es || {}, enOv = ov.en || {};
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
       if (!self.orig.has(el)) self.orig.set(el, el.innerHTML);
       var k = el.getAttribute('data-i18n');
-      if (lang === 'en') { if (self.en[k] != null) el.innerHTML = self.en[k]; }
-      else { el.innerHTML = self.orig.get(el); }
+      var es = esOv[k] != null ? esOv[k] : self.orig.get(el);
+      if (lang === 'en') {
+        var en = enOv[k] != null ? enOv[k] : self.en[k];
+        el.innerHTML = (en != null ? en : es);
+      } else {
+        el.innerHTML = es;
+      }
     });
     document.querySelectorAll('[data-lang-label]').forEach(function (el) { el.textContent = lang === 'es' ? 'EN' : 'ES'; });
     document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
@@ -101,5 +109,12 @@ window.InnovI18N = {
     });
   },
   toggle: function () { this.apply(this.lang === 'es' ? 'en' : 'es'); },
-  t: function (k, es) { return this.lang === 'en' && this.en[k] != null ? this.en[k] : es; }
+  t: function (k, es) {
+    var ov = (window.INNOV_CONTENT && window.INNOV_CONTENT.textos) || {};
+    if (this.lang === 'en') {
+      var e = (ov.en || {})[k]; if (e != null) return e;
+      if (this.en[k] != null) return this.en[k];
+    }
+    var s = (ov.es || {})[k]; return s != null ? s : es;
+  }
 };

@@ -10,6 +10,13 @@
     return { id: id, name: name, cat: c, linea: (c === 'insumos' ? 'insumos' : 'decor'), sub: sub, img: M + media };
   }
 
+  // Igual que P(), pero para fotos propias guardadas en /uploads.
+  var U = 'uploads/';
+  function L(id, name, cat, sub, file) {
+    var c = CATMAP[cat] || cat;
+    return { id: id, name: name, cat: c, linea: (c === 'insumos' ? 'insumos' : 'decor'), sub: sub, img: U + file };
+  }
+
   // Categorías del catálogo decorativo. Editables: nombre, slug, orden, activa,
   // destacada y descripción. (Cerámica, Concreto y Resina aún sin productos.)
   window.INNOV_CATS = [
@@ -44,6 +51,21 @@
   ];
 
   window.INNOV_PRODUCTS = [
+    // ---- Fotos propias (nombres y subtítulos editables) ----
+    // Velas
+    L('iv-vela-piedra',      'Vela Piedra Natural',      'velas', 'Colección Artesanal', 'WhatsApp Image 2026-07-20 at 13.32.01.jpeg'),
+    L('iv-pilares',          'Set Pilares Texturados',   'velas', 'Colección Artesanal', 'WhatsApp Image 2026-07-20 at 13.32.05.jpeg'),
+    L('iv-flores-bandeja',   'Flores en Bandeja',        'velas', 'Colección Floral',    'WhatsApp Image 2026-07-20 at 13.32.07.jpeg'),
+    L('iv-travertino',       'Vela Travertino',          'velas', 'Línea Premium',       'WhatsApp Image 2026-07-20 at 13.33.26.jpeg'),
+    L('iv-noir',             'Vela Noir',                'velas', 'Línea Premium',       'WhatsApp Image 2026-07-20 at 13.33.27.jpeg'),
+    L('iv-perla',            'Vela Perla',               'velas', 'Línea Premium',       'WhatsApp Image 2026-07-20 at 13.33.29.jpeg'),
+    L('iv-velas-flor',       'Velas Flor',               'velas', 'Colección Floral',    'WhatsApp Image 2026-07-20 at 13.33.29 (1).jpeg'),
+    // Aromatizadores
+    L('iv-set-noir',         'Set Baño Noir',            'aromatizadores', 'Difusor y dispensador', 'WhatsApp Image 2026-07-20 at 13.32.02.jpeg'),
+    L('iv-set-arena',        'Set Baño Arena',           'aromatizadores', 'Difusor y dispensador', 'WhatsApp Image 2026-07-20 at 13.32.02 (1).jpeg'),
+    L('iv-difusor-flor',     'Difusor Flor',             'aromatizadores', 'Difusor de aromas',     'WhatsApp Image 2026-07-20 at 13.32.04.jpeg'),
+    L('iv-duo-cristal',      'Dúo Cristal',              'aromatizadores', 'Difusor y dispensador', 'WhatsApp Image 2026-07-20 at 13.32.08.jpeg'),
+
     // Signature — Flower Collection
     P('peonies', 'Peonies', 'signature', 'Flower Collection', 'c78faf_32737f49c38a4b958effb92e55b9e90c~mv2.jpg'),
     P('tulip', 'Tulip', 'signature', 'Flower Collection', 'c78faf_7f0a0696d27c4b389ee08f9feaf168b2~mv2.jpg'),

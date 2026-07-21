@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel de administración — Innovarte</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --marron:#39302A; --marron-medio:#6B5D51; --oro:#9C7A50;
+    --rosa:#C89A8C; --rosa-osc:#B98979; --rosa-claro:#EAD5CC;
+    --crema:#FBF4E7; --arena:#F3EBDC; --fondo:#F9EBEB; --borde:rgba(156,122,80,.24);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--fondo);color:var(--marron);font-family:'Jost',sans-serif;-webkit-font-smoothing:antialiased;display:flex;min-height:100vh}
+  h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:500;line-height:1.15}
+  button,input,select,textarea{font-family:inherit;font-size:inherit}
+  a{color:var(--oro);text-decoration:none}
+
+  /* ---------- Barra lateral ---------- */
+  .side{width:246px;flex-shrink:0;background:var(--marron);color:#EFE3D8;padding:26px 0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+  .side .marca{font-family:'Cormorant Garamond',serif;font-size:29px;color:#fff;padding:0 24px 4px}
+  .side .sub{font-size:9.5px;letter-spacing:.34em;text-transform:uppercase;color:#B79C7E;padding:0 24px 26px}
+  .side nav{display:flex;flex-direction:column;gap:2px;padding:0 12px}
+  .side nav button{display:flex;align-items:center;gap:11px;width:100%;text-align:left;background:none;border:0;color:#D9C9B8;padding:11px 14px;border-radius:8px;cursor:pointer;font-size:13.5px;letter-spacing:.03em;transition:background .2s,color .2s}
+  .side nav button:hover{background:rgba(255,255,255,.07);color:#fff}
+  .side nav button[aria-current="true"]{background:var(--rosa);color:#fff;font-weight:500}
+  .side nav button[hidden]{display:none}   /* quitar 'hidden' en el HTML para volver a mostrarlo */
+  .side nav button svg{width:17px;height:17px;flex-shrink:0}
+  .side .pie{margin-top:auto;padding:18px 24px 0;font-size:11px;color:#A08D77;line-height:1.6}
+
+  /* ---------- Contenido ---------- */
+  .main{flex:1;min-width:0;padding:30px 34px 70px}
+  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:26px}
+  .top h1{font-size:34px}
+  .top p{color:var(--marron-medio);font-size:14px;font-weight:300;margin-top:5px}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:40px;padding:11px 22px;font-size:12px;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;transition:background .25s,opacity .2s}
+  .btn-p{background:var(--rosa);color:#fff}.btn-p:hover{background:var(--rosa-osc)}
+  .btn-s{background:transparent;color:var(--marron);border:1px solid var(--borde)}.btn-s:hover{background:var(--arena)}
+  .btn-d{background:transparent;color:#A4453C;border:1px solid rgba(164,69,60,.4)}.btn-d:hover{background:rgba(164,69,60,.08)}
+  .btn-mini{padding:7px 14px;font-size:10.5px;letter-spacing:.1em}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+
+  .card{background:var(--crema);border:1px solid var(--borde);border-radius:12px;padding:22px}
+  .grid{display:grid;gap:16px}
+  .stats{grid-template-columns:repeat(auto-fit,minmax(178px,1fr))}
+  .stat .n{font-family:'Cormorant Garamond',serif;font-size:42px;color:var(--rosa);line-height:1}
+  .stat .l{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--oro);margin-top:6px}
+  .stat .d{font-size:12.5px;color:var(--marron-medio);margin-top:9px;font-weight:300}
+
+  table{width:100%;border-collapse:collapse;background:var(--crema);border:1px solid var(--borde);border-radius:12px;overflow:hidden}
+  th{background:var(--arena);text-align:left;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--oro);padding:13px 14px;font-weight:500}
+  td{padding:12px 14px;border-top:1px solid rgba(156,122,80,.14);font-size:14px;vertical-align:middle}
+  tr:hover td{background:rgba(234,213,204,.22)}
+  .thumb{width:46px;height:46px;border-radius:7px;object-fit:cover;background:var(--rosa-claro);display:block}
+  .pill{display:inline-block;padding:4px 11px;border-radius:30px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+  .pill-on{background:#DCEBDC;color:#3F6B45}.pill-off{background:#EFE2DC;color:#96695D}
+  .acciones{display:flex;gap:7px;justify-content:flex-end}
+
+  label{display:block;font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--oro);margin-bottom:6px}
+  input[type=text],input[type=url],select,textarea{width:100%;padding:11px 13px;border:1px solid var(--borde);border-radius:8px;background:#fff;color:var(--marron);font-size:14px}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--rosa);outline-offset:1px;border-color:transparent}
+  textarea{min-height:80px;resize:vertical}
+  .campo{margin-bottom:16px}
+  .fila{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .check{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+  .check input{width:17px;height:17px;accent-color:var(--rosa)}
+  .check label{margin:0;text-transform:none;letter-spacing:.02em;font-size:13.5px;color:var(--marron)}
+  .ayuda{font-size:12px;color:var(--marron-medio);font-weight:300;margin-top:5px;line-height:1.5}
+  .error{color:#A4453C;font-size:12.5px;margin-top:6px}
+
+  /* ---------- Modal ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(57,48,42,.5);z-index:80;display:none;align-items:center;justify-content:center;padding:20px}
+  .overlay.open{display:flex}
+  .modal{background:var(--crema);border-radius:14px;width:min(640px,100%);max-height:90vh;overflow-y:auto;padding:28px}
+  .modal h2{font-size:27px;margin-bottom:5px}
+  .modal .cierre{position:sticky;top:0;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+  .modal .cierre button{background:none;border:0;font-size:26px;cursor:pointer;color:var(--marron-medio);line-height:1}
+
+  /* ---------- Aviso / toast ---------- */
+  .toast{position:fixed;right:22px;bottom:22px;z-index:120;background:var(--marron);color:#fff;padding:14px 20px;border-radius:10px;font-size:13.5px;box-shadow:0 16px 40px -18px rgba(57,48,42,.7);opacity:0;transform:translateY(12px);transition:opacity .3s,transform .3s;pointer-events:none}
+  .toast.show{opacity:1;transform:none}
+  .toast.err{background:#8E3A32}
+
+  .banner{background:var(--rosa-claro);border:1px solid var(--borde);border-radius:10px;padding:14px 18px;font-size:13.5px;color:var(--marron);line-height:1.6;margin-bottom:22px}
+  .banner b{font-weight:600}
+  .vista{display:none}.vista.activa{display:block}
+  .barra-h{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  .barra-h input,.barra-h select{width:auto;min-width:190px}
+  .vacio{text-align:center;padding:52px 20px;color:var(--marron-medio);font-size:14px}
+  pre{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:15px;font-size:11.5px;max-height:270px;overflow:auto;line-height:1.55;font-family:ui-monospace,Menlo,Consolas,monospace}
+  @media(max-width:860px){
+    body{flex-direction:column}
+    .side{width:100%;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center;padding:14px}
+    .side .marca,.side .sub{padding:0 12px}.side .sub{display:none}
+    .side nav{flex-direction:row;flex-wrap:wrap;flex:1}
+    .side .pie{display:none}
+    .main{padding:22px 18px 60px}
+    .fila{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<aside class="side">
+  <div class="marca">InnovArte</div>
+  <div class="sub">Panel de administración</div>
+  <nav id="nav">
+    <button data-v="dashboard" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</button>
+    <button data-v="categorias"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg> Categorías</button>
+    <button data-v="productos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg> Productos</button>
+    <button data-v="textos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h9"/><path d="M17 16v5M14.5 18.5h5" stroke-linecap="round"/></svg> Textos</button>
+    <button data-v="historia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></svg> Historia</button>
+    <button data-v="contenido" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5l5 2.5-5 2.5z"/></svg> Contenido y videos</button>
+    <button data-v="exportar" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v12M8 11l4 4 4-4M4 19h16"/></svg> Publicar cambios</button>
+  </nav>
+  <div class="pie">Los cambios se guardan como borrador en este navegador hasta que los publiques.</div>
+</aside>
+
+<main class="main">
+
+  <!-- ============ DASHBOARD ============ -->
+  <section class="vista activa" id="v-dashboard">
+    <div class="top"><div><h1>Dashboard</h1><p>Resumen del catálogo y el contenido de la web.</p></div>
+      <button class="btn btn-s" id="btn-descartar">Cerrar sesión</button></div>
+    <div id="aviso-borrador"></div>
+    <div class="grid stats" id="stats"></div>
+    <div style="margin-top:22px" class="grid">
+      <div class="card">
+        <h3 style="font-size:21px;margin-bottom:12px">Productos por categoría</h3>
+        <div id="por-cat"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CATEGORÍAS ============ -->
+  <section class="vista" id="v-categorias">
+    <div class="top"><div><h1>Categorías</h1><p>Las categorías ocultas no aparecen en la tienda.</p></div>
+      <button class="btn btn-p" id="btn-nueva-cat">+ Nueva categoría</button></div>
+    <div class="banner">Una categoría <b>sin productos</b> se puede ocultar para que no se vea vacía en la tienda. Solo se puede eliminar si no tiene productos asociados.</div>
+    <div id="tabla-cats"></div>
+  </section>
+
+  <!-- ============ PRODUCTOS ============ -->
+  <section class="vista" id="v-productos">
+    <div class="top"><div><h1>Productos</h1><p id="cuenta-prod"></p></div>
+      <button class="btn btn-p" id="btn-nuevo-prod">+ Nuevo producto</button></div>
+    <div class="barra-h">
+      <input type="text" id="buscar" placeholder="Buscar por nombre…" aria-label="Buscar producto">
+      <select id="filtro-cat" aria-label="Filtrar por categoría"></select>
+      <select id="filtro-linea" aria-label="Filtrar por línea">
+        <option value="">Todas las líneas</option>
+        <option value="decor">Decoración</option>
+        <option value="insumos">Insumos</option>
+      </select>
+    </div>
+    <div id="tabla-prods"></div>
+  </section>
+
+  <!-- ============ TEXTOS ============ -->
+  <section class="vista" id="v-textos">
+    <div class="top"><div><h1>Textos del sitio</h1><p>Se aplican en todas las páginas al publicar.</p></div>
+      <button class="btn btn-s" id="btn-reset-textos">Restaurar originales</button></div>
+    <div class="banner">Los cambios se guardan solos mientras escribís. Para cortar una línea dentro de un título, escribí <b>&lt;br&gt;</b> donde quieras el salto.</div>
+    <div id="campos-textos"></div>
+  </section>
+
+  <!-- ============ HISTORIA ============ -->
+  <section class="vista" id="v-historia">
+    <div class="top"><div><h1>Historia</h1><p>Contenido de la página “Nuestra historia”.</p></div></div>
+    <div class="banner">La marca va primero y la historia personal de Adriana aparece como sección secundaria, tal como se definió en el diseño.</div>
+    <div id="campos-historia"></div>
+  </section>
+
+  <!-- ============ CONTENIDO ============ -->
+  <section class="vista" id="v-contenido">
+    <div class="top"><div><h1>Contenido y videos</h1><p>Portada, sección “Nuestra Colección” e insumos.</p></div></div>
+
+    <div class="card" style="margin-bottom:20px">
+      <h3 style="font-size:22px;margin-bottom:4px">Portada (hero)</h3>
+      <p class="ayuda" style="margin-bottom:16px">Si dejás los dos videos vacíos, se muestra la imagen de portada. Los videos deben ser horizontales para verse bien en escritorio.</p>
+      <div class="fila">
+        <div class="campo"><label for="h-vd">Video escritorio</label><input type="text" id="h-vd" placeholder="uploads/mi-video.mp4"><div class="ayuda">Vacío = usar imagen</div></div>
+        <div class="campo"><label for="h-vm">Video móvil (vertical)</label><input type="text" id="h-vm" placeholder="uploads/mi-video-vertical.mp4"></div>
+      </div>
+      <div class="fila">
+        <div class="campo"><label for="h-po">Imagen de portada (poster)</label><input type="text" id="h-po"></div>
+        <div class="campo"><label for="h-fa">Imagen alternativa (fallback)</label><input type="text" id="h-fa"></div>
+      </div>
+      <div id="prev-hero"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px">
+      <h3 style="font-size:22px;margin-bottom:4px">Nuestra Colección</h3>
+      <p class="ayuda" style="margin-bottom:16px">Las 4 tarjetas de la portada. Si una no tiene video, se muestra solo su imagen.</p>
+      <div id="coleccion-campos"></div>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:22px;margin-bottom:14px">Página de Insumos</h3>
+      <div class="check"><input type="checkbox" id="ins-pub"><label for="ins-pub">Publicar insumos (si está desmarcado se muestra “Próximamente”)</label></div>
+      <div class="campo"><label for="ins-msg">Mensaje de “Próximamente”</label><textarea id="ins-msg"></textarea></div>
+    </div>
+  </section>
+
+  <!-- ============ EXPORTAR ============ -->
+  <section class="vista" id="v-exportar">
+    <div class="top"><div><h1>Publicar cambios</h1><p>Descargá los archivos y reemplazalos en el proyecto.</p></div></div>
+    <div class="banner">
+      <b>Cómo publicar:</b> 1) Descargá los archivos. 2) Reemplazá <b>products.js</b> y <b>content.js</b> en la carpeta del proyecto. 3) Publicá el sitio (push). Los cambios quedan online en aproximadamente un minuto.
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+      <div class="card">
+        <h3 style="font-size:21px;margin-bottom:6px">products.js</h3>
+        <p class="ayuda" style="margin-bottom:14px">Categorías y productos.</p>
+        <button class="btn btn-p" id="dl-products">Descargar</button>
+        <button class="btn btn-s btn-mini" id="cp-products" style="margin-left:8px">Copiar</button>
+        <pre id="pre-products" style="margin-top:14px"></pre>
+      </div>
+      <div class="card">
+        <h3 style="font-size:21px;margin-bottom:6px">content.js</h3>
+        <p class="ayuda" style="margin-bottom:14px">Videos, colecciones e insumos.</p>
+        <button class="btn btn-p" id="dl-content">Descargar</button>
+        <button class="btn btn-s btn-mini" id="cp-content" style="margin-left:8px">Copiar</button>
+        <pre id="pre-content" style="margin-top:14px"></pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============ MODAL ============ -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="cierre"><h2 id="modal-titulo">Editar</h2><button id="modal-x" aria-label="Cerrar">&times;</button></div>
+    <form id="modal-form"></form>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- ============ PANTALLA DE ACCESO ============ -->
+<div id="login" style="position:fixed;inset:0;z-index:200;background:var(--fondo);display:flex;align-items:center;justify-content:center;padding:20px">
+  <div style="width:min(420px,100%);text-align:center">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:44px;color:var(--marron)">InnovArte</div>
+    <div style="font-size:10px;letter-spacing:.34em;text-transform:uppercase;color:var(--oro);margin-bottom:30px">Panel de administración</div>
+    <form id="form-login" class="card" style="text-align:left">
+      <div class="campo"><label for="li-email">Email</label>
+        <input type="email" id="li-email" autocomplete="username" required></div>
+      <div class="campo"><label for="li-pass">Contraseña</label>
+        <input type="password" id="li-pass" autocomplete="current-password" required
+               style="width:100%;padding:11px 13px;border:1px solid var(--borde);border-radius:8px;background:#fff;font-size:14px"></div>
+      <div id="li-error"></div>
+      <button type="submit" class="btn btn-p" id="li-btn" style="width:100%;justify-content:center;margin-top:6px">Entrar</button>
+    </form>
+    <div id="li-estado" class="ayuda" style="margin-top:16px">Conectando…</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="supabase-config.js"></script>
+<script src="products.js"></script>
+<script src="content.js"></script>
+<script>
+(function(){
+  'use strict';
+  var CLAVE='innovarte_admin_borrador';
+  var S={cats:[],products:[],content:{}};
+  var origen={};                       // datos originales del sitio (para descartar)
+  var $=function(s){return document.querySelector(s);};
+
+  /* ---------- utilidades ---------- */
+  function clon(o){return JSON.parse(JSON.stringify(o));}
+  function aviso(msg,err){var t=$('#toast');t.textContent=msg;t.className='toast show'+(err?' err':'');clearTimeout(t._t);t._t=setTimeout(function(){t.className='toast';},2800);}
+  function slugify(s){return (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  /* ================= SUPABASE ================= */
+  var sb=null, hayBorrador=false, usuario=null;
+
+  function iniciarCliente(){
+    sb = window.INNOV_crearCliente ? window.INNOV_crearCliente() : null;
+    return !!sb;
+  }
+
+  /* --- Traducción entre la base de datos y el formato del panel --- */
+  function catDeBD(r){ return { id:r.id, slug:r.slug, name:r.nombre, en:r.nombre_en,
+    order:r.orden, active:r.activa, featured:r.destacada, descEs:r.descripcion,
+    descEn:r.descripcion_en, img:r.imagen }; }
+  function catABD(c){ return { slug:c.slug, nombre:c.name, nombre_en:c.en||null,
+    descripcion:c.descEs||null, descripcion_en:c.descEn||null, imagen:c.img||null,
+    orden:c.order||0, activa:c.active!==false, destacada:!!c.featured }; }
+
+  function prodDeBD(r, porId){ return { id:r.id, slug:r.slug, name:r.nombre,
+    cat:(porId[r.categoria_id]||{}).slug||'', sub:r.subtitulo, img:r.imagen,
+    linea:r.linea, order:r.orden }; }
+  function prodABD(p, porSlug){ return { slug:p.slug||p.id, nombre:p.name,
+    categoria_id:(porSlug[p.cat]||{}).id||null, subtitulo:p.sub||null,
+    imagen:p.img||null, linea:p.linea||'decor', orden:p.order||0 }; }
+
+  /* --- Cargar todo desde Supabase --- */
+  async function cargarDatos(){
+    var [cs,ps,ts,cfg,ch] = await Promise.all([
+      sb.from('categorias').select('*').eq('eliminada',false).order('orden'),
+      sb.from('productos').select('*').eq('eliminado',false).order('orden'),
+      sb.from('textos').select('*').order('orden'),
+      sb.from('configuracion').select('*'),
+      sb.from('coleccion_home').select('*').order('orden')
+    ]);
+    var err=[cs,ps,ts,cfg,ch].find(function(r){return r.error;});
+    if(err) throw new Error(err.error.message);
+
+    S.cats = (cs.data||[]).map(catDeBD);
+    var porId={}; (cs.data||[]).forEach(function(c){ porId[c.id]=c; });
+    S.products = (ps.data||[]).map(function(r){ return prodDeBD(r,porId); });
+
+    var textos={es:{},en:{}};
+    (ts.data||[]).forEach(function(t){ if(t.es!=null)textos.es[t.clave]=t.es; if(t.en!=null)textos.en[t.clave]=t.en; });
+
+    var conf={}; (cfg.data||[]).forEach(function(r){ conf[r.clave]=r.valor||{}; });
+    S.content = {
+      hero: conf.hero||{}, insumos: conf.insumos||{publicado:false,mensaje:''},
+      textos: textos, colecciones: [],
+      coleccion: (ch.data||[]).map(function(r){ return { id:r.clave, title:r.titulo,
+        subtitle:r.subtitulo, video:r.video, videoMobile:r.video_movil, poster:r.poster,
+        href:r.enlace, order:r.orden, active:r.activa }; })
+    };
+    origen = clon(S);
+  }
+
+  function guardar(){ pintarTodo(); }   // los cambios ya se guardan en Supabase
+
+  async function conError(promesa, exito){
+    try{ var r=await promesa; if(r && r.error) throw new Error(r.error.message);
+         if(exito) aviso(exito); return true; }
+    catch(e){ aviso('Error: '+e.message, true); return false; }
+  }
+
+  /* ---------- autenticación ---------- */
+  async function comprobarSesion(){
+    var { data } = await sb.auth.getSession();
+    if(data && data.session){ await entrar(data.session.user); return true; }
+    $('#li-estado').textContent='Ingresá con tu cuenta de administrador.';
+    return false;
+  }
+
+  async function entrar(user){
+    // Verificar que tenga perfil habilitado
+    var { data:perfil } = await sb.from('perfiles').select('*').eq('id',user.id).maybeSingle();
+    if(!perfil || perfil.activo===false){
+      await sb.auth.signOut();
+      $('#li-error').innerHTML='<div class="error">Tu usuario no tiene permisos de administrador.</div>';
+      $('#li-estado').textContent='';
+      return;
+    }
+    usuario=user;
+    $('#login').style.display='none';
+    try{ await cargarDatos(); pintarTodo(); aviso('Sesión iniciada'); }
+    catch(e){ aviso('No se pudieron cargar los datos: '+e.message, true); }
+  }
+
+  $('#form-login').addEventListener('submit', async function(e){
+    e.preventDefault();
+    var b=$('#li-btn'); b.disabled=true; b.textContent='Entrando…';
+    $('#li-error').innerHTML='';
+    var { data, error } = await sb.auth.signInWithPassword({
+      email: $('#li-email').value.trim(), password: $('#li-pass').value });
+    b.disabled=false; b.textContent='Entrar';
+    if(error){ $('#li-error').innerHTML='<div class="error">'+esc(error.message==='Invalid login credentials'?'Email o contraseña incorrectos.':error.message)+'</div>'; return; }
+    await entrar(data.user);
+  });
+
+  /* ---------- navegación ---------- */
+  $('#nav').addEventListener('click',function(e){
+    var b=e.target.closest('button[data-v]'); if(!b) return;
+    [].forEach.call(document.querySelectorAll('#nav button'),function(x){x.setAttribute('aria-current', x===b?'true':'false');});
+    [].forEach.call(document.querySelectorAll('.vista'),function(v){v.classList.remove('activa');});
+    $('#v-'+b.dataset.v).classList.add('activa');
+    if(b.dataset.v==='exportar') pintarExport();
+  });
+
+  /* ---------- dashboard ---------- */
+  function pintarDashboard(){
+    var decor=S.products.filter(function(p){return (p.linea||'decor')==='decor';});
+    var ins=S.products.filter(function(p){return p.linea==='insumos';});
+    var activas=S.cats.filter(function(c){return c.active!==false;});
+    var vids=(S.content.coleccion||[]).filter(function(c){return c.video;});
+    var st=[
+      {n:decor.length,l:'Productos',d:'En la tienda decorativa'},
+      {n:activas.length+'/'+S.cats.length,l:'Categorías',d:'Visibles / totales'},
+      {n:ins.length,l:'Insumos',d:(S.content.insumos&&S.content.insumos.publicado)?'Publicados':'Sin publicar'},
+      {n:vids.length+'/4',l:'Videos colección',d:'Tarjetas con video'}
+    ];
+    $('#stats').innerHTML=st.map(function(s){
+      return '<div class="card stat"><div class="n">'+s.n+'</div><div class="l">'+s.l+'</div><div class="d">'+s.d+'</div></div>';
+    }).join('');
+
+    $('#por-cat').innerHTML=S.cats.map(function(c){
+      var n=S.products.filter(function(p){return p.cat===c.id;}).length;
+      var max=Math.max.apply(null,S.cats.map(function(k){return S.products.filter(function(p){return p.cat===k.id;}).length;}).concat([1]));
+      return '<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px">'+
+        '<span>'+esc(c.name)+(c.active===false?' <span class="pill pill-off">oculta</span>':'')+'</span><b>'+n+'</b></div>'+
+        '<div style="height:7px;background:#EFE2DC;border-radius:4px;overflow:hidden"><div style="height:100%;width:'+(n/max*100)+'%;background:var(--rosa)"></div></div></div>';
+    }).join('');
+
+    $('#aviso-borrador').innerHTML = hayBorrador
+      ? '<div class="banner">Tenés <b>cambios sin publicar</b>. Andá a “Publicar cambios” para descargar los archivos actualizados.</div>' : '';
+  }
+
+  /* ---------- categorías ---------- */
+  function pintarCats(){
+    if(!S.cats.length){ $('#tabla-cats').innerHTML='<div class="vacio">Todavía no hay categorías.</div>'; return; }
+    var f=S.cats.slice().sort(function(a,b){return (a.order||0)-(b.order||0);});
+    $('#tabla-cats').innerHTML='<table><thead><tr><th>Orden</th><th>Nombre</th><th>Slug</th><th>Productos</th><th>Estado</th><th></th></tr></thead><tbody>'+
+      f.map(function(c){
+        var n=S.products.filter(function(p){return p.cat===c.id;}).length;
+        return '<tr><td>'+(c.order||0)+'</td><td><b>'+esc(c.name)+'</b>'+(c.featured?' <span class="pill pill-on">destacada</span>':'')+'</td>'+
+          '<td style="color:var(--marron-medio)">'+esc(c.slug||c.id)+'</td><td>'+n+'</td>'+
+          '<td>'+(c.active!==false?'<span class="pill pill-on">visible</span>':'<span class="pill pill-off">oculta</span>')+'</td>'+
+          '<td><div class="acciones">'+
+            '<button class="btn btn-s btn-mini" data-cat-edit="'+esc(c.id)+'">Editar</button>'+
+            '<button class="btn btn-s btn-mini" data-cat-vis="'+esc(c.id)+'">'+(c.active!==false?'Ocultar':'Mostrar')+'</button>'+
+            '<button class="btn btn-d btn-mini" data-cat-del="'+esc(c.id)+'" '+(n?'disabled title="Tiene productos"':'')+'>Eliminar</button>'+
+          '</div></td></tr>';
+      }).join('')+'</tbody></table>';
+  }
+
+  function formCat(c){
+    var nuevo=!c; c=c||{id:'',name:'',slug:'',order:(S.cats.length+1),active:true,featured:false,descEs:'',img:''};
+    abrirModal(nuevo?'Nueva categoría':'Editar categoría',
+      '<div class="campo"><label for="c-name">Nombre *</label><input type="text" id="c-name" value="'+esc(c.name)+'" required></div>'+
+      '<div class="fila"><div class="campo"><label for="c-slug">Slug (URL)</label><input type="text" id="c-slug" value="'+esc(c.slug||c.id)+'"><div class="ayuda">Se genera solo si lo dejás vacío</div></div>'+
+      '<div class="campo"><label for="c-order">Orden</label><input type="text" id="c-order" value="'+(c.order||0)+'"></div></div>'+
+      '<div class="campo"><label for="c-desc">Descripción</label><textarea id="c-desc">'+esc(c.descEs||'')+'</textarea></div>'+
+      '<div class="campo"><label for="c-img">Imagen de portada</label><input type="text" id="c-img" value="'+esc(c.img||'')+'"></div>'+
+      '<div class="check"><input type="checkbox" id="c-act" '+(c.active!==false?'checked':'')+'><label for="c-act">Visible en la tienda</label></div>'+
+      '<div class="check"><input type="checkbox" id="c-fea" '+(c.featured?'checked':'')+'><label for="c-fea">Categoría destacada</label></div>'+
+      '<div id="c-err"></div>',
+      async function(){
+        var name=$('#c-name').value.trim();
+        if(!name){ $('#c-err').innerHTML='<div class="error">El nombre es obligatorio.</div>'; return false; }
+        var slug=slugify($('#c-slug').value.trim()||name);
+        if(S.cats.some(function(x){return x.slug===slug && x.id!==c.id;})){
+          $('#c-err').innerHTML='<div class="error">Ya existe una categoría con ese slug.</div>'; return false; }
+        var fila=catABD({ slug:slug, name:name, en:c.en, descEs:$('#c-desc').value.trim(),
+          descEn:c.descEn, img:$('#c-img').value.trim(), order:parseInt($('#c-order').value,10)||0,
+          active:$('#c-act').checked, featured:$('#c-fea').checked });
+        var r = nuevo ? await sb.from('categorias').insert(fila)
+                      : await sb.from('categorias').update(fila).eq('id',c.id);
+        if(r.error){ $('#c-err').innerHTML='<div class="error">'+esc(r.error.message)+'</div>'; return false; }
+        await cargarDatos(); pintarTodo();
+        aviso(nuevo?'Categoría creada':'Categoría actualizada'); return true;
+      });
+  }
+
+  $('#btn-nueva-cat').addEventListener('click',function(){formCat(null);});
+  $('#tabla-cats').addEventListener('click',async function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.catEdit) formCat(S.cats.find(function(c){return c.id===b.dataset.catEdit;}));
+
+    if(b.dataset.catVis){
+      var c=S.cats.find(function(x){return x.id===b.dataset.catVis;});
+      var nuevo=(c.active===false);
+      b.disabled=true;
+      if(await conError(sb.from('categorias').update({activa:nuevo}).eq('id',c.id),
+                        'Categoría '+(nuevo?'visible':'oculta'))){
+        c.active=nuevo; pintarTodo();
+      } else b.disabled=false;
+    }
+
+    if(b.dataset.catDel){
+      var cat=S.cats.find(function(x){return x.id===b.dataset.catDel;});
+      if(S.products.some(function(p){return p.cat===cat.slug;})){ aviso('No se puede: tiene productos',true); return; }
+      if(!confirm('¿Eliminar la categoría “'+cat.name+'”? No se puede deshacer.')) return;
+      b.disabled=true;
+      if(await conError(sb.from('categorias').delete().eq('id',cat.id),'Categoría eliminada')){
+        await cargarDatos(); pintarTodo();
+      } else b.disabled=false;
+    }
+  });
+
+  /* ---------- productos ---------- */
+  function prodsFiltrados(){
+    var q=($('#buscar').value||'').toLowerCase(), c=$('#filtro-cat').value, l=$('#filtro-linea').value;
+    return S.products.filter(function(p){
+      if(q && (p.name||'').toLowerCase().indexOf(q)<0) return false;
+      if(c && p.cat!==c) return false;
+      if(l && (p.linea||'decor')!==l) return false;
+      return true;
+    });
+  }
+  function pintarProds(){
+    $('#filtro-cat').innerHTML='<option value="">Todas las categorías</option>'+
+      S.cats.map(function(c){return '<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>';}).join('');
+    var f=prodsFiltrados();
+    $('#cuenta-prod').textContent=f.length+' de '+S.products.length+' productos';
+    if(!f.length){ $('#tabla-prods').innerHTML='<div class="vacio">No hay productos que coincidan.</div>'; return; }
+    $('#tabla-prods').innerHTML='<table><thead><tr><th></th><th>Nombre</th><th>Categoría</th><th>Subtítulo</th><th>Línea</th><th></th></tr></thead><tbody>'+
+      f.map(function(p){
+        var c=S.cats.find(function(x){return x.id===p.cat;});
+        return '<tr><td><img class="thumb" src="'+esc(p.img)+'" alt="" loading="lazy"></td>'+
+          '<td><b>'+esc(p.name)+'</b><div style="font-size:11.5px;color:var(--marron-medio)">'+esc(p.id)+'</div></td>'+
+          '<td>'+esc(c?c.name:p.cat)+'</td><td style="color:var(--marron-medio)">'+esc(p.sub||'')+'</td>'+
+          '<td>'+((p.linea||'decor')==='insumos'?'Insumos':'Decoración')+'</td>'+
+          '<td><div class="acciones"><button class="btn btn-s btn-mini" data-p-edit="'+esc(p.id)+'">Editar</button>'+
+          '<button class="btn btn-d btn-mini" data-p-del="'+esc(p.id)+'">Eliminar</button></div></td></tr>';
+      }).join('')+'</tbody></table>';
+  }
+
+  function formProd(p){
+    var nuevo=!p; p=p||{id:'',name:'',cat:(S.cats[0]||{}).id||'',sub:'',img:'',linea:'decor'};
+    abrirModal(nuevo?'Nuevo producto':'Editar producto',
+      '<div class="campo"><label for="p-name">Nombre *</label><input type="text" id="p-name" value="'+esc(p.name)+'" required></div>'+
+      '<div class="fila">'+
+        '<div class="campo"><label for="p-cat">Categoría *</label><select id="p-cat">'+
+          S.cats.map(function(c){return '<option value="'+esc(c.id)+'" '+(c.id===p.cat?'selected':'')+'>'+esc(c.name)+(c.active===false?' (oculta)':'')+'</option>';}).join('')+
+        '</select></div>'+
+        '<div class="campo"><label for="p-linea">Línea</label><select id="p-linea">'+
+          '<option value="decor" '+((p.linea||'decor')==='decor'?'selected':'')+'>Decoración (tienda)</option>'+
+          '<option value="insumos" '+(p.linea==='insumos'?'selected':'')+'>Insumos</option>'+
+        '</select></div></div>'+
+      '<div class="campo"><label for="p-sub">Subtítulo</label><input type="text" id="p-sub" value="'+esc(p.sub||'')+'" placeholder="Ej. Colección Floral"></div>'+
+      '<div class="campo"><label for="p-img">Imagen *</label><input type="text" id="p-img" value="'+esc(p.img||'')+'" placeholder="uploads/mi-foto.jpeg">'+
+        '<div class="ayuda">Elegí el archivo para completar la ruta automáticamente:</div>'+
+        '<input type="file" id="p-file" accept="image/*" style="margin-top:7px;font-size:12.5px">'+
+        '<div id="p-prev" style="margin-top:10px"></div></div>'+
+      '<div id="p-err"></div>',
+      async function(){
+        var name=$('#p-name').value.trim(), img=$('#p-img').value.trim();
+        if(!name){ $('#p-err').innerHTML='<div class="error">El nombre es obligatorio.</div>'; return false; }
+        if(!img){ $('#p-err').innerHTML='<div class="error">La imagen es obligatoria.</div>'; return false; }
+        var slug=nuevo?slugify(name):p.slug, base=slug, k=2;
+        while(nuevo && S.products.some(function(x){return x.slug===slug;})){ slug=base+'-'+(k++); }
+        var porSlug={}; S.cats.forEach(function(c){ porSlug[c.slug]=c; });
+        var fila=prodABD({ slug:slug, name:name, cat:$('#p-cat').value, sub:$('#p-sub').value.trim(),
+                           img:img, linea:$('#p-linea').value, order:p.order||0 }, porSlug);
+        var r = nuevo ? await sb.from('productos').insert(fila)
+                      : await sb.from('productos').update(fila).eq('id',p.id);
+        if(r.error){ $('#p-err').innerHTML='<div class="error">'+esc(r.error.message)+'</div>'; return false; }
+        await cargarDatos(); pintarTodo();
+        aviso(nuevo?'Producto creado':'Producto actualizado'); return true;
+      },
+      function(){   // al abrir
+        var prev=function(){ var v=$('#p-img').value.trim(); $('#p-prev').innerHTML = v?'<img src="'+esc(v)+'" alt="" style="max-height:130px;border-radius:8px;border:1px solid var(--borde)">':''; };
+        $('#p-img').addEventListener('input',prev); prev();
+        $('#p-file').addEventListener('change',function(){ if(this.files[0]){ $('#p-img').value='uploads/'+this.files[0].name; prev(); } });
+      });
+  }
+
+  $('#btn-nuevo-prod').addEventListener('click',function(){ if(!S.cats.length){aviso('Creá una categoría primero',true);return;} formProd(null); });
+  ['#buscar','#filtro-cat','#filtro-linea'].forEach(function(s){ $(s).addEventListener('input',pintarProds); });
+  $('#tabla-prods').addEventListener('click',async function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.pEdit) formProd(S.products.find(function(p){return p.id===b.dataset.pEdit;}));
+    if(b.dataset.pDel){
+      var p=S.products.find(function(x){return x.id===b.dataset.pDel;});
+      if(!confirm('¿Eliminar “'+p.name+'”? No se puede deshacer.')) return;
+      b.disabled=true;
+      if(await conError(sb.from('productos').delete().eq('id',p.id),'Producto eliminado')){
+        await cargarDatos(); pintarTodo();
+      } else b.disabled=false;
+    }
+  });
+
+  /* ---------- textos e historia ---------- */
+  var CAMPOS_TEXTOS=[
+    {g:'Franja superior',c:[
+      {k:'ann',l:'Texto de la franja',t:'area'}]},
+    {g:'Portada',c:[
+      {k:'hero_eye',l:'Línea superior'},
+      {k:'hero_h1',l:'Título principal',t:'area'},
+      {k:'hero_sub',l:'Descripción',t:'area'},
+      {k:'cta_shop',l:'Botón principal'},
+      {k:'cta_story',l:'Botón secundario'}]},
+    {g:'Nuestra Colección',c:[
+      {k:'ncol_eye',l:'Línea superior'},
+      {k:'ncol_h',l:'Título'},
+      {k:'ncol_sub',l:'Descripción',t:'area'}]},
+    {g:'Sobre la marca (home)',c:[
+      {k:'marca_eye',l:'Línea superior'},
+      {k:'marca_h',l:'Título',t:'area'},
+      {k:'marca_sub',l:'Subtítulo (líneas de producto)',t:'area'},
+      {k:'marca_p',l:'Descripción',t:'area'},
+      {k:'marca_cta1',l:'Botón 1'},
+      {k:'marca_cta2',l:'Botón 2'}]},
+    {g:'Página de Insumos',c:[
+      {k:'insumos_pagetitle',l:'Título de la página'},
+      {k:'insumos_p',l:'Mensaje principal',t:'area'},
+      {k:'insumos_note',l:'Texto de apoyo',t:'area'},
+      {k:'insumos_cta',l:'Botón'}]},
+    {g:'Pie de página',c:[
+      {k:'foot_desc',l:'Descripción de la marca',t:'area'},
+      {k:'foot_ship',l:'Línea de envíos'}]}
+  ];
+  var CAMPOS_HISTORIA=[
+    {g:'Encabezado (la marca primero)',c:[
+      {k:'marcapg_eye',l:'Línea superior'},
+      {k:'marcapg_h',l:'Título'},
+      {k:'marcapg_sub',l:'Subtítulo (líneas de producto)',t:'area'}]},
+    {g:'Historia de la fundadora',c:[
+      {k:'founder_eye',l:'Línea superior'},
+      {k:'founder_h',l:'Título'},
+      {k:'founder_p1',l:'Párrafo 1',t:'area'},
+      {k:'founder_p2',l:'Párrafo 2',t:'area'},
+      {k:'founder_p3',l:'Párrafo 3',t:'area'},
+      {k:'founder_p4',l:'Párrafo 4',t:'area'}]},
+    {g:'Cita destacada',c:[
+      {k:'founder_quote',l:'Frase',t:'area'}]}
+  ];
+
+  function txt(){ var t=S.content.textos||(S.content.textos={es:{},en:{}}); if(!t.es)t.es={}; if(!t.en)t.en={}; return t; }
+
+  function pintarCampos(cont,cfg){
+    var es=txt().es;
+    $(cont).innerHTML=cfg.map(function(gr){
+      return '<div class="card" style="margin-bottom:18px"><h3 style="font-size:21px;margin-bottom:16px">'+esc(gr.g)+'</h3>'+
+        gr.c.map(function(f){
+          var v=es[f.k]!=null?es[f.k]:'';
+          var id='tx-'+f.k;
+          return '<div class="campo"><label for="'+id+'">'+esc(f.l)+'</label>'+
+            (f.t==='area'
+              ? '<textarea id="'+id+'" data-tx="'+f.k+'">'+esc(v)+'</textarea>'
+              : '<input type="text" id="'+id+'" data-tx="'+f.k+'" value="'+esc(v)+'">')+
+            '</div>';
+        }).join('')+'</div>';
+    }).join('');
+  }
+  function pintarTextos(){ pintarCampos('#campos-textos',CAMPOS_TEXTOS); pintarCampos('#campos-historia',CAMPOS_HISTORIA); }
+
+  // Guarda en Supabase 900 ms después de dejar de escribir.
+  var pendientes={}, temporizador=null;
+  function bindTextos(sel){
+    $(sel).addEventListener('input',function(e){
+      var k=e.target.dataset.tx; if(!k) return;
+      txt().es[k]=e.target.value;
+      pendientes[k]=e.target.value;
+      clearTimeout(temporizador);
+      temporizador=setTimeout(guardarTextos,900);
+    });
+  }
+  async function guardarTextos(){
+    var claves=Object.keys(pendientes); if(!claves.length) return;
+    var filas=claves.map(function(k){ return { clave:k, es:pendientes[k] }; });
+    pendientes={};
+    var r=await sb.from('textos').upsert(filas,{onConflict:'clave'});
+    if(r.error) aviso('No se pudo guardar el texto: '+r.error.message,true);
+    else aviso('Texto guardado');
+  }
+  bindTextos('#v-textos'); bindTextos('#v-historia');
+
+  $('#btn-reset-textos').addEventListener('click',async function(){
+    if(!confirm('¿Restaurar todos los textos a como estaban cuando abriste el panel?')) return;
+    var orig=(origen.content&&origen.content.textos&&origen.content.textos.es)||{};
+    var filas=Object.keys(orig).map(function(k){ return {clave:k, es:orig[k]}; });
+    if(await conError(sb.from('textos').upsert(filas,{onConflict:'clave'}),'Textos restaurados')){
+      await cargarDatos(); pintarTodo();
+    }
+  });
+
+  /* ---------- contenido ---------- */
+  function pintarContenido(){
+    var h=S.content.hero||(S.content.hero={});
+    $('#h-vd').value=h.videoDesktop||''; $('#h-vm').value=h.videoMobile||'';
+    $('#h-po').value=h.poster||''; $('#h-fa').value=h.fallback||'';
+    $('#prev-hero').innerHTML=h.poster?'<img src="'+esc(h.poster)+'" alt="" style="max-height:150px;border-radius:9px;border:1px solid var(--borde)">':'';
+    var ins=S.content.insumos||(S.content.insumos={publicado:false,mensaje:''});
+    $('#ins-pub').checked=!!ins.publicado; $('#ins-msg').value=ins.mensaje||'';
+
+    $('#coleccion-campos').innerHTML=(S.content.coleccion||[]).map(function(c,i){
+      return '<div style="border-top:1px solid var(--borde);padding-top:16px;margin-top:16px">'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'+
+          '<b style="font-size:15px">Tarjeta '+(i+1)+'</b>'+
+          '<label class="check" style="margin:0"><input type="checkbox" data-c-act="'+i+'" '+(c.active!==false?'checked':'')+'> <span style="font-size:13px">Visible</span></label></div>'+
+        '<div class="fila"><div class="campo"><label>Título</label><input type="text" data-c-f="title" data-c-i="'+i+'" value="'+esc(c.title||'')+'"></div>'+
+        '<div class="campo"><label>Subtítulo</label><input type="text" data-c-f="subtitle" data-c-i="'+i+'" value="'+esc(c.subtitle||'')+'"></div></div>'+
+        '<div class="fila"><div class="campo"><label>Video</label><input type="text" data-c-f="video" data-c-i="'+i+'" value="'+esc(c.video||'')+'" placeholder="uploads/video.mp4"></div>'+
+        '<div class="campo"><label>Imagen de portada</label><input type="text" data-c-f="poster" data-c-i="'+i+'" value="'+esc(c.poster||'')+'"></div></div>'+
+        '<div class="fila"><div class="campo"><label>Enlace</label><input type="text" data-c-f="href" data-c-i="'+i+'" value="'+esc(c.href||'')+'"></div>'+
+        '<div class="campo"><label>Orden</label><input type="text" data-c-f="order" data-c-i="'+i+'" value="'+(c.order||0)+'"></div></div>'+
+        (c.poster?'<img src="'+esc(c.poster)+'" alt="" style="max-height:96px;border-radius:8px;border:1px solid var(--borde)">':'')+
+        '</div>';
+    }).join('');
+  }
+  var tCont=null;
+  function guardarContenidoDiferido(){ clearTimeout(tCont); tCont=setTimeout(guardarContenido,900); }
+  async function guardarContenido(){
+    var r1=await sb.from('configuracion').upsert([
+      { clave:'hero', valor:S.content.hero },
+      { clave:'insumos', valor:S.content.insumos }
+    ],{onConflict:'clave'});
+    var filas=(S.content.coleccion||[]).map(function(c){ return { clave:c.id, titulo:c.title,
+      subtitulo:c.subtitle, video:c.video, video_movil:c.videoMobile, poster:c.poster,
+      enlace:c.href, orden:c.order||0, activa:c.active!==false }; });
+    var r2=await sb.from('coleccion_home').upsert(filas,{onConflict:'clave'});
+    if(r1.error||r2.error) aviso('No se pudo guardar: '+((r1.error||r2.error).message),true);
+    else aviso('Contenido guardado');
+  }
+
+  $('#v-contenido').addEventListener('input',function(e){
+    var t=e.target;
+    if(t.id==='h-vd')S.content.hero.videoDesktop=t.value.trim();
+    if(t.id==='h-vm')S.content.hero.videoMobile=t.value.trim();
+    if(t.id==='h-po')S.content.hero.poster=t.value.trim();
+    if(t.id==='h-fa')S.content.hero.fallback=t.value.trim();
+    if(t.id==='ins-msg')S.content.insumos.mensaje=t.value;
+    if(t.dataset.cF){ var c=S.content.coleccion[+t.dataset.cI]; c[t.dataset.cF]= t.dataset.cF==='order'?(parseInt(t.value,10)||0):t.value.trim(); }
+    guardarContenidoDiferido();
+  });
+  $('#v-contenido').addEventListener('change',function(e){
+    var t=e.target;
+    if(t.id==='ins-pub') S.content.insumos.publicado=t.checked;
+    if(t.dataset.cAct!=null) S.content.coleccion[+t.dataset.cAct].active=t.checked;
+    guardarContenido();
+  });
+
+  /* ---------- exportar ---------- */
+  function genProducts(){
+    var j=function(o){return JSON.stringify(o,null,2).split('\n').map(function(l,i){return i?'  '+l:l;}).join('\n');};
+    return '/* Generado desde el panel de administración de Innovarte. */\n'+
+      '(function () {\n'+
+      '  window.INNOV_CATS = '+j(S.cats)+';\n\n'+
+      '  window.INNOV_PRODUCTS = '+j(S.products)+';\n\n'+
+      '  window.INNOV_LOGO = '+JSON.stringify(window.INNOV_LOGO||'')+';\n'+
+      '  window.INNOV_CONTACT = '+JSON.stringify(window.INNOV_CONTACT||{})+';\n'+
+      '})();\n';
+  }
+  function genContent(){
+    var j=function(o){return JSON.stringify(o,null,2).split('\n').map(function(l,i){return i?'  '+l:l;}).join('\n');};
+    return '/* Generado desde el panel de administración de Innovarte.\n'+
+      '   Editá desde admin.html y volvé a exportar este archivo. */\n'+
+      '(function () {\n'+
+      '  window.INNOV_CONTENT = '+j(S.content)+';\n\n'+
+      '  /* Devuelve las colecciones que deben verse hoy (estado + fechas). */\n'+
+      '  window.INNOV_activeCollections = function () {\n'+
+      '    var hoy = new Date(); hoy.setHours(0, 0, 0, 0);\n'+
+      '    return (window.INNOV_CONTENT.colecciones || [])\n'+
+      '      .filter(function (c) {\n'+
+      "        if (c.estado === 'archivada' || c.estado === 'borrador') return false;\n"+
+      '        if (c.inicio && new Date(c.inicio) > hoy) return false;\n'+
+      '        if (c.fin && new Date(c.fin) < hoy) return false;\n'+
+      '        return true;\n'+
+      '      })\n'+
+      '      .sort(function (a, b) { return (a.orden || 0) - (b.orden || 0); });\n'+
+      '  };\n'+
+      '})();\n';
+  }
+  function pintarExport(){
+    $('#pre-products').textContent=genProducts().slice(0,1400)+'\n…';
+    $('#pre-content').textContent=genContent().slice(0,1400)+'\n…';
+  }
+  function bajar(nombre,txt){
+    var b=new Blob([txt],{type:'text/javascript;charset=utf-8'}), u=URL.createObjectURL(b);
+    var a=document.createElement('a'); a.href=u; a.download=nombre; a.click(); URL.revokeObjectURL(u);
+    aviso(nombre+' descargado');
+  }
+  $('#dl-products').addEventListener('click',function(){bajar('products.js',genProducts());});
+  $('#dl-content').addEventListener('click',function(){bajar('content.js',genContent());});
+  $('#cp-products').addEventListener('click',function(){navigator.clipboard.writeText(genProducts()).then(function(){aviso('products.js copiado');});});
+  $('#cp-content').addEventListener('click',function(){navigator.clipboard.writeText(genContent()).then(function(){aviso('content.js copiado');});});
+
+  $('#btn-descartar').addEventListener('click',async function(){
+    if(!confirm('¿Cerrar sesión?')) return;
+    await sb.auth.signOut();
+    location.reload();
+  });
+
+  /* ---------- modal ---------- */
+  var alGuardar=null;
+  function abrirModal(titulo,html,onSave,onOpen){
+    $('#modal-titulo').textContent=titulo;
+    $('#modal-form').innerHTML=html+'<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px">'+
+      '<button type="button" class="btn btn-s" id="modal-cancel">Cancelar</button>'+
+      '<button type="submit" class="btn btn-p">Guardar</button></div>';
+    alGuardar=onSave; $('#overlay').classList.add('open');
+    $('#modal-cancel').addEventListener('click',cerrarModal);
+    if(onOpen) onOpen();
+    var f=$('#modal-form').querySelector('input,select,textarea'); if(f) f.focus();
+  }
+  function cerrarModal(){ $('#overlay').classList.remove('open'); alGuardar=null; }
+  $('#modal-x').addEventListener('click',cerrarModal);
+  $('#overlay').addEventListener('mousedown',function(e){ if(e.target===this) cerrarModal(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && $('#overlay').classList.contains('open')) cerrarModal(); });
+  $('#modal-form').addEventListener('submit',async function(e){
+    e.preventDefault();
+    if(!alGuardar) return;
+    var b=$('#modal-form').querySelector('button[type=submit]');
+    b.disabled=true; var txtOrig=b.textContent; b.textContent='Guardando…';
+    var r=await alGuardar();
+    b.disabled=false; b.textContent=txtOrig;
+    if(r!==false) cerrarModal();
+  });
+
+  /* ---------- init ---------- */
+  function pintarTodo(){ pintarDashboard(); pintarCats(); pintarProds(); pintarContenido(); pintarTextos(); }
+
+  (async function(){
+    if(!iniciarCliente()){
+      $('#li-estado').innerHTML='<span style="color:#A4453C">No se pudo cargar la librería de Supabase. Revisá tu conexión.</span>';
+      $('#li-btn').disabled=true; return;
+    }
+    try{ await comprobarSesion(); }
+    catch(e){ $('#li-estado').innerHTML='<span style="color:#A4453C">Error de conexión: '+esc(e.message)+'</span>'; }
+  })();
+
+  // Expuesto para depuración y para generar los archivos desde consola si hiciera falta.
+  window.InnovAdmin={ genProducts:genProducts, genContent:genContent, estado:function(){return S;} };
+})();
+</script>
+</body>
+</html>

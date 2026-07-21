@@ -20,3 +20,6 @@ npm-debug.log*
 # Env
 .env
 .env.*
+
+# Listado de schemas del servidor (contiene proyectos de otros clientes)
+supabase/PGRST_DB_SCHEMAS.txt
