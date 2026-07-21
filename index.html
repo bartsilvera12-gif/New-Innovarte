@@ -37,6 +37,8 @@
   image-slot { --is-bg:#ECDDD2; }
   @keyframes riseIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
   @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  .mq { color:#7E5A52; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:23px; padding-right:34px; white-space:nowrap; }
+  @media (max-width:640px) { .mq { font-size:19px; padding-right:24px; } }
   .rise1 { animation:riseIn 1s cubic-bezier(.22,.61,.36,1) .15s both; }
   .rise2 { animation:riseIn 1s cubic-bezier(.22,.61,.36,1) .33s both; }
   .rise3 { animation:riseIn 1s cubic-bezier(.22,.61,.36,1) .51s both; }
@@ -157,7 +159,8 @@
   <!-- MARQUEE -->
   <div style="background:#EAD5CC; padding:19px 0; overflow:hidden; white-space:nowrap;">
     <div style="display:inline-flex; animation:marquee 34s linear infinite; will-change:transform;">
-      <span style="color:#7E5A52; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:23px;">Cera de soya natural&nbsp;&nbsp;·&nbsp;&nbsp;Velas escultóricas&nbsp;&nbsp;·&nbsp;&nbsp;Fragancia para el hogar&nbsp;&nbsp;·&nbsp;&nbsp;Hecho a mano&nbsp;&nbsp;·&nbsp;&nbsp;Hecho con amor&nbsp;&nbsp;·&nbsp;&nbsp;Bajo pedido&nbsp;&nbsp;·&nbsp;&nbsp;Cera de soya natural&nbsp;&nbsp;·&nbsp;&nbsp;Velas escultóricas&nbsp;&nbsp;·&nbsp;&nbsp;Fragancia para el hogar&nbsp;&nbsp;·&nbsp;&nbsp;Hecho a mano&nbsp;&nbsp;·&nbsp;&nbsp;Hecho con amor&nbsp;&nbsp;·&nbsp;&nbsp;Bajo pedido&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span class="mq" data-i18n="marquee">Velas artesanales de cera de soja · Cerámica · Concreto decorativo · Aromatizadores · Difusores de varillas · Hecho a mano · Diseño para tu hogar</span>
+      <span class="mq" data-i18n="marquee" aria-hidden="true">Velas artesanales de cera de soja · Cerámica · Concreto decorativo · Aromatizadores · Difusores de varillas · Hecho a mano · Diseño para tu hogar</span>
     </div>
   </div>
 

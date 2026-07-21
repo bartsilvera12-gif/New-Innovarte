@@ -17,6 +17,7 @@ window.InnovI18N = {
     hero_h1: "We inspire homes with<br>design, scent &amp; art", hero_h1b: "We inspire homes with design, scent and art",
     hero_sub: "At Innovarte we turn noble materials into pieces that tell stories. We craft soy candles, home fragrance, reed diffusers and decorative ceramic and concrete pieces, made one by one with passion and dedication.",
     cta_shop: "Explore the collection", cta_story: "Our story", portada: "Cover", scroll: "Scroll",
+    marquee: "Handcrafted soy candles · Ceramics · Decorative concrete · Home fragrance · Reed diffusers · Handmade · Design for your home",
 
     marca_eye: "About Innovarte",
     marca_h: "We create spaces that inspire calm, beauty and well-being.",

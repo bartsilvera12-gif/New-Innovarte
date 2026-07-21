@@ -107,6 +107,8 @@
         hero_sub: 'En Innovarte convertimos materiales nobles en piezas que cuentan historias. Creamos velas artesanales de cera de soja, aromatizadores para el hogar, difusores de varillas y piezas decorativas de cerámica y concreto, elaboradas una a una con pasión y dedicación.',
         cta_shop: 'Explorar la colección',
         cta_story: 'Nuestra historia',
+        // Cinta que se desplaza debajo de la portada
+        marquee: 'Velas artesanales de cera de soja · Cerámica · Concreto decorativo · Aromatizadores · Difusores de varillas · Hecho a mano · Diseño para tu hogar',
         // Nuestra Colección
         ncol_eye: 'Nuestra colección',
         ncol_h: 'Piezas que transforman tu hogar',
