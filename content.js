@@ -31,8 +31,8 @@
     hero: {
       videoDesktop: '',                              // '' = usar imagen de portada
       videoMobile:  '',                              // '' = usar imagen de portada
-      poster:       U + 'ChatGPT Image 17 jul 2026, 12_57_03.png',
-      fallback:     U + 'ChatGPT Image 17 jul 2026, 12_57_03.png'
+      poster:       U + 'portada-innovarte.jpg',
+      fallback:     U + 'portada-innovarte.jpg'
     },
 
     /* ---------------------------------------------------------------------

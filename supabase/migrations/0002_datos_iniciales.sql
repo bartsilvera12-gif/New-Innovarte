@@ -379,7 +379,7 @@ on conflict (clave) do nothing;
 
 -- ---------- Configuración (hero, insumos, contacto) ----------
 insert into new_innovarte.configuracion (clave, valor)
-values ('hero', '{"videoDesktop":"","videoMobile":"","poster":"uploads/ChatGPT Image 17 jul 2026, 12_57_03.png","fallback":"uploads/ChatGPT Image 17 jul 2026, 12_57_03.png"}'::jsonb)
+values ('hero', '{"videoDesktop":"","videoMobile":"","poster":"uploads/portada-innovarte.jpg","fallback":"uploads/portada-innovarte.jpg"}'::jsonb)
 on conflict (clave) do nothing;
 insert into new_innovarte.configuracion (clave, valor)
 values ('insumos', '{"publicado":false,"mensaje":"Próximamente: insumos seleccionados para tus propias creaciones."}'::jsonb)
