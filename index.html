@@ -46,6 +46,14 @@
   .btn-fill { transition:background .4s ease, color .4s ease, letter-spacing .4s ease; }
   .btn-fill:hover { background:#B98979 !important; letter-spacing:.24em !important; }
   .btn-light:hover { background:#F4ECDD !important; color:#39302A !important; letter-spacing:.24em !important; }
+  /* --- Portada ---
+     Usa min-height (no height) y el contenido va en el flujo normal, para que
+     la portada CREZCA si el texto no entra en lugar de recortar los botones.
+     Pasaba en pantallas bajas y en movil, donde el titulo ocupa mas lineas. */
+  .hero-box { min-height:max(88vh, 560px); }
+  @media (max-height:760px), (max-width:640px) {
+    .hero-inner { padding-top:36px !important; padding-bottom:36px !important; }
+  }
   .btn-ghost { transition:all .4s ease; }
   .btn-ghost:hover { background:#C89A8C !important; color:#fff !important; border-color:#C89A8C !important; }
   .col-card { position:relative; display:block; border-radius:12px; overflow:hidden; aspect-ratio:3/4; box-shadow:0 16px 36px -26px rgba(57,48,42,.45); transition:transform .6s cubic-bezier(.22,.61,.36,1), box-shadow .6s ease; }
@@ -119,7 +127,7 @@
 
   <!-- HERO (video administrable desde content.js) -->
   <section id="top" data-hero="1" style="position:relative;">
-    <div style="position:relative; height:88vh; min-height:560px; overflow:hidden; background:#ECDDD2;">
+    <div class="hero-box" style="position:relative; min-height:88vh; overflow:hidden; background:#ECDDD2; display:flex;">
       <video id="hero-video" data-hero-video muted loop playsinline preload="metadata" aria-hidden="true"
              style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"></video>
       <img id="hero-fallback" class="cine-pan" alt="Innovarte — diseño artesanal para el hogar" style="display:none; position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
@@ -144,7 +152,7 @@
         <span class="petal" style="left:16%; animation-delay:-10s; --dx:28px;"></span>
         <span class="petal" style="left:88%; animation-delay:-7s; --dx:-30px;"></span>
       </div>
-      <div style="position:absolute; inset:0; z-index:10; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:0 24px; pointer-events:none;">
+      <div class="hero-inner" style="position:relative; z-index:10; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:52px 24px; pointer-events:none;">
         <div class="rise1" style="font-size:12px; letter-spacing:.42em; text-transform:uppercase; color:#F3E4D8; margin-bottom:22px;" data-i18n="hero_eye">Diseño artesanal para el hogar</div>
         <h1 class="rise2" style="font-family:'Cormorant Garamond',serif; font-weight:400; color:#fff; font-size:clamp(36px,6vw,78px); line-height:1.06; max-width:14ch; text-shadow:0 2px 40px rgba(48,40,35,.45);" data-i18n="hero_h1">Inspiramos hogares con diseño, aroma y arte.</h1>
         <p class="rise3" style="max-width:600px; color:#F3E4D8; font-weight:300; font-size:16.5px; line-height:1.75; margin-top:22px;" data-i18n="hero_sub">En Innovarte convertimos materiales nobles en piezas que cuentan historias. Creamos velas artesanales de cera de soja, aromatizadores para el hogar, difusores de varillas y piezas decorativas de cerámica y concreto, elaboradas una a una con pasión y dedicación.</p>
