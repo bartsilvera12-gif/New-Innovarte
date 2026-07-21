@@ -4,7 +4,7 @@ window.InnovI18N = {
   orig: new WeakMap(),
   en: {
     ann: "Artisan design for your home · Candles · Ceramics · Decorative concrete · Home fragrance",
-    nav_home: "Home", nav_shop: "Shop", nav_hist: "Story", nav_pers: "Custom", nav_gal: "Gallery", nav_contact: "Contact", nav_menu: "Menu",
+    nav_home: "Home", nav_shop: "Shop", nav_hist: "Our Story", nav_pers: "Custom", nav_gal: "Collections", nav_contact: "Contact", nav_menu: "Menu",
     cart_title: "Your cart", cart_empty: "Your cart is empty", cart_empty_sub: "Add your favorite pieces to request them.",
     cart_remove: "Remove", cart_items: "Items", cart_checkout: "Request by email",
     cart_note: "We'll confirm price and availability by email.", add: "Add", added: "Added to cart",

@@ -6,6 +6,39 @@
    Puntos de quiebre: 820px (tablet/móvil), 560px, 430px.
    ============================================================ */
 
+/* ============================================================
+   PALETA DE MARCA (manual de marca Innovarte, julio 2026)
+   ------------------------------------------------------------
+   Referencia central de los colores. El sitio los usa como hex
+   literales porque los layouts van con estilos en linea, asi que
+   para cambiar un color hay que buscar y reemplazar su hex.
+   Estas variables quedan definidas para lo que se escriba nuevo.
+
+     Champagne mate   #C8A96A   acentos, iconos, lineas decorativas
+     Champagne oscuro #B39257   solo para estados hover
+     Marron chocolate #4B3621   titulos, textos, botones, pie
+     Crema            #F7F1E6   fondo principal
+     Beige arena      #E7D6B8   franjas y bloques secundarios
+     Beige claro      #F3EEE6   fondos muy suaves
+     Taupe oscuro     #7A6754   textos secundarios
+     Blanco calido    #FFFDF7   tarjetas y superficies elevadas
+
+   Nota: el manual define el taupe en #A78F7A, pero sobre crema ese
+   tono no llega al minimo de contraste para texto (2,5:1). Para
+   textos se usa #7A6754, que es el mismo taupe oscurecido y si
+   cumple (5,6:1). El #A78F7A queda para elementos decorativos.
+   ============================================================ */
+:root {
+  --champan: #C8A96A;
+  --champan-osc: #B39257;
+  --chocolate: #4B3621;
+  --crema: #F7F1E6;
+  --arena: #E7D6B8;
+  --beige-claro: #F3EEE6;
+  --taupe: #7A6754;
+  --blanco-calido: #FFFDF7;
+}
+
 /* --- Fija la barra: 'clip' recorta el desborde horizontal SIN crear un
    contenedor de scroll (a diferencia de 'hidden'), lo que permite que
    position:sticky del nav funcione. --- */

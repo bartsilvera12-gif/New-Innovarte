@@ -30,9 +30,9 @@
     d.id = 'innov-preview-bar';
     d.setAttribute('role', 'status');
     d.style.cssText = 'position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9999;' +
-      'background:#39302A;color:#F6EFE7;padding:10px 14px;border-radius:40px;display:flex;align-items:center;' +
+      'background:#4B3621;color:#F7F1E6;padding:10px 14px;border-radius:40px;display:flex;align-items:center;' +
       'gap:13px;font-family:Jost,sans-serif;font-size:13px;line-height:1;max-width:94vw;' +
-      'box-shadow:0 14px 34px -16px rgba(57,48,42,.7)';
+      'box-shadow:0 14px 34px -16px rgba(75,54,33,.7)';
 
     var t = document.createElement('span');
     t.textContent = 'Vista previa · cambios sin publicar';
@@ -40,12 +40,12 @@
     var a = document.createElement('a');
     a.href = 'admin.html';
     a.textContent = 'Panel';
-    a.style.cssText = 'color:#EAD5CC;text-decoration:underline;white-space:nowrap';
+    a.style.cssText = 'color:#E7D6B8;text-decoration:underline;white-space:nowrap';
 
     var x = document.createElement('button');
     x.type = 'button';
     x.textContent = 'Salir';
-    x.style.cssText = 'background:#C89A8C;color:#fff;border:0;border-radius:30px;padding:6px 14px;' +
+    x.style.cssText = 'background:#C8A96A;color:#fff;border:0;border-radius:30px;padding:6px 14px;' +
       'cursor:pointer;font:inherit;white-space:nowrap';
     x.addEventListener('click', function () {
       try { sessionStorage.setItem(APAGADO, '1'); } catch (e) {}
