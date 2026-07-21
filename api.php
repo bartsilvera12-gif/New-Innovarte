@@ -16,7 +16,18 @@ const SUPABASE = 'http://187.77.247.54:8000';
 const PERMITIDAS = ['rest/', 'auth/', 'storage/'];
 
 // --- Ruta pedida ---------------------------------------------------------
-$ruta = isset($_GET['p']) ? ltrim($_GET['p'], '/') : '';
+// Admite las dos formas:  /api.php/rest/v1/tabla?select=...   (la que usa la web)
+//                         /api.php?p=rest/v1/tabla&select=... (alternativa)
+$consulta = '';
+if (!empty($_SERVER['PATH_INFO'])) {
+  $ruta = ltrim($_SERVER['PATH_INFO'], '/');
+  $consulta = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '';
+} else {
+  $ruta = isset($_GET['p']) ? ltrim($_GET['p'], '/') : '';
+  $extra = $_GET; unset($extra['p']);
+  $consulta = count($extra) ? http_build_query($extra) : '';
+}
+
 $ok = false;
 foreach (PERMITIDAS as $pre) { if (strpos($ruta, $pre) === 0) { $ok = true; break; } }
 if (!$ok) {
@@ -26,9 +37,7 @@ if (!$ok) {
   exit;
 }
 
-// Recuperamos el resto de parámetros (los de PostgREST: select, order, etc.)
-$extra = $_GET; unset($extra['p']);
-$destino = SUPABASE . '/' . $ruta . (count($extra) ? '?' . http_build_query($extra) : '');
+$destino = SUPABASE . '/' . $ruta . ($consulta !== '' ? '?' . $consulta : '');
 
 // --- Cabeceras a reenviar ------------------------------------------------
 $entrada = function_exists('getallheaders') ? getallheaders() : [];

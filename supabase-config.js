@@ -8,8 +8,12 @@
 
    La clave "service_role" NUNCA debe ponerse acá ni en ningún archivo del sitio.
    ============================================================================ */
+/* Si la página va por HTTPS usamos el puente PHP del propio dominio, porque el
+   navegador bloquea las consultas a un servidor HTTP. En local vamos directo. */
 window.INNOV_SB = {
-  url: 'http://187.77.247.54:8000',
+  url: (location.protocol === 'https:')
+        ? location.origin + '/api.php'         // puente (mismo dominio, seguro)
+        : 'http://187.77.247.54:8000',         // conexión directa en desarrollo
   anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzc0MTAxNDYxLCJleHAiOjE5MzE3ODE0NjF9.7_wAph8IolPMXtgfpezSwS5XR62IdD__qhqCywLDp3Q',
   schema: 'new_innovarte',
   bucket: 'innovarte-medios'
