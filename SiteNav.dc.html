@@ -36,12 +36,22 @@
   .cart-x:hover { color:#C89A8C; }
   .co-btn { transition:background .4s ease, letter-spacing .4s ease; }
   .co-btn:hover { background:#B98979 !important; letter-spacing:.24em !important; }
-  /* --- Barra fija que se achica al desplazar --- */
+  /* --- Barra fija que se achica al desplazar ---
+     El sticky va en el contenedor de la cabecera, no en el <nav>: un elemento
+     sticky solo puede fijarse dentro de su padre, y .innav mide apenas lo mismo
+     que la franja + el nav. Al fijar el bloque entero, la barra acompaña toda
+     la página. La franja se retrae al desplazar para no ocupar lugar. */
+  .innav-host { position:sticky; top:0; z-index:60; }
   .nav-inner { transition:padding-top .3s cubic-bezier(.22,.61,.36,1), padding-bottom .3s cubic-bezier(.22,.61,.36,1); }
   .innav nav { transition:box-shadow .35s ease; }
+  .innav .ann-bar { max-height:60px; transition:max-height .35s cubic-bezier(.22,.61,.36,1), opacity .25s ease; }
+  .innav.nav-shrink .ann-bar { max-height:0; opacity:0; }
   .innav.nav-shrink .nav-inner { padding-top:8px !important; padding-bottom:8px !important; }
   .innav.nav-shrink .logo-link img { height:56px !important; }
   .innav.nav-shrink nav { box-shadow:0 6px 22px -14px rgba(57,48,42,.4); }
+  @media (prefers-reduced-motion: reduce) {
+    .innav .ann-bar, .nav-inner, .innav .logo-link img { transition:none !important; }
+  }
   /* --- Menú móvil (hamburguesa) --- */
   .nav-burger { display:none; flex-direction:column; justify-content:center; gap:5px; width:40px; height:40px; background:none; border:none; cursor:pointer; padding:8px; }
   .nav-burger span { display:block; width:23px; height:2px; background:#39302A; border-radius:2px; transition:transform .35s cubic-bezier(.22,.61,.36,1), opacity .25s ease; }
@@ -74,7 +84,7 @@
     </div>
   </div>
 
-  <nav style="position:sticky; top:0; z-index:60; background:rgba(240,231,215,.97); border-bottom:1px solid rgba(156,122,80,.18);">
+  <nav style="background:rgba(240,231,215,.97); border-bottom:1px solid rgba(156,122,80,.18);">
     <div class="nav-inner" style="max-width:1320px; margin:0 auto; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
       <a href="index.html" class="logo-link" style="display:flex; align-items:center;">
         <img src="https://static.wixstatic.com/media/c78faf_6406c07728144968971366602127833a~mv2.png/v1/crop/x_61,y_135,w_396,h_208/fill/w_350,h_184,al_c,q_90,enc_auto/logo.png" alt="InnovArte Handmade" style="height:80px; width:auto; display:block;">
@@ -167,6 +177,11 @@ class Component extends DCLogic {
       });
     }
     if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
+    /* El sticky se aplica al contenedor que envuelve la cabecera (ver
+       .innav-host en el <style>), porque .innav mide lo mismo que su contenido
+       y ahi la barra no tendria margen para quedarse fija. */
+    const cab=document.querySelector('.innav');
+    if(cab && cab.parentElement) cab.parentElement.classList.add('innav-host');
     this._shrunk=false;
     this._onNavScroll=()=>{
       const y=window.scrollY||document.documentElement.scrollTop||0;
