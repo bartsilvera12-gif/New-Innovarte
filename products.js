@@ -90,6 +90,12 @@
 
     // ---- Fotos propias (nombres y subtítulos editables) ----
     // Velas decorativas (escultóricas)
+    L('velas-pilares-acanalados', 'Set Pilares Acanalados',   'velas', 'Vela decorativa',        'velas-pilares-acanalados.jpg'),
+    L('velas-esferas-espiral',    'Set Esferas Espiral',      'velas', 'Vela decorativa',        'velas-esferas-espiral.jpg'),
+    L('velas-esfera-burbujas',    'Vela Esfera de Burbujas',  'velas', 'Vela decorativa',        'velas-esfera-burbujas.jpg'),
+    L('velas-cubo-burbujas',      'Vela Cubo de Burbujas',    'velas', 'Vela decorativa',        'velas-cubo-burbujas.jpg'),
+    L('velas-candelabro',         'Velas Candelabro',         'velas', 'Vela decorativa',        'velas-candelabro.jpg'),
+    L('velas-espiral-oval',       'Vela Espiral Oval',        'velas', 'Vela decorativa',        'velas-espiral-oval.jpg'),
     L('velas-peonia',             'Vela Peonía',              'velas', 'Vela decorativa',        'velas-peonia.jpg'),
     L('velas-capullo-rosa',       'Vela Capullo de Rosa',     'velas', 'Vela decorativa',        'velas-capullo-rosa.jpg'),
     L('velas-loto',               'Vela Loto',                'velas', 'Vela decorativa',        'velas-loto.jpg'),

@@ -361,6 +361,26 @@ insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imag
 values ('velas-coleccion-surtido', 'Colección Surtido', (select id from new_innovarte.categorias where slug='velas'), 'Surtido decorativo', 'uploads/velas-coleccion-surtido.jpg', 'decor', -25)
 on conflict (slug) do nothing;
 
+-- Velas decorativas estudio (fondo crema)
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-pilares-acanalados', 'Set Pilares Acanalados', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-pilares-acanalados.jpg', 'decor', -46)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-esferas-espiral', 'Set Esferas Espiral', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-esferas-espiral.jpg', 'decor', -45)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-esfera-burbujas', 'Vela Esfera de Burbujas', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-esfera-burbujas.jpg', 'decor', -44)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-cubo-burbujas', 'Vela Cubo de Burbujas', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-cubo-burbujas.jpg', 'decor', -43)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-candelabro', 'Velas Candelabro', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-candelabro.jpg', 'decor', -42)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-espiral-oval', 'Vela Espiral Oval', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-espiral-oval.jpg', 'decor', -41)
+on conflict (slug) do nothing;
+
 -- Bouquet (arreglos de velas flor)
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('bouquet-crema-corazon', 'Bouquet Crema con Corazón', (select id from new_innovarte.categorias where slug='velas'), 'Arreglo en caja', 'uploads/bouquet-crema-corazon.jpg', 'decor', 1)
