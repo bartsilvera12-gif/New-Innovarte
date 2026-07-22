@@ -49,7 +49,7 @@ window.InnovI18N = {
     about_p: "Innovarte Candles was born from Adriana Saieg’s love of turning wax into small works of art — between Paraguay and the United States. Every candle is sculpted, poured and finished by hand with 100% natural soy wax.",
     about_cta: "Read our story",
     v1_h: "Handcrafted", v1_p: "Sculpted and poured one by one.",
-    v2_h: "Natural soy wax", v2_p: "Clean, slow, long-lasting burn.",
+    v2_h: "Natural waxes", v2_p: "Clean, slow, long-lasting burn.",
     v3_h: "Paraguay & USA", v3_p: "Our roots, in every piece.",
     pers_eye: "Custom orders", pers_h: "Designed for your moments",
     pers_p: "Weddings, events, corporate gifts or a one-of-a-kind detail. We craft the shape, color, scent and label with you.",
