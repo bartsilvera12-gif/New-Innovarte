@@ -111,6 +111,34 @@ function subcatDe(p){
   return 'decorativas'; // resto: velas decorativas + escultóricas previas
 }
 
+// Sub-secciones dentro de Aromatizadores.
+const AROMA_SUBCATS = [
+  { key:'home-spray', title:'Home Spray' },
+  { key:'wax-melts',  title:'Wax Melts' },
+  { key:'difusores',  title:'Difusores' }
+];
+function aromaSubcat(p){
+  const s = String(p.slug || p.id || '');
+  if(/^aroma-homespray-/.test(s)) return 'home-spray';
+  if(/^aroma-(waxmelt|hornillo)-/.test(s)) return 'wax-melts';
+  if(/wax\s*melt/i.test(p.sub || '')) return 'wax-melts';   // productos previos "Wax Melts"
+  return 'difusores'; // difusores de varillas, sets, vessels y demás
+}
+
+// Config de sub-secciones por categoría (las demás se muestran sin agrupar).
+const SUBSECCIONES = {
+  velas:          { lista: SUBCATS,       fn: subcatDe },
+  aromatizadores: { lista: AROMA_SUBCATS, fn: aromaSubcat }
+};
+function gruposDe(catId, all){
+  const prods = all.filter(p => p.cat === catId);
+  const cfg = SUBSECCIONES[catId];
+  if(!cfg) return prods.length ? [{ title:'', products:prods }] : [];
+  return cfg.lista
+    .map(sc => ({ title:sc.title, products:prods.filter(p => cfg.fn(p) === sc.key) }))
+    .filter(g => g.products.length > 0);
+}
+
 class Component extends DCLogic {
   state = { filter: 'all' };
 
@@ -145,22 +173,16 @@ class Component extends DCLogic {
     const cats=(window.INNOV_CATS||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
     const f=this.state.filter;
     let groups=[];
-    if(f==='velas' || f==='all'){
-      // Velas agrupadas por sub-sección, en el orden de SUBCATS.
-      const vel=all.filter(p=>p.cat==='velas');
-      SUBCATS.forEach(sc=>{
-        const ps=vel.filter(p=>subcatDe(p)===sc.key);
-        if(ps.length) groups.push({ title:sc.title, products:ps });
+    if(f==='all'){
+      // Todas las categorías activas, cada una con sus sub-secciones (o plana).
+      cats.forEach(c=>{
+        const g=gruposDe(c.id, all);
+        // Las categorías planas (sin sub-secciones) llevan su nombre como título.
+        if(!SUBSECCIONES[c.id] && g.length) g[0].title=c.name;
+        groups=groups.concat(g);
       });
-      if(f==='all'){
-        // Las demás categorías activas (p. ej. Aromatizadores) van al final.
-        cats.filter(c=>c.id!=='velas').forEach(c=>{
-          const ps=all.filter(p=>p.cat===c.id);
-          if(ps.length) groups.push({ title:c.name, products:ps });
-        });
-      }
     } else {
-      groups=[{ title:'', products:all.filter(p=>p.cat===f) }];
+      groups=gruposDe(f, all);
     }
     const total=groups.reduce((n,g)=>n+g.products.length,0);
     return { cats, groups, empty:total===0, setFilter:this.setFilter, addToCart:this.addToCart };

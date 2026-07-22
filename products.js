@@ -151,6 +151,15 @@
     L('difusor-auto',          'Difusor para Auto',          'difusores-para-autos', 'Frasco 9 ml con varillas', 'difusor-auto.jpg'),
     L('difusor-auto-colgante', 'Difusor Colgante para Auto', 'difusores-para-autos', 'Para colgar · 9 ml',       'difusor-auto-colgante.jpg'),
 
+    // Aromatizadores nuevos (Home Spray y Wax Melts)
+    L('aroma-homespray-1',      'Home Spray',                'aromatizadores', 'Aroma ambiental',       'aroma-homespray-1.jpg'),
+    L('aroma-homespray-2',      'Home Spray Clásico',        'aromatizadores', 'Aromatiza tu espacio',  'aroma-homespray-2.jpg'),
+    L('aroma-homespray-set',    'Home Spray — Set de Aromas','aromatizadores', 'Aroma ambiental y textil · 1250 ml', 'aroma-homespray-set.jpg'),
+    L('aroma-homespray-jazmin', 'Home Spray Jazmín Paraguay','aromatizadores', 'Aroma ambiental · 250 ml', 'aroma-homespray-jazmin.jpg'),
+    L('aroma-waxmelt-electrico','Wax Melt con Difusor Eléctrico','aromatizadores', 'Aromatizador eléctrico', 'aroma-waxmelt-electrico.jpg'),
+    L('aroma-waxmelt-set',      'Wax Melts y Hornillos',     'aromatizadores', 'Aromatizador eléctrico', 'aroma-waxmelt-set.jpg'),
+    L('aroma-hornillo-perfume', 'Hornillo con Perfume',      'aromatizadores', 'Quemador y aceite',     'aroma-hornillo-perfume.jpg'),
+
     // Velas (colección artesanal previa)
     L('iv-flores-bandeja',   'Flores en Bandeja',        'velas', 'Colección Floral',    'WhatsApp Image 2026-07-20 at 13.32.07.jpeg'),
     // Aromatizadores

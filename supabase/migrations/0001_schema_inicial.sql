@@ -335,6 +335,14 @@ insert into storage.buckets (id, name, public)
 values ('innovarte-medios', 'innovarte-medios', true)
 on conflict (id) do nothing;
 
+-- El bucket debe ser VISIBLE bajo RLS de storage.buckets para que storage-api
+-- pueda resolverlo al subir. Sin esta política, un usuario autenticado recibe
+-- 404 "Bucket not found" al subir, aunque el bucket exista y la lectura
+-- pública funcione (esa usa una vía privilegiada que no pasa por RLS).
+drop policy if exists innovarte_medios_bucket_ver on storage.buckets;
+create policy innovarte_medios_bucket_ver on storage.buckets
+  for select to anon, authenticated using (id = 'innovarte-medios');
+
 drop policy if exists innovarte_medios_lectura on storage.objects;
 create policy innovarte_medios_lectura on storage.objects
   for select to anon, authenticated using (bucket_id = 'innovarte-medios');

@@ -391,6 +391,29 @@ insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imag
 values ('difusor-auto-colgante', 'Difusor Colgante para Auto', (select id from new_innovarte.categorias where slug='difusores-para-autos'), 'Para colgar · 9 ml', 'uploads/difusor-auto-colgante.jpg', 'decor', 2)
 on conflict (slug) do nothing;
 
+-- Aromatizadores nuevos (Home Spray y Wax Melts)
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('aroma-homespray-1', 'Home Spray', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Aroma ambiental', 'uploads/aroma-homespray-1.jpg', 'decor', 1)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('aroma-homespray-2', 'Home Spray Clásico', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Aromatiza tu espacio', 'uploads/aroma-homespray-2.jpg', 'decor', 2)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('aroma-homespray-set', 'Home Spray — Set de Aromas', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Aroma ambiental y textil · 1250 ml', 'uploads/aroma-homespray-set.jpg', 'decor', 3)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('aroma-homespray-jazmin', 'Home Spray Jazmín Paraguay', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Aroma ambiental · 250 ml', 'uploads/aroma-homespray-jazmin.jpg', 'decor', 4)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('aroma-waxmelt-electrico', 'Wax Melt con Difusor Eléctrico', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Aromatizador eléctrico', 'uploads/aroma-waxmelt-electrico.jpg', 'decor', 5)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('aroma-waxmelt-set', 'Wax Melts y Hornillos', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Aromatizador eléctrico', 'uploads/aroma-waxmelt-set.jpg', 'decor', 6)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('aroma-hornillo-perfume', 'Hornillo con Perfume', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Quemador y aceite', 'uploads/aroma-hornillo-perfume.jpg', 'decor', 7)
+on conflict (slug) do nothing;
+
 -- Bouquet (arreglos de velas flor)
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('bouquet-crema-corazon', 'Bouquet Crema con Corazón', (select id from new_innovarte.categorias where slug='velas'), 'Arreglo en caja', 'uploads/bouquet-crema-corazon.jpg', 'decor', 1)
