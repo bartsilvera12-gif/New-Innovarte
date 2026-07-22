@@ -94,30 +94,15 @@
     .promos-grid::-webkit-scrollbar { display:none; }
     .promos-grid > * { flex:0 0 86%; height:500px; scroll-snap-align:center; }
   }
-  @keyframes flick { 0%,100% { transform:translate(-50%,-100%) scale(1,1) rotate(-1deg); opacity:.95; } 25% { transform:translate(-50%,-100%) scale(1.06,.93) rotate(1.5deg); opacity:1; } 50% { transform:translate(-50%,-100%) scale(.95,1.07) rotate(-1.5deg); opacity:.82; } 75% { transform:translate(-50%,-100%) scale(1.03,.97) rotate(1deg); opacity:1; } }
-  @keyframes glowp { 0%,100% { opacity:.45; transform:translate(-50%,-50%) scale(1); } 50% { opacity:.8; transform:translate(-50%,-50%) scale(1.18); } }
-  .flame-wrap { position:absolute; width:0; height:0; z-index:6; }
-  .flame-glow { position:absolute; left:50%; top:50%; width:120px; height:150px; transform:translate(-50%,-50%); border-radius:50%; background:radial-gradient(circle, rgba(255,210,140,.85) 0%, rgba(255,178,90,.45) 34%, rgba(255,165,75,0) 68%); filter:blur(4px); animation:glowp 2.4s ease-in-out infinite; }
-  .flame { position:absolute; left:50%; top:0; width:22px; height:42px; transform:translate(-50%,-100%); background:linear-gradient(to top,#ffcf6a 0%,#ff9d3c 55%,#ff6a1f 100%); border-radius:50% 50% 50% 50% / 78% 78% 32% 32%; box-shadow:0 0 22px 7px rgba(255,160,70,.5); transform-origin:center bottom; animation:flick 1.05s ease-in-out infinite; }
-  .flame::after { content:''; position:absolute; left:50%; bottom:3px; width:9px; height:20px; transform:translateX(-50%); background:linear-gradient(to top,#fff6d8,#ffd98f); border-radius:50% 50% 50% 50% / 74% 74% 28% 28%; opacity:.92; }
   @keyframes panzoom { 0% { transform:scale(1.05) translateX(-1.6%); } 100% { transform:scale(1.12) translateX(1.6%); } }
   .cine-pan { animation:panzoom 26s ease-in-out infinite alternate; }
-  @keyframes rays { 0% { opacity:.18; transform:translateX(-6%); } 50% { opacity:.55; transform:translateX(6%); } 100% { opacity:.18; transform:translateX(-6%); } }
-  .cine-rays { position:absolute; inset:-10% -14%; pointer-events:none; z-index:4; background:linear-gradient(112deg, rgba(255,240,220,0) 38%, rgba(255,224,186,.7) 58%, rgba(255,246,230,.25) 66%, rgba(255,240,220,0) 82%); mix-blend-mode:screen; animation:rays 8s ease-in-out infinite; }
-  @keyframes sway { 0%,100% { transform:translateX(0) scaleX(1); } 50% { transform:translateX(-9px) scaleX(1.04); } }
-  .cine-curtain { position:absolute; top:0; right:0; width:26%; height:100%; pointer-events:none; z-index:4; background:linear-gradient(90deg, rgba(255,245,235,0) 0%, rgba(255,238,228,.32) 68%, rgba(249,229,221,.55) 100%); transform-origin:right center; animation:sway 8.5s ease-in-out infinite; }
   .petals { position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:5; }
   @keyframes petal { 0% { transform:translate3d(0,-40px,0) rotate(0deg); opacity:0; } 10% { opacity:.95; } 90% { opacity:.95; } 100% { transform:translate3d(var(--dx,30px),90vh,0) rotate(360deg); opacity:0; } }
   .petal { position:absolute; top:0; width:26px; height:32px; background:linear-gradient(135deg,#E7D6B8 0%,#B39257 55%,#4B3621 100%); border-radius:60% 40% 55% 45% / 66% 56% 44% 34%; box-shadow:0 4px 10px rgba(75,54,33,.3); opacity:.88; animation:petal 14s linear infinite; will-change:transform; }
-  /* --- Rendimiento: aligera decoraciones pesadas en móvil --- */
-  @media (max-width:820px) {
-    /* .cine-rays usa mix-blend-mode y causaba el rectángulo negro en móvil */
-    .cine-rays { display:none !important; }
-  }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior:auto; }
-    .cine-rays, .cine-curtain, .petals { display:none !important; }
-    .kb, .cine-pan, .flame, .flame-glow, .scrollcue, .rise1, .rise2, .rise3, .rise4, [class*="marquee"] { animation:none !important; }
+    .petals { display:none !important; }
+    .kb, .cine-pan, .scrollcue, .rise1, .rise2, .rise3, .rise4, [class*="marquee"] { animation:none !important; }
   }
 </style>
 </helmet>
@@ -136,12 +121,6 @@
            velas) donde el título blanco no se leería. Oscurecer la imagen entera
            le quitaría luminosidad, así que solo se oscurece el centro. -->
       <div style="position:absolute; inset:0; background:radial-gradient(ellipse 62% 58% at 50% 47%, rgba(60,44,28,.58) 0%, rgba(60,44,28,.38) 45%, rgba(60,44,28,0) 78%), linear-gradient(180deg, rgba(60,44,28,.42) 0%, rgba(60,44,28,.16) 45%, rgba(60,44,28,.56) 100%); pointer-events:none;"></div>
-      <div class="cine-pan" style="position:absolute; inset:0; pointer-events:none;">
-        <div class="flame-wrap" style="left:19.5%; top:49%;"><div class="flame-glow"></div></div>
-        <div class="flame-wrap" style="left:70.5%; top:53%;"><div class="flame-glow"></div></div>
-      </div>
-      <div class="cine-rays"></div>
-      <div class="cine-curtain"></div>
       <div class="petals">
         <span class="petal" style="left:10%; animation-delay:-1s; --dx:40px;"></span>
         <span class="petal" style="left:22%; animation-delay:-6s; --dx:-30px;"></span>
