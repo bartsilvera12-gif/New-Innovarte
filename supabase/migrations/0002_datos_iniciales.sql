@@ -452,6 +452,38 @@ insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imag
 values ('difusor-flor-tela-beige', 'Difusor de Flor de Tela Beige', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Flor de tela · 120 ml', 'uploads/difusor-flor-tela-beige.jpg', 'decor', 21)
 on conflict (slug) do nothing;
 
+-- Bandeja con Flores (velas flor en bandeja · categoría Velas)
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bandeja-flores-ovalada-rosa', 'Bandeja Ovalada Rosa', (select id from new_innovarte.categorias where slug='velas'), 'Velas flor en bandeja · rosados', 'uploads/bandeja-flores-ovalada-rosa.jpg', 'decor', 60)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bandeja-flores-rosa', 'Bandeja de Flores Rosa', (select id from new_innovarte.categorias where slug='velas'), 'Velas flor en bandeja · rosa', 'uploads/bandeja-flores-rosa.jpg', 'decor', 61)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bandeja-flores-redonda-rosa', 'Bandeja Redonda Rosa', (select id from new_innovarte.categorias where slug='velas'), 'Velas flor con hojas · bowl', 'uploads/bandeja-flores-redonda-rosa.jpg', 'decor', 62)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bandeja-flores-madera-marfil', 'Bandeja de Madera Marfil', (select id from new_innovarte.categorias where slug='velas'), 'Velas flor marfil · bandeja de madera', 'uploads/bandeja-flores-madera-marfil.jpg', 'decor', 63)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bandeja-flores-tulipanes-set', 'Tulipanes en Bandeja (Set)', (select id from new_innovarte.categorias where slug='velas'), 'Velas tulipán · varios colores', 'uploads/bandeja-flores-tulipanes-set.jpg', 'decor', 64)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bandeja-flores-suculentas-color', 'Bandeja Suculentas y Flores', (select id from new_innovarte.categorias where slug='velas'), 'Velas suculentas y flores · colores', 'uploads/bandeja-flores-suculentas-color.jpg', 'decor', 65)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bandeja-flores-tulipanes-madera', 'Tulipanes en Bandeja de Madera', (select id from new_innovarte.categorias where slug='velas'), 'Velas tulipán beige · bandeja de madera', 'uploads/bandeja-flores-tulipanes-madera.jpg', 'decor', 66)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bandeja-flores-blanco-verde', 'Bandeja Blanco y Verde', (select id from new_innovarte.categorias where slug='velas'), 'Velas flor · blanco y salvia', 'uploads/bandeja-flores-blanco-verde.jpg', 'decor', 67)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bandeja-flores-festoneada-marfil', 'Bandeja Festoneada Marfil', (select id from new_innovarte.categorias where slug='velas'), 'Velas capullo marfil · bowl festoneado', 'uploads/bandeja-flores-festoneada-marfil.jpg', 'decor', 68)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bandeja-flores-suculentas-verde', 'Bandeja de Suculentas', (select id from new_innovarte.categorias where slug='velas'), 'Velas suculentas y cactus · verde', 'uploads/bandeja-flores-suculentas-verde.jpg', 'decor', 69)
+on conflict (slug) do nothing;
+
 -- Bouquet (arreglos de velas flor)
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('bouquet-crema-corazon', 'Bouquet Crema con Corazón', (select id from new_innovarte.categorias where slug='velas'), 'Arreglo en caja', 'uploads/bouquet-crema-corazon.jpg', 'decor', 1)

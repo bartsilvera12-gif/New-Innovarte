@@ -176,6 +176,18 @@
     L('difusor-flor-tela-blanca',        'Difusor de Flor de Tela Blanca',       'aromatizadores', 'Flor de tela · 120 ml',                 'difusor-flor-tela-blanca.jpg'),
     L('difusor-flor-tela-beige',         'Difusor de Flor de Tela Beige',        'aromatizadores', 'Flor de tela · 120 ml',                 'difusor-flor-tela-beige.jpg'),
 
+    // Bandeja con Flores (velas flor en bandeja)
+    L('bandeja-flores-ovalada-rosa',     'Bandeja Ovalada Rosa',           'velas', 'Velas flor en bandeja · rosados',        'bandeja-flores-ovalada-rosa.jpg'),
+    L('bandeja-flores-rosa',             'Bandeja de Flores Rosa',         'velas', 'Velas flor en bandeja · rosa',           'bandeja-flores-rosa.jpg'),
+    L('bandeja-flores-redonda-rosa',     'Bandeja Redonda Rosa',           'velas', 'Velas flor con hojas · bowl',            'bandeja-flores-redonda-rosa.jpg'),
+    L('bandeja-flores-madera-marfil',    'Bandeja de Madera Marfil',       'velas', 'Velas flor marfil · bandeja de madera',  'bandeja-flores-madera-marfil.jpg'),
+    L('bandeja-flores-tulipanes-set',    'Tulipanes en Bandeja (Set)',     'velas', 'Velas tulipán · varios colores',         'bandeja-flores-tulipanes-set.jpg'),
+    L('bandeja-flores-suculentas-color', 'Bandeja Suculentas y Flores',    'velas', 'Velas suculentas y flores · colores',    'bandeja-flores-suculentas-color.jpg'),
+    L('bandeja-flores-tulipanes-madera', 'Tulipanes en Bandeja de Madera', 'velas', 'Velas tulipán beige · bandeja de madera','bandeja-flores-tulipanes-madera.jpg'),
+    L('bandeja-flores-blanco-verde',     'Bandeja Blanco y Verde',         'velas', 'Velas flor · blanco y salvia',           'bandeja-flores-blanco-verde.jpg'),
+    L('bandeja-flores-festoneada-marfil','Bandeja Festoneada Marfil',      'velas', 'Velas capullo marfil · bowl festoneado', 'bandeja-flores-festoneada-marfil.jpg'),
+    L('bandeja-flores-suculentas-verde', 'Bandeja de Suculentas',          'velas', 'Velas suculentas y cactus · verde',      'bandeja-flores-suculentas-verde.jpg'),
+
     // Velas (colección artesanal previa)
     L('iv-flores-bandeja',   'Flores en Bandeja',        'velas', 'Colección Floral',    'WhatsApp Image 2026-07-20 at 13.32.07.jpeg'),
     // Aromatizadores

@@ -99,7 +99,8 @@ const SUBCATS = [
   { key:'concreto',    title:'Velas en concreto' },
   { key:'decorativas', title:'Velas decorativas' },
   { key:'souvenir',    title:'Souvenir' },
-  { key:'bouquet',     title:'Bouquet' }
+  { key:'bouquet',     title:'Bouquet' },
+  { key:'bandeja-flores', title:'Bandeja con Flores' }
 ];
 // Deriva la sub-sección de un producto de velas por su slug/id.
 function subcatDe(p){
@@ -107,6 +108,7 @@ function subcatDe(p){
   if(/^velas-vidrio-|^velas-lata-/.test(s)) return 'recipiente';
   if(/^velas-ceramica-/.test(s)) return 'concreto';
   if(/^bouquet-/.test(s)) return 'bouquet';
+  if(/^bandeja-flores-/.test(s) || s === 'iv-flores-bandeja') return 'bandeja-flores';
   if(/^deco-(angel|bautismo|cruz-comunion|comunion|corazon-manos|confirmacion|marg-confesion|marg-babyshower|marg-aniversario|marg-caja)/.test(s)) return 'souvenir';
   return 'decorativas'; // resto: velas decorativas + escultóricas previas
 }
