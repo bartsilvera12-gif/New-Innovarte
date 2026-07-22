@@ -70,22 +70,47 @@
         <p style="max-width:460px; margin:16px auto 0; font-size:15px; font-weight:300; line-height:1.7;" data-i18n="cat_empty_p">Estamos preparando piezas nuevas para esta categoría. Muy pronto vas a poder descubrirlas aquí.</p>
       </div>
     </sc-if>
-    <div class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:36px 26px;">
-      <sc-for list="{{ products }}" as="p" hint-placeholder-count="12">
-        <div class="prodcard" style="display:flex; flex-direction:column;">
-          <div class="pm" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></div>
-          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px; color:#4B3621;">{{ p.name }}</div>
-          <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">{{ p.sub }}</div>
-          <button class="addbtn" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="1">
+      <div style="margin-bottom:34px;">
+        <sc-if value="{{ g.title }}">
+          <h2 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(24px,2.8vw,34px); color:#4B3621; margin:10px 0 20px; padding-bottom:12px; border-bottom:1px solid rgba(200,169,106,.28);">{{ g.title }}</h2>
+        </sc-if>
+        <div class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:36px 26px;">
+          <sc-for list="{{ g.products }}" as="p" hint-placeholder-count="8">
+            <div class="prodcard" style="display:flex; flex-direction:column;">
+              <div class="pm" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></div>
+              <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px; color:#4B3621;">{{ p.name }}</div>
+              <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">{{ p.sub }}</div>
+              <button class="addbtn" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+            </div>
+          </sc-for>
         </div>
-      </sc-for>
-    </div>
+      </div>
+    </sc-for>
   </section>
 
   <dc-import name="SiteFooter" hint-size="100%,320px"></dc-import>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:1000}}">
+// Sub-secciones dentro de la categoría Velas, en orden.
+const SUBCATS = [
+  { key:'recipiente',  title:'Velas de recipiente' },
+  { key:'concreto',    title:'Velas en concreto' },
+  { key:'decorativas', title:'Velas decorativas' },
+  { key:'souvenir',    title:'Souvenir' },
+  { key:'bouquet',     title:'Bouquet' }
+];
+// Deriva la sub-sección de un producto de velas por su slug/id.
+function subcatDe(p){
+  const s = String(p.slug || p.id || '');
+  if(/^velas-vidrio-|^velas-lata-/.test(s)) return 'recipiente';
+  if(/^velas-ceramica-/.test(s)) return 'concreto';
+  if(/^bouquet-/.test(s)) return 'bouquet';
+  if(/^deco-(angel|bautismo|cruz-comunion|comunion|corazon-manos|confirmacion|marg-confesion|marg-babyshower|marg-aniversario|marg-caja)/.test(s)) return 'souvenir';
+  return 'decorativas'; // resto: velas decorativas + escultóricas previas
+}
+
 class Component extends DCLogic {
   state = { filter: 'all' };
 
@@ -118,8 +143,27 @@ class Component extends DCLogic {
     // Solo productos de la línea decorativa (los insumos viven en su propia página).
     const all=(window.INNOV_PRODUCTS||[]).filter(p=>(p.linea||'decor')==='decor');
     const cats=(window.INNOV_CATS||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
-    const products=this.state.filter==='all'?all:all.filter(p=>p.cat===this.state.filter);
-    return { cats, products, empty:products.length===0, setFilter:this.setFilter, addToCart:this.addToCart };
+    const f=this.state.filter;
+    let groups=[];
+    if(f==='velas' || f==='all'){
+      // Velas agrupadas por sub-sección, en el orden de SUBCATS.
+      const vel=all.filter(p=>p.cat==='velas');
+      SUBCATS.forEach(sc=>{
+        const ps=vel.filter(p=>subcatDe(p)===sc.key);
+        if(ps.length) groups.push({ title:sc.title, products:ps });
+      });
+      if(f==='all'){
+        // Las demás categorías activas (p. ej. Aromatizadores) van al final.
+        cats.filter(c=>c.id!=='velas').forEach(c=>{
+          const ps=all.filter(p=>p.cat===c.id);
+          if(ps.length) groups.push({ title:c.name, products:ps });
+        });
+      }
+    } else {
+      groups=[{ title:'', products:all.filter(p=>p.cat===f) }];
+    }
+    const total=groups.reduce((n,g)=>n+g.products.length,0);
+    return { cats, groups, empty:total===0, setFilter:this.setFilter, addToCart:this.addToCart };
   }
 }
 </script>
