@@ -28,25 +28,7 @@ on conflict (slug) do nothing;
 
 -- ---------- Productos ----------
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('iv-vela-piedra', 'Vela Piedra Natural', (select id from new_innovarte.categorias where slug='velas'), 'Colección Artesanal', 'uploads/WhatsApp Image 2026-07-20 at 13.32.01.jpeg', 'decor', 0)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('iv-pilares', 'Set Pilares Texturados', (select id from new_innovarte.categorias where slug='velas'), 'Colección Artesanal', 'uploads/WhatsApp Image 2026-07-20 at 13.32.05.jpeg', 'decor', 1)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('iv-flores-bandeja', 'Flores en Bandeja', (select id from new_innovarte.categorias where slug='velas'), 'Colección Floral', 'uploads/WhatsApp Image 2026-07-20 at 13.32.07.jpeg', 'decor', 2)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('iv-travertino', 'Vela Travertino', (select id from new_innovarte.categorias where slug='velas'), 'Línea Premium', 'uploads/WhatsApp Image 2026-07-20 at 13.33.26.jpeg', 'decor', 3)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('iv-noir', 'Vela Noir', (select id from new_innovarte.categorias where slug='velas'), 'Línea Premium', 'uploads/WhatsApp Image 2026-07-20 at 13.33.27.jpeg', 'decor', 4)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('iv-perla', 'Vela Perla', (select id from new_innovarte.categorias where slug='velas'), 'Línea Premium', 'uploads/WhatsApp Image 2026-07-20 at 13.33.29.jpeg', 'decor', 5)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('iv-velas-flor', 'Velas Flor', (select id from new_innovarte.categorias where slug='velas'), 'Colección Floral', 'uploads/WhatsApp Image 2026-07-20 at 13.33.29 (1).jpeg', 'decor', 6)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('iv-set-noir', 'Set Baño Noir', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Difusor y dispensador', 'uploads/WhatsApp Image 2026-07-20 at 13.32.02.jpeg', 'decor', 7)
@@ -73,9 +55,6 @@ insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imag
 values ('sunflowers', 'Sunflowers', (select id from new_innovarte.categorias where slug='velas'), 'Flower Collection', 'https://static.wixstatic.com/media/c78faf_be7271a11aaa4d7d9c777aecb122788f~mv2.jpg', 'decor', 14)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('roses', 'Roses', (select id from new_innovarte.categorias where slug='velas'), 'Flower Collection', 'https://static.wixstatic.com/media/c78faf_4e5180be2d5a4310bdff00342c134eae~mv2.jpg', 'decor', 15)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('carnation', 'Carnation', (select id from new_innovarte.categorias where slug='velas'), 'Flower Collection', 'https://static.wixstatic.com/media/c78faf_f288184b5a8c4fee90e948fc6d2f87dd~mv2.jpg', 'decor', 16)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
@@ -94,52 +73,16 @@ insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imag
 values ('tulipbouquet', 'Tulip Bouquet', (select id from new_innovarte.categorias where slug='velas'), 'Bouquet Collection', 'https://static.wixstatic.com/media/c78faf_a9465894389047dfb0ddf453276c0d9e~mv2.jpg', 'decor', 21)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('pearlrose', 'Pearl Rose', (select id from new_innovarte.categorias where slug='velas'), 'Bouquet Collection', 'https://static.wixstatic.com/media/c78faf_90f99b4512ba4a218f6845b79cb555a2~mv2.jpg', 'decor', 22)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('hearts', 'Hearts', (select id from new_innovarte.categorias where slug='velas'), 'Figures Collection', 'https://static.wixstatic.com/media/c78faf_2b9a7710b6754ae0aecd346c3845e84a~mv2.jpg', 'decor', 23)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('bears', 'Bears', (select id from new_innovarte.categorias where slug='velas'), 'Figures Collection', 'https://static.wixstatic.com/media/c78faf_135a9dc00924467fba7c64f3dcfe718e~mv2.jpg', 'decor', 24)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('ladyblindfold', 'Lady with Blindfold', (select id from new_innovarte.categorias where slug='velas'), 'Figures Collection', 'https://static.wixstatic.com/media/c78faf_6357d05b27c543ce913c97df1203f602~mv2.jpg', 'decor', 25)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('wavesphere', 'Wave Sphere', (select id from new_innovarte.categorias where slug='velas'), 'Classic Collection', 'https://static.wixstatic.com/media/c78faf_def70f9361164c7e8c6eddd8d94e49b3~mv2.jpg', 'decor', 26)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('tallwave', 'Tall Wave', (select id from new_innovarte.categorias where slug='velas'), 'Classic Collection', 'https://static.wixstatic.com/media/c78faf_6fe7286cf8c8407987a8a2422d4a0c56~mv2.jpg', 'decor', 27)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('tallripple', 'Tall Ripple', (select id from new_innovarte.categorias where slug='velas'), 'Classic Collection', 'https://static.wixstatic.com/media/c78faf_7ae475a6edac4e96b791259fafe9a3f1~mv2.jpg', 'decor', 28)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('bubblecube', 'Bubble Cube', (select id from new_innovarte.categorias where slug='velas'), 'Classic Collection', 'https://static.wixstatic.com/media/c78faf_753cc176c10e4a05ad1929afe6387b7e~mv2.jpg', 'decor', 29)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('hextower', 'Hex Tower', (select id from new_innovarte.categorias where slug='velas'), 'Classic Collection', 'https://static.wixstatic.com/media/c78faf_7d60223e9e354f06a9c7bc82bbc22683~mv2.jpg', 'decor', 30)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('bubbledome', 'Bubble Dome', (select id from new_innovarte.categorias where slug='velas'), 'Classic Collection', 'https://static.wixstatic.com/media/c78faf_a0bb096ce4c244cd9b90c0775c371f2f~mv2.jpg', 'decor', 31)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('pearlshell', 'Pearl Shell', (select id from new_innovarte.categorias where slug='velas'), 'Pearls Collection', 'https://static.wixstatic.com/media/c78faf_903cb88bacf84c388c64468dc10633b4~mv2.jpg', 'decor', 32)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('goldenpearlbowl', 'Golden Pearl Bowl', (select id from new_innovarte.categorias where slug='velas'), 'Pearls Collection', 'https://static.wixstatic.com/media/c78faf_dbbe8b6198624ffab14dd268621313c3~mv2.jpg', 'decor', 33)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('pearltower', 'Pearl Tower', (select id from new_innovarte.categorias where slug='velas'), 'Pearls Collection', 'https://static.wixstatic.com/media/c78faf_fc21ecf1b8d14ccdaca318a1e7b7f7d9~mv2.jpg', 'decor', 34)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('pearlmartini', 'Pearl Martini', (select id from new_innovarte.categorias where slug='velas'), 'Pearls Collection', 'https://static.wixstatic.com/media/c78faf_7e46a3bf11f5437fb356094d00f6e70c~mv2.jpg', 'decor', 35)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('goldenblossom', 'Golden Blossom', (select id from new_innovarte.categorias where slug='velas'), 'Tin Candles', 'https://static.wixstatic.com/media/c78faf_6fc3232e3e0f43bfbd666ef5e89e37a4~mv2.jpg', 'decor', 36)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('coffeecoconut', 'Coffee & Coconut', (select id from new_innovarte.categorias where slug='velas'), 'Tin Candles', 'https://static.wixstatic.com/media/c78faf_d45ba56cea45491795413e1fd0ff8ea6~mv2.jpg', 'decor', 37)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('cinnamonwood', 'Cinnamon Wood', (select id from new_innovarte.categorias where slug='velas'), 'Tin Candles', 'https://static.wixstatic.com/media/c78faf_5c3cc096bd3b46c98c8287246f890fbd~mv2.jpg', 'decor', 38)
@@ -155,18 +98,6 @@ values ('glassbloom', 'Glass Bloom', (select id from new_innovarte.categorias wh
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('lion', 'Lion', (select id from new_innovarte.categorias where slug='velas'), 'Animals', 'https://static.wixstatic.com/media/c78faf_8c8558cca7d54564bf07de78779bde81~mv2.jpg', 'decor', 42)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('teddybear', 'Teddy Bear', (select id from new_innovarte.categorias where slug='velas'), 'Animals', 'https://static.wixstatic.com/media/c78faf_eb01eb031f7e41ababf562f368836c4a~mv2.jpg', 'decor', 43)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('giraffe', 'Giraffe', (select id from new_innovarte.categorias where slug='velas'), 'Animals', 'https://static.wixstatic.com/media/c78faf_c622679d0cfe4322ad0d553c0d88be51~mv2.jpg', 'decor', 44)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('minimalistbear', 'Minimalist Bear', (select id from new_innovarte.categorias where slug='velas'), 'Animals', 'https://static.wixstatic.com/media/c78faf_34ea9798506d426a8ce725bd33f6c5eb~mv2.jpg', 'decor', 45)
-on conflict (slug) do nothing;
-insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('angel', 'Angel', (select id from new_innovarte.categorias where slug='velas'), 'Animals', 'https://static.wixstatic.com/media/c78faf_ecd16610f1264b8caee8d45e490a7929~mv2.jpg', 'decor', 46)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('cinnamonstar', 'Cinnamon Star', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Closet Fresheners', 'https://static.wixstatic.com/media/c78faf_a4d5828cceca4b978d5bae940f5a30fc~mv2.jpg', 'decor', 47)
