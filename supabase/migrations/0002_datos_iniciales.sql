@@ -19,6 +19,12 @@ on conflict (slug) do nothing;
 insert into new_innovarte.categorias (slug, nombre, nombre_en, descripcion, descripcion_en, imagen, orden, activa, destacada)
 values ('resina', 'Resina', 'Resin', 'Piezas artesanales en resina.', 'Handcrafted resin pieces.', 'https://static.wixstatic.com/media/c78faf_dcc35e71fbf04865868d42a6da27e4bc~mv2.jpg', 5, false, false)
 on conflict (slug) do nothing;
+insert into new_innovarte.categorias (slug, nombre, nombre_en, descripcion, descripcion_en, imagen, orden, activa, destacada)
+values ('piezas-decorativas', 'Piezas Decorativas', 'Decorative Pieces', 'Velas escultóricas y piezas decorativas para regalar y ambientar.', 'Sculptural candles and decorative pieces to gift and adorn.', 'uploads/deco-osito-rosas.jpg', 6, true, false)
+on conflict (slug) do nothing;
+insert into new_innovarte.categorias (slug, nombre, nombre_en, descripcion, descripcion_en, imagen, orden, activa, destacada)
+values ('bouquet', 'Bouquet', 'Bouquet', 'Arreglos de velas con forma de flores, en caja y canasta, listos para regalar.', 'Flower-shaped candle arrangements in boxes and baskets, ready to gift.', 'uploads/bouquet-crema-corazon.jpg', 7, true, false)
+on conflict (slug) do nothing;
 
 -- ---------- Productos ----------
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
@@ -268,9 +274,194 @@ insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imag
 values ('soywax', 'Soy Wax', (select id from new_innovarte.categorias where slug='insumos'), 'Wax', 'https://static.wixstatic.com/media/c78faf_655300d79ced4f9dad2d7d316f86b4e4~mv2.jpg', 'insumos', 81)
 on conflict (slug) do nothing;
 
+-- Piezas decorativas (velas escultoricas y souvenirs de eventos)
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-osito-rosas', 'Vela Osito de Rosas', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Colección Floral', 'uploads/deco-osito-rosas.jpg', 'decor', 82)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-ramo-rosas', 'Vela Ramo de Rosas', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Colección Floral', 'uploads/deco-ramo-rosas.jpg', 'decor', 83)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-margarita-rosada', 'Vela Margarita Rosada', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Colección Floral', 'uploads/deco-margarita-rosada.jpg', 'decor', 84)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-jirafa', 'Velas Jirafa', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Colección Baby', 'uploads/deco-jirafa.jpg', 'decor', 85)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-elefante', 'Vela Elefante', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Colección Baby', 'uploads/deco-elefante.jpg', 'decor', 86)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-leoncito', 'Figura Leoncito', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Colección Baby', 'uploads/deco-leoncito.jpg', 'decor', 87)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-mariposa', 'Vela Mariposa', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Colección Naturaleza', 'uploads/deco-mariposa.jpg', 'decor', 88)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-angel', 'Yeso Aromático Ángel', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Aromatizante decorativo', 'uploads/deco-angel.jpg', 'decor', 89)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-bautismo-cruz', 'Vela Bautismo Cruz', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-bautismo-cruz.jpg', 'decor', 90)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-bautismo-flores', 'Vela Bautismo Flores Secas', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-bautismo-flores.jpg', 'decor', 91)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-bautismo-rosario', 'Vela Bautismo con Rosario', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-bautismo-rosario.jpg', 'decor', 92)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-cruz-comunion', 'Vela Cruz Comunión', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-cruz-comunion.jpg', 'decor', 93)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-comunion-person', 'Vela Comunión Personalizada', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-comunion-personalizada.jpg', 'decor', 94)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-corazon-manos', 'Vela Corazón Manos en Oración', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-corazon-manos.jpg', 'decor', 95)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-marg-confesion', 'Vela Margarita Confesión', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-margarita-confesion.jpg', 'decor', 96)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-confirmacion', 'Vela Confirmación', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-confirmacion.jpg', 'decor', 97)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-marg-babyshower', 'Vela Margarita Baby Shower', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-margarita-babyshower.jpg', 'decor', 98)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-marg-aniversario', 'Vela Margarita Aniversario', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-margarita-aniversario.jpg', 'decor', 99)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('deco-marg-caja', 'Vela Margarita en Caja', (select id from new_innovarte.categorias where slug='piezas-decorativas'), 'Souvenir personalizable', 'uploads/deco-margarita-caja.jpg', 'decor', 100)
+on conflict (slug) do nothing;
+
+-- Velas en recipiente (vidrio, ceramica, lata) - orden negativo para que vayan primero
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-vidrio-clasica', 'Vela Vidrio Clásica', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de vidrio', 'uploads/velas-vidrio-clasica.jpg', 'decor', -20)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-vidrio-flor', 'Vela Vidrio con Flor', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de vidrio', 'uploads/velas-vidrio-flor.jpg', 'decor', -19)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-vidrio-girasol', 'Vela Vidrio Girasol', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de vidrio', 'uploads/velas-vidrio-girasol.jpg', 'decor', -18)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-vidrio-rosa', 'Vela Vidrio Rosa', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de vidrio', 'uploads/velas-vidrio-rosa.jpg', 'decor', -17)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-vidrio-tallado', 'Vela Vidrio Tallado', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de vidrio', 'uploads/velas-vidrio-tallado.jpg', 'decor', -16)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-vidrio-acanalado', 'Vela Vidrio Acanalado', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de vidrio', 'uploads/velas-vidrio-acanalado.jpg', 'decor', -15)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-vidrio-corcho', 'Vela Vidrio Tapa Corcho', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de vidrio', 'uploads/velas-vidrio-corcho.jpg', 'decor', -14)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-ceramica-travertino', 'Vela Cerámica Travertino', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de cerámica', 'uploads/velas-ceramica-travertino.jpg', 'decor', -13)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-ceramica-tapa', 'Vela Cerámica con Tapa', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de cerámica', 'uploads/velas-ceramica-tapa.jpg', 'decor', -12)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-ceramica-arena', 'Vela Cerámica Arena', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de cerámica', 'uploads/velas-ceramica-arena.jpg', 'decor', -11)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-ceramica-texturada', 'Vela Cerámica Texturada', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de cerámica', 'uploads/velas-ceramica-texturada.jpg', 'decor', -10)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-ceramica-blanca', 'Vela Cerámica Blanca', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de cerámica', 'uploads/velas-ceramica-blanca.jpg', 'decor', -9)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-ceramica-perlas', 'Vela Cerámica con Perlas', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de cerámica', 'uploads/velas-ceramica-perlas.jpg', 'decor', -8)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-ceramica-duo', 'Vela Cerámica Dúo', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de cerámica', 'uploads/velas-ceramica-duo.jpg', 'decor', -7)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-lata-dorada', 'Vela Lata Dorada', (select id from new_innovarte.categorias where slug='velas'), 'Recipiente de metal', 'uploads/velas-lata-dorada.jpg', 'decor', -6)
+on conflict (slug) do nothing;
+
+-- Velas decorativas (esculToricas) - orden -40..-25, antes de las de recipiente
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-peonia', 'Vela Peonía', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-peonia.jpg', 'decor', -40)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-capullo-rosa', 'Vela Capullo de Rosa', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-capullo-rosa.jpg', 'decor', -39)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-loto', 'Vela Loto', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-loto.jpg', 'decor', -38)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-rosa-grande', 'Vela Rosa Grande', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-rosa-grande.jpg', 'decor', -37)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-busto', 'Vela Busto Dama', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-busto.jpg', 'decor', -36)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-espiral', 'Vela Espiral', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-espiral.jpg', 'decor', -35)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-burbuja', 'Vela Burbuja', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-burbuja.jpg', 'decor', -34)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-concha', 'Vela Concha de Mar', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-concha.jpg', 'decor', -33)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-rosa-vidrio', 'Vela Rosa en Vidrio', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-rosa-vidrio.jpg', 'decor', -32)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-pilar-acanalado', 'Vela Pilar Acanalado', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-pilar-acanalado.jpg', 'decor', -31)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-arco', 'Vela Arco', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-arco.jpg', 'decor', -30)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-peonia-caja', 'Velas Peonía en Caja', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-peonia-caja.jpg', 'decor', -29)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-rosa-corazon', 'Velas Rosa y Corazón', (select id from new_innovarte.categorias where slug='velas'), 'Vela decorativa', 'uploads/velas-rosa-corazon.jpg', 'decor', -28)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-coleccion-flores', 'Colección Flores', (select id from new_innovarte.categorias where slug='velas'), 'Surtido decorativo', 'uploads/velas-coleccion-flores.jpg', 'decor', -27)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-coleccion-formas', 'Colección de Formas', (select id from new_innovarte.categorias where slug='velas'), 'Surtido decorativo', 'uploads/velas-coleccion-formas.jpg', 'decor', -26)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('velas-coleccion-surtido', 'Colección Surtido', (select id from new_innovarte.categorias where slug='velas'), 'Surtido decorativo', 'uploads/velas-coleccion-surtido.jpg', 'decor', -25)
+on conflict (slug) do nothing;
+
+-- Bouquet (arreglos de velas flor)
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bouquet-crema-corazon', 'Bouquet Crema con Corazón', (select id from new_innovarte.categorias where slug='bouquet'), 'Arreglo en caja', 'uploads/bouquet-crema-corazon.jpg', 'decor', 1)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bouquet-marfil', 'Bouquet Marfil', (select id from new_innovarte.categorias where slug='bouquet'), 'Arreglo en caja', 'uploads/bouquet-marfil.jpg', 'decor', 2)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bouquet-dorado', 'Bouquet Dorado', (select id from new_innovarte.categorias where slug='bouquet'), 'Arreglo en caja', 'uploads/bouquet-dorado.jpg', 'decor', 3)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bouquet-flores', 'Bouquet Flores', (select id from new_innovarte.categorias where slug='bouquet'), 'Velas con flores', 'uploads/bouquet-flores.jpg', 'decor', 4)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bouquet-verde-canasta', 'Bouquet Verde en Canasta', (select id from new_innovarte.categorias where slug='bouquet'), 'Arreglo en canasta', 'uploads/bouquet-verde-canasta.jpg', 'decor', 5)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bouquet-tulipanes-caja', 'Bouquet Tulipanes en Caja', (select id from new_innovarte.categorias where slug='bouquet'), 'Arreglo en caja', 'uploads/bouquet-tulipanes-caja.jpg', 'decor', 6)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bouquet-duo', 'Bouquet Dúo', (select id from new_innovarte.categorias where slug='bouquet'), 'Set de regalo', 'uploads/bouquet-duo.jpg', 'decor', 7)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bouquet-dia-madre', 'Bouquet Día de la Madre', (select id from new_innovarte.categorias where slug='bouquet'), 'Bolsa de regalo', 'uploads/bouquet-dia-madre.jpg', 'decor', 8)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('bouquet-rosa', 'Bouquet Rosa', (select id from new_innovarte.categorias where slug='bouquet'), 'Arreglo en caja', 'uploads/bouquet-rosa.jpg', 'decor', 9)
+on conflict (slug) do nothing;
+
 -- ---------- "Nuestra Colección" (tarjetas del home) ----------
 insert into new_innovarte.coleccion_home (clave, titulo, subtitulo, video, video_movil, poster, enlace, orden, activa)
-values ('velas', 'Velas artesanales', 'Cera de soja esculpida a mano', 'uploads/WhatsApp Video 2026-07-20 at 13.32.09.mp4', '', 'uploads/WhatsApp Image 2026-07-20 at 13.33.26.jpeg', 'catalogo.dc.html#velas', 1, true)
+values ('velas', 'Velas artesanales', 'Cera de soja esculpida a mano', 'uploads/coleccion-velas.mp4', '', 'uploads/WhatsApp Image 2026-07-20 at 13.33.26.jpeg', 'catalogo.dc.html#velas', 1, true)
 on conflict (clave) do nothing;
 insert into new_innovarte.coleccion_home (clave, titulo, subtitulo, video, video_movil, poster, enlace, orden, activa)
 values ('aromas', 'Aromatizadores', 'Difusores, home sprays y textiles', 'uploads/WhatsApp Video 2026-07-20 at 13.32.10.mp4', '', 'uploads/WhatsApp Image 2026-07-20 at 13.32.08.jpeg', 'catalogo.dc.html#aromatizadores', 2, true)
@@ -341,6 +532,21 @@ insert into new_innovarte.textos (clave, es, en, grupo, tipo, orden)
 values ('insumos_cta', 'Quiero que me avisen', 'Notify me', 'insumos', 'texto', 18)
 on conflict (clave) do nothing;
 insert into new_innovarte.textos (clave, es, en, grupo, tipo, orden)
+values ('cursos_eye', 'Aprende con nosotros', 'Learn with us', 'cursos', 'texto', 18)
+on conflict (clave) do nothing;
+insert into new_innovarte.textos (clave, es, en, grupo, tipo, orden)
+values ('cursos_pagetitle', 'Cursos y talleres', 'Courses & workshops', 'cursos', 'texto', 18)
+on conflict (clave) do nothing;
+insert into new_innovarte.textos (clave, es, en, grupo, tipo, orden)
+values ('cursos_p', 'Próximamente: cursos y talleres para crear tus propias piezas.', 'Coming soon: courses and workshops to create your own pieces.', 'cursos', 'area', 18)
+on conflict (clave) do nothing;
+insert into new_innovarte.textos (clave, es, en, grupo, tipo, orden)
+values ('cursos_note', 'Estamos preparando cursos y talleres, presenciales y online, para que aprendas el arte de las velas, los aromatizadores y las piezas decorativas. Dejanos tu mensaje y te avisamos cuando abramos las inscripciones.', 'We''re preparing in-person and online courses so you can learn the art of candles, home fragrance and decorative pieces. Leave us a message and we''ll let you know when enrollment opens.', 'cursos', 'area', 18)
+on conflict (clave) do nothing;
+insert into new_innovarte.textos (clave, es, en, grupo, tipo, orden)
+values ('cursos_cta', 'Quiero que me avisen', 'Notify me', 'cursos', 'texto', 18)
+on conflict (clave) do nothing;
+insert into new_innovarte.textos (clave, es, en, grupo, tipo, orden)
 values ('foot_desc', 'Velas artesanales de cera de soja, aromatizadores, difusores y piezas decorativas de cerámica y concreto para transformar tu hogar. Hechas a mano entre Paraguay y Estados Unidos.', 'Handcrafted soy candles, home fragrance, reed diffusers and decorative ceramic and concrete pieces to transform your home. Handmade between Paraguay and the USA.', 'pie', 'area', 19)
 on conflict (clave) do nothing;
 insert into new_innovarte.textos (clave, es, en, grupo, tipo, orden)
@@ -382,7 +588,10 @@ insert into new_innovarte.configuracion (clave, valor)
 values ('hero', '{"videoDesktop":"","videoMobile":"","poster":"uploads/portada-velas-artesanales.jpg","fallback":"uploads/portada-velas-artesanales.jpg"}'::jsonb)
 on conflict (clave) do nothing;
 insert into new_innovarte.configuracion (clave, valor)
-values ('insumos', '{"publicado":false,"mensaje":"Próximamente: insumos seleccionados para tus propias creaciones."}'::jsonb)
+values ('insumos', '{"publicado":true,"mensaje":"Próximamente: insumos seleccionados para tus propias creaciones."}'::jsonb)
+on conflict (clave) do nothing;
+insert into new_innovarte.configuracion (clave, valor)
+values ('cursos', '{"publicado":false,"mensaje":"Próximamente: cursos y talleres para crear tus propias piezas."}'::jsonb)
 on conflict (clave) do nothing;
 insert into new_innovarte.configuracion (clave, valor)
 values ('contacto', '{"email":"innovartecandles@gmail.com","ig":"https://www.instagram.com/innovartecandles","igHandle":"@innovartecandles"}'::jsonb)

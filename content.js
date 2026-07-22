@@ -43,7 +43,7 @@
     coleccion: [
       { id: 'velas',    order: 1, active: true,
         title: 'Velas artesanales', subtitle: 'Cera de soja esculpida a mano',
-        video: U + 'WhatsApp Video 2026-07-20 at 13.32.09.mp4', videoMobile: '',
+        video: U + 'coleccion-velas.mp4', videoMobile: '',
         poster: U + 'WhatsApp Image 2026-07-20 at 13.33.26.jpeg',
         href: 'catalogo.dc.html#velas' },
 
@@ -87,8 +87,18 @@
        Cuando tengas insumos para vender, poné 'publicado: true'.
        --------------------------------------------------------------------- */
     insumos: {
-      publicado: false,
+      publicado: true,
       mensaje: 'Próximamente: insumos seleccionados para tus propias creaciones.'
+    },
+
+    /* ---------------------------------------------------------------------
+       4b) CURSOS (línea futura)
+       Igual que insumos: mientras 'publicado' sea false, la página muestra
+       el estado "Próximamente". Ponelo en true cuando abras inscripciones.
+       --------------------------------------------------------------------- */
+    cursos: {
+      publicado: false,
+      mensaje: 'Próximamente: cursos y talleres para crear tus propias piezas.'
     },
 
     /* ---------------------------------------------------------------------
@@ -125,6 +135,12 @@
         insumos_p: 'Próximamente: insumos seleccionados para tus propias creaciones.',
         insumos_note: 'Estamos preparando una línea de insumos para que crees tus propias piezas. Dejanos un mensaje y te avisamos cuando esté disponible.',
         insumos_cta: 'Quiero que me avisen',
+        // Cursos
+        cursos_eye: 'Aprende con nosotros',
+        cursos_pagetitle: 'Cursos y talleres',
+        cursos_p: 'Próximamente: cursos y talleres para crear tus propias piezas.',
+        cursos_note: 'Estamos preparando cursos y talleres, presenciales y online, para que aprendas el arte de las velas, los aromatizadores y las piezas decorativas. Dejanos tu mensaje y te avisamos cuando abramos las inscripciones.',
+        cursos_cta: 'Quiero que me avisen',
         // Pie de página
         foot_desc: 'Velas artesanales de cera de soja, aromatizadores, difusores y piezas decorativas de cerámica y concreto para transformar tu hogar. Hechas a mano entre Paraguay y Estados Unidos.',
         foot_ship: 'Envíos a todo EE. UU.',

@@ -50,12 +50,91 @@
       order: 5, active: false, featured: false,
       descEs: 'Piezas artesanales en resina.',
       descEn: 'Handcrafted resin pieces.',
-      img: M + 'c78faf_dcc35e71fbf04865868d42a6da27e4bc~mv2.jpg' }
+      img: M + 'c78faf_dcc35e71fbf04865868d42a6da27e4bc~mv2.jpg' },
+    // Piezas decorativas: velas escultoricas y souvenirs para eventos.
+    { id: 'piezas-decorativas', slug: 'piezas-decorativas', name: 'Piezas Decorativas', es: 'Piezas Decorativas', en: 'Decorative Pieces',
+      order: 6, active: true, featured: false,
+      descEs: 'Velas escultoricas y piezas decorativas para regalar y ambientar.',
+      descEn: 'Sculptural candles and decorative pieces to gift and adorn.',
+      img: U + 'deco-osito-rosas.jpg' },
+    // Bouquet: arreglos de velas con forma de flores, listos para regalar.
+    { id: 'bouquet', slug: 'bouquet', name: 'Bouquet', es: 'Bouquet', en: 'Bouquet',
+      order: 7, active: true, featured: false,
+      descEs: 'Arreglos de velas con forma de flores, en caja y canasta, listos para regalar.',
+      descEn: 'Flower-shaped candle arrangements in boxes and baskets, ready to gift.',
+      img: U + 'bouquet-crema-corazon.jpg' }
   ];
 
   window.INNOV_PRODUCTS = [
+    // ---- Piezas decorativas (velas escultóricas y souvenirs de eventos) ----
+    L('deco-osito-rosas',       'Vela Osito de Rosas',            'piezas-decorativas', 'Colección Floral',        'deco-osito-rosas.jpg'),
+    L('deco-ramo-rosas',        'Vela Ramo de Rosas',             'piezas-decorativas', 'Colección Floral',        'deco-ramo-rosas.jpg'),
+    L('deco-margarita-rosada',  'Vela Margarita Rosada',          'piezas-decorativas', 'Colección Floral',        'deco-margarita-rosada.jpg'),
+    L('deco-jirafa',            'Velas Jirafa',                   'piezas-decorativas', 'Colección Baby',          'deco-jirafa.jpg'),
+    L('deco-elefante',          'Vela Elefante',                  'piezas-decorativas', 'Colección Baby',          'deco-elefante.jpg'),
+    L('deco-leoncito',          'Figura Leoncito',                'piezas-decorativas', 'Colección Baby',          'deco-leoncito.jpg'),
+    L('deco-mariposa',          'Vela Mariposa',                  'piezas-decorativas', 'Colección Naturaleza',    'deco-mariposa.jpg'),
+    L('deco-angel',             'Yeso Aromático Ángel',           'piezas-decorativas', 'Aromatizante decorativo', 'deco-angel.jpg'),
+    L('deco-bautismo-cruz',     'Vela Bautismo Cruz',             'piezas-decorativas', 'Souvenir personalizable', 'deco-bautismo-cruz.jpg'),
+    L('deco-bautismo-flores',   'Vela Bautismo Flores Secas',     'piezas-decorativas', 'Souvenir personalizable', 'deco-bautismo-flores.jpg'),
+    L('deco-bautismo-rosario',  'Vela Bautismo con Rosario',      'piezas-decorativas', 'Souvenir personalizable', 'deco-bautismo-rosario.jpg'),
+    L('deco-cruz-comunion',     'Vela Cruz Comunión',             'piezas-decorativas', 'Souvenir personalizable', 'deco-cruz-comunion.jpg'),
+    L('deco-comunion-person',   'Vela Comunión Personalizada',    'piezas-decorativas', 'Souvenir personalizable', 'deco-comunion-personalizada.jpg'),
+    L('deco-corazon-manos',     'Vela Corazón Manos en Oración',  'piezas-decorativas', 'Souvenir personalizable', 'deco-corazon-manos.jpg'),
+    L('deco-marg-confesion',    'Vela Margarita Confesión',       'piezas-decorativas', 'Souvenir personalizable', 'deco-margarita-confesion.jpg'),
+    L('deco-confirmacion',      'Vela Confirmación',              'piezas-decorativas', 'Souvenir personalizable', 'deco-confirmacion.jpg'),
+    L('deco-marg-babyshower',   'Vela Margarita Baby Shower',     'piezas-decorativas', 'Souvenir personalizable', 'deco-margarita-babyshower.jpg'),
+    L('deco-marg-aniversario',  'Vela Margarita Aniversario',     'piezas-decorativas', 'Souvenir personalizable', 'deco-margarita-aniversario.jpg'),
+    L('deco-marg-caja',         'Vela Margarita en Caja',         'piezas-decorativas', 'Souvenir personalizable', 'deco-margarita-caja.jpg'),
+
     // ---- Fotos propias (nombres y subtítulos editables) ----
-    // Velas
+    // Velas decorativas (escultóricas)
+    L('velas-peonia',             'Vela Peonía',              'velas', 'Vela decorativa',        'velas-peonia.jpg'),
+    L('velas-capullo-rosa',       'Vela Capullo de Rosa',     'velas', 'Vela decorativa',        'velas-capullo-rosa.jpg'),
+    L('velas-loto',               'Vela Loto',                'velas', 'Vela decorativa',        'velas-loto.jpg'),
+    L('velas-rosa-grande',        'Vela Rosa Grande',         'velas', 'Vela decorativa',        'velas-rosa-grande.jpg'),
+    L('velas-busto',              'Vela Busto Dama',          'velas', 'Vela decorativa',        'velas-busto.jpg'),
+    L('velas-espiral',            'Vela Espiral',             'velas', 'Vela decorativa',        'velas-espiral.jpg'),
+    L('velas-burbuja',            'Vela Burbuja',             'velas', 'Vela decorativa',        'velas-burbuja.jpg'),
+    L('velas-concha',             'Vela Concha de Mar',       'velas', 'Vela decorativa',        'velas-concha.jpg'),
+    L('velas-rosa-vidrio',        'Vela Rosa en Vidrio',      'velas', 'Vela decorativa',        'velas-rosa-vidrio.jpg'),
+    L('velas-pilar-acanalado',    'Vela Pilar Acanalado',     'velas', 'Vela decorativa',        'velas-pilar-acanalado.jpg'),
+    L('velas-arco',               'Vela Arco',                'velas', 'Vela decorativa',        'velas-arco.jpg'),
+    L('velas-peonia-caja',        'Velas Peonía en Caja',     'velas', 'Vela decorativa',        'velas-peonia-caja.jpg'),
+    L('velas-rosa-corazon',       'Velas Rosa y Corazón',     'velas', 'Vela decorativa',        'velas-rosa-corazon.jpg'),
+    L('velas-coleccion-flores',   'Colección Flores',         'velas', 'Surtido decorativo',     'velas-coleccion-flores.jpg'),
+    L('velas-coleccion-formas',   'Colección de Formas',      'velas', 'Surtido decorativo',     'velas-coleccion-formas.jpg'),
+    L('velas-coleccion-surtido',  'Colección Surtido',        'velas', 'Surtido decorativo',     'velas-coleccion-surtido.jpg'),
+
+    // Velas en recipiente (primero vidrio, luego cerámica, luego lata)
+    L('velas-vidrio-clasica',     'Vela Vidrio Clásica',      'velas', 'Recipiente de vidrio',   'velas-vidrio-clasica.jpg'),
+    L('velas-vidrio-flor',        'Vela Vidrio con Flor',     'velas', 'Recipiente de vidrio',   'velas-vidrio-flor.jpg'),
+    L('velas-vidrio-girasol',     'Vela Vidrio Girasol',      'velas', 'Recipiente de vidrio',   'velas-vidrio-girasol.jpg'),
+    L('velas-vidrio-rosa',        'Vela Vidrio Rosa',         'velas', 'Recipiente de vidrio',   'velas-vidrio-rosa.jpg'),
+    L('velas-vidrio-tallado',     'Vela Vidrio Tallado',      'velas', 'Recipiente de vidrio',   'velas-vidrio-tallado.jpg'),
+    L('velas-vidrio-acanalado',   'Vela Vidrio Acanalado',    'velas', 'Recipiente de vidrio',   'velas-vidrio-acanalado.jpg'),
+    L('velas-vidrio-corcho',      'Vela Vidrio Tapa Corcho',  'velas', 'Recipiente de vidrio',   'velas-vidrio-corcho.jpg'),
+    L('velas-ceramica-travertino','Vela Cerámica Travertino', 'velas', 'Recipiente de cerámica', 'velas-ceramica-travertino.jpg'),
+    L('velas-ceramica-tapa',      'Vela Cerámica con Tapa',   'velas', 'Recipiente de cerámica', 'velas-ceramica-tapa.jpg'),
+    L('velas-ceramica-arena',     'Vela Cerámica Arena',      'velas', 'Recipiente de cerámica', 'velas-ceramica-arena.jpg'),
+    L('velas-ceramica-texturada', 'Vela Cerámica Texturada',  'velas', 'Recipiente de cerámica', 'velas-ceramica-texturada.jpg'),
+    L('velas-ceramica-blanca',    'Vela Cerámica Blanca',     'velas', 'Recipiente de cerámica', 'velas-ceramica-blanca.jpg'),
+    L('velas-ceramica-perlas',    'Vela Cerámica con Perlas', 'velas', 'Recipiente de cerámica', 'velas-ceramica-perlas.jpg'),
+    L('velas-ceramica-duo',       'Vela Cerámica Dúo',        'velas', 'Recipiente de cerámica', 'velas-ceramica-duo.jpg'),
+    L('velas-lata-dorada',        'Vela Lata Dorada',         'velas', 'Recipiente de metal',    'velas-lata-dorada.jpg'),
+
+    // Bouquet (arreglos de velas flor)
+    L('bouquet-crema-corazon', 'Bouquet Crema con Corazón',  'bouquet', 'Arreglo en caja',     'bouquet-crema-corazon.jpg'),
+    L('bouquet-marfil',        'Bouquet Marfil',             'bouquet', 'Arreglo en caja',     'bouquet-marfil.jpg'),
+    L('bouquet-dorado',        'Bouquet Dorado',             'bouquet', 'Arreglo en caja',     'bouquet-dorado.jpg'),
+    L('bouquet-flores',        'Bouquet Flores',             'bouquet', 'Velas con flores',    'bouquet-flores.jpg'),
+    L('bouquet-verde-canasta', 'Bouquet Verde en Canasta',   'bouquet', 'Arreglo en canasta',  'bouquet-verde-canasta.jpg'),
+    L('bouquet-tulipanes-caja','Bouquet Tulipanes en Caja',  'bouquet', 'Arreglo en caja',     'bouquet-tulipanes-caja.jpg'),
+    L('bouquet-duo',           'Bouquet Dúo',                'bouquet', 'Set de regalo',       'bouquet-duo.jpg'),
+    L('bouquet-dia-madre',     'Bouquet Día de la Madre',    'bouquet', 'Bolsa de regalo',     'bouquet-dia-madre.jpg'),
+    L('bouquet-rosa',          'Bouquet Rosa',               'bouquet', 'Arreglo en caja',     'bouquet-rosa.jpg'),
+
+    // Velas (colección artesanal previa)
     L('iv-vela-piedra',      'Vela Piedra Natural',      'velas', 'Colección Artesanal', 'WhatsApp Image 2026-07-20 at 13.32.01.jpeg'),
     L('iv-pilares',          'Set Pilares Texturados',   'velas', 'Colección Artesanal', 'WhatsApp Image 2026-07-20 at 13.32.05.jpeg'),
     L('iv-flores-bandeja',   'Flores en Bandeja',        'velas', 'Colección Floral',    'WhatsApp Image 2026-07-20 at 13.32.07.jpeg'),
