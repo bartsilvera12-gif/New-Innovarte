@@ -74,6 +74,7 @@
       content: {
         hero: conf.hero || {},
         insumos: conf.insumos || { publicado: false, mensaje: '' },
+        cursos: conf.cursos || { publicado: false, mensaje: '' },
         textos: { es: es, en: en },
         colecciones: [],
         coleccion: tarjetas.map(function (t) {

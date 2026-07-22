@@ -64,7 +64,10 @@
   .mobile-panel .mp-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
   .mobile-panel a { font-family:'Jost',sans-serif; font-size:15px; letter-spacing:.16em; text-transform:uppercase; color:#4B3621; padding:17px 2px; border-bottom:1px solid rgba(200,169,106,.16); transition:color .3s ease, padding-left .3s ease; }
   .mobile-panel a:hover { color:#7A6754; padding-left:8px; }
-  @media (max-width:900px) {
+  /* Umbral de la hamburguesa: con 7 enlaces, el menu completo necesita ~1050px
+     para entrar en una linea. Por debajo de 1080px se pasa a hamburguesa para
+     que el menu no se parta en dos lineas. */
+  @media (max-width:1080px) {
     .nav-desktop { display:none !important; }
     .nav-burger { display:flex; }
     .nav-inner { padding:12px 20px !important; gap:14px !important; }
@@ -73,7 +76,7 @@
     .innav.nav-shrink .nav-inner { padding-top:7px !important; padding-bottom:7px !important; }
     .innav .ann-inner { font-size:10px !important; letter-spacing:.16em !important; padding-top:9px !important; padding-bottom:9px !important; }
   }
-  @media (min-width:901px) { .mobile-panel, .mobile-overlay { display:none; } }
+  @media (min-width:1081px) { .mobile-panel, .mobile-overlay { display:none; } }
 </style>
 </helmet>
 
@@ -90,10 +93,11 @@
       <a href="index.html" class="logo-link" style="display:flex; align-items:center;">
         <img src="uploads/logo-innovarte.jpg" alt="Innovarte — Artesanía Creativa" style="height:80px; width:auto; display:block; clip-path:circle(47.5%);">
       </a>
-      <div class="nav-desktop" style="display:flex; align-items:center; gap:32px; font-size:12px; letter-spacing:.18em; text-transform:uppercase;">
+      <div class="nav-desktop" style="display:flex; align-items:center; gap:26px; font-size:12px; letter-spacing:.16em; text-transform:uppercase;">
         <a class="navlink" href="index.html" data-i18n="nav_home">Inicio</a>
         <a class="navlink" href="catalogo.dc.html" data-i18n="nav_shop">Tienda</a>
         <a class="navlink" href="insumos.dc.html" data-i18n="nav_insumos">Insumos</a>
+        <a class="navlink" href="cursos.dc.html" data-i18n="nav_cursos">Cursos</a>
         <a class="navlink" href="historia.dc.html" data-i18n="nav_hist">Nuestra Historia</a>
         <a class="navlink" href="personalizacion.dc.html" data-i18n="nav_pers">Personalización</a>
         <a class="navlink" href="galeria.dc.html" data-i18n="nav_gal">Colecciones</a>
@@ -120,6 +124,7 @@
     <a href="index.html" onClick="{{ closeMenu }}" data-i18n="nav_home">Inicio</a>
     <a href="catalogo.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_shop">Tienda</a>
     <a href="insumos.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_insumos">Insumos</a>
+    <a href="cursos.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_cursos">Cursos</a>
     <a href="historia.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_hist">Nuestra Historia</a>
     <a href="personalizacion.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_pers">Personalización</a>
     <a href="galeria.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_gal">Colecciones</a>
