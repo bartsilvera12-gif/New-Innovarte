@@ -340,12 +340,37 @@
     var ext = (file.name.split('.').pop()||'jpg').toLowerCase();
     var base = slugify(file.name.replace(/\.[^.]+$/,'')) || 'imagen';
     var nombre = base + '-' + Date.now() + '.' + ext;
-    var r = await sb.storage.from(window.INNOV_SB.bucket)
-              .upload(nombre, file, { cacheControl:'31536000', upsert:false });
-    if(r.error) throw new Error(r.error.message);
+    var cfg = window.INNOV_SB;
+
+    // Subimos el archivo como cuerpo binario crudo (no multipart/form-data).
+    // El puente PHP lee el cuerpo con php://input, que PHP DEJA VACÍO cuando el
+    // request es multipart (así lo envía supabase-js). Enviándolo crudo, el
+    // proxy puede reenviarlo y Storage lo acepta igual.
+    var token = cfg.anonKey;
+    try{
+      var ses = await sb.auth.getSession();
+      if(ses && ses.data && ses.data.session && ses.data.session.access_token)
+        token = ses.data.session.access_token;
+    }catch(e){}
+
+    var resp = await fetch(cfg.url + '/storage/v1/object/' + cfg.bucket + '/' + nombre, {
+      method:'POST',
+      headers:{
+        apikey: cfg.anonKey,
+        authorization: 'Bearer ' + token,
+        'content-type': file.type || 'application/octet-stream'
+      },
+      body: file
+    });
+    if(!resp.ok){
+      var msg = 'Error ' + resp.status;
+      try{ var j = await resp.json(); if(j && (j.message||j.error)) msg = j.message||j.error; }
+      catch(_){ try{ var t = await resp.text(); if(t) msg = t; }catch(__){} }
+      throw new Error(msg);
+    }
     // Guardamos una dirección relativa al propio dominio: así funciona en el sitio
     // publicado (por HTTPS) sin depender de la IP del servidor de Supabase.
-    return '/api.php/storage/v1/object/public/' + window.INNOV_SB.bucket + '/' + nombre;
+    return '/api.php/storage/v1/object/public/' + cfg.bucket + '/' + nombre;
   }
 
   /* Conecta un campo de texto con un selector de archivo y su vista previa. */
@@ -435,8 +460,8 @@
     }).join('');
 
     $('#por-cat').innerHTML=S.cats.map(function(c){
-      var n=S.products.filter(function(p){return p.cat===c.id;}).length;
-      var max=Math.max.apply(null,S.cats.map(function(k){return S.products.filter(function(p){return p.cat===k.id;}).length;}).concat([1]));
+      var n=S.products.filter(function(p){return p.cat===c.slug;}).length;
+      var max=Math.max.apply(null,S.cats.map(function(k){return S.products.filter(function(p){return p.cat===k.slug;}).length;}).concat([1]));
       return '<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:5px">'+
         '<span>'+esc(c.name)+(c.active===false?' <span class="pill pill-off">oculta</span>':'')+'</span><b>'+n+'</b></div>'+
         '<div style="height:7px;background:#F3EEE6;border-radius:4px;overflow:hidden"><div style="height:100%;width:'+(n/max*100)+'%;background:var(--champan)"></div></div></div>';
@@ -452,7 +477,7 @@
     var f=S.cats.slice().sort(function(a,b){return (a.order||0)-(b.order||0);});
     $('#tabla-cats').innerHTML='<table><thead><tr><th>Orden</th><th>Nombre</th><th>Slug</th><th>Productos</th><th>Estado</th><th></th></tr></thead><tbody>'+
       f.map(function(c){
-        var n=S.products.filter(function(p){return p.cat===c.id;}).length;
+        var n=S.products.filter(function(p){return p.cat===c.slug;}).length;
         return '<tr><td>'+(c.order||0)+'</td><td><b>'+esc(c.name)+'</b>'+(c.featured?' <span class="pill pill-on">destacada</span>':'')+'</td>'+
           '<td style="color:var(--marron-medio)">'+esc(c.slug||c.id)+'</td><td>'+n+'</td>'+
           '<td>'+(c.active!==false?'<span class="pill pill-on">visible</span>':'<span class="pill pill-off">oculta</span>')+'</td>'+
@@ -535,13 +560,13 @@
   }
   function pintarProds(){
     $('#filtro-cat').innerHTML='<option value="">Todas las categorías</option>'+
-      S.cats.map(function(c){return '<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>';}).join('');
+      S.cats.map(function(c){return '<option value="'+esc(c.slug)+'">'+esc(c.name)+'</option>';}).join('');
     var f=prodsFiltrados();
     $('#cuenta-prod').textContent=f.length+' de '+S.products.length+' productos';
     if(!f.length){ $('#tabla-prods').innerHTML='<div class="vacio">No hay productos que coincidan.</div>'; return; }
     $('#tabla-prods').innerHTML='<table><thead><tr><th></th><th>Nombre</th><th>Categoría</th><th>Subtítulo</th><th>Línea</th><th></th></tr></thead><tbody>'+
       f.map(function(p){
-        var c=S.cats.find(function(x){return x.id===p.cat;});
+        var c=S.cats.find(function(x){return x.slug===p.cat;});
         return '<tr><td><img class="thumb" src="'+esc(p.img)+'" alt="" loading="lazy"></td>'+
           '<td><b>'+esc(p.name)+'</b><div style="font-size:11.5px;color:var(--marron-medio)">'+esc(p.id)+'</div></td>'+
           '<td>'+esc(c?c.name:p.cat)+'</td><td style="color:var(--marron-medio)">'+esc(p.sub||'')+'</td>'+
@@ -557,7 +582,7 @@
       '<div class="campo"><label for="p-name">Nombre *</label><input type="text" id="p-name" value="'+esc(p.name)+'" required></div>'+
       '<div class="fila">'+
         '<div class="campo"><label for="p-cat">Categoría *</label><select id="p-cat">'+
-          S.cats.map(function(c){return '<option value="'+esc(c.id)+'" '+(c.id===p.cat?'selected':'')+'>'+esc(c.name)+(c.active===false?' (oculta)':'')+'</option>';}).join('')+
+          S.cats.map(function(c){return '<option value="'+esc(c.slug)+'" '+(c.slug===p.cat?'selected':'')+'>'+esc(c.name)+(c.active===false?' (oculta)':'')+'</option>';}).join('')+
         '</select></div>'+
         '<div class="campo"><label for="p-linea">Línea</label><select id="p-linea">'+
           '<option value="decor" '+((p.linea||'decor')==='decor'?'selected':'')+'>Decoración (tienda)</option>'+
