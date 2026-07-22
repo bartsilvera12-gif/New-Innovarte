@@ -158,7 +158,23 @@
     L('aroma-homespray-jazmin', 'Home Spray Jazmín Paraguay','aromatizadores', 'Aroma ambiental · 250 ml', 'aroma-homespray-jazmin.jpg'),
     L('aroma-waxmelt-electrico','Wax Melt con Difusor Eléctrico','aromatizadores', 'Aromatizador eléctrico', 'aroma-waxmelt-electrico.jpg'),
     L('aroma-waxmelt-set',      'Wax Melts y Hornillos',     'aromatizadores', 'Aromatizador eléctrico', 'aroma-waxmelt-set.jpg'),
-    L('aroma-hornillo-perfume', 'Hornillo con Perfume',      'aromatizadores', 'Quemador y aceite',     'aroma-hornillo-perfume.jpg'),
+    L('aroma-hornillo-perfume', 'Hornito con Cera Aromática', 'aromatizadores', 'Quemador y aceite',     'aroma-hornillo-perfume.jpg'),
+
+    // Difusores de varillas
+    L('difusor-varillas-natural',        'Difusor de Varillas Naturales',        'aromatizadores', 'Frasco de vidrio · varillas de rattan', 'difusor-varillas-natural.jpg'),
+    L('difusor-varillas-natural-duo',    'Difusor de Varillas Naturales (Dúo)',  'aromatizadores', 'Set de 2 · varillas de rattan',         'difusor-varillas-natural-duo.jpg'),
+    L('difusor-varillas-onduladas',      'Difusor de Varillas Onduladas',        'aromatizadores', 'Varillas onduladas · frasco ámbar',     'difusor-varillas-onduladas.jpg'),
+    L('difusor-varillas-negras-set',     'Difusor de Varillas Negras (Set)',     'aromatizadores', 'Colección · frascos vidrio y ámbar',    'difusor-varillas-negras-set.jpg'),
+    L('difusor-varillas-nervado',        'Difusor de Varillas — Frasco Nervado', 'aromatizadores', 'Cerámica nervada · varillas negras',    'difusor-varillas-nervado.jpg'),
+    L('difusor-varillas-vidrio-tallado', 'Difusor de Varillas — Vidrio Tallado', 'aromatizadores', 'Frasco tallado · varillas naturales',   'difusor-varillas-vidrio-tallado.jpg'),
+    L('difusor-varillas-tapa-madera',    'Difusor de Varillas — Tapa de Madera', 'aromatizadores', 'Frasco de vidrio con tapa de madera',   'difusor-varillas-tapa-madera.jpg'),
+    L('difusor-varillas-ceramica-negra', 'Difusor de Varillas — Cerámica Negra', 'aromatizadores', 'Cerámica negra mate · varillas negras', 'difusor-varillas-ceramica-negra.jpg'),
+    L('difusor-varillas-ceramica-taupe', 'Difusor de Varillas — Cerámica Taupe', 'aromatizadores', 'Cerámica taupe · varillas naturales',   'difusor-varillas-ceramica-taupe.jpg'),
+    L('difusor-varillas-ceramica-crema', 'Difusor de Varillas — Cerámica Crema', 'aromatizadores', 'Cerámica crema · varillas negras',      'difusor-varillas-ceramica-crema.jpg'),
+
+    // Difusores de flores de tela
+    L('difusor-flor-tela-blanca',        'Difusor de Flor de Tela Blanca',       'aromatizadores', 'Flor de tela · 120 ml',                 'difusor-flor-tela-blanca.jpg'),
+    L('difusor-flor-tela-beige',         'Difusor de Flor de Tela Beige',        'aromatizadores', 'Flor de tela · 120 ml',                 'difusor-flor-tela-beige.jpg'),
 
     // Velas (colección artesanal previa)
     L('iv-flores-bandeja',   'Flores en Bandeja',        'velas', 'Colección Floral',    'WhatsApp Image 2026-07-20 at 13.32.07.jpeg'),

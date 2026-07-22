@@ -411,7 +411,45 @@ insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imag
 values ('aroma-waxmelt-set', 'Wax Melts y Hornillos', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Aromatizador eléctrico', 'uploads/aroma-waxmelt-set.jpg', 'decor', 6)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('aroma-hornillo-perfume', 'Hornillo con Perfume', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Quemador y aceite', 'uploads/aroma-hornillo-perfume.jpg', 'decor', 7)
+values ('aroma-hornillo-perfume', 'Hornito con Cera Aromática', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Quemador y aceite', 'uploads/aroma-hornillo-perfume.jpg', 'decor', 7)
+on conflict (slug) do nothing;
+
+-- Difusores de varillas y de flores de tela (sección Difusores)
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-varillas-natural', 'Difusor de Varillas Naturales', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Frasco de vidrio · varillas de rattan', 'uploads/difusor-varillas-natural.jpg', 'decor', 10)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-varillas-natural-duo', 'Difusor de Varillas Naturales (Dúo)', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Set de 2 · varillas de rattan', 'uploads/difusor-varillas-natural-duo.jpg', 'decor', 11)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-varillas-onduladas', 'Difusor de Varillas Onduladas', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Varillas onduladas · frasco ámbar', 'uploads/difusor-varillas-onduladas.jpg', 'decor', 12)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-varillas-negras-set', 'Difusor de Varillas Negras (Set)', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Colección · frascos vidrio y ámbar', 'uploads/difusor-varillas-negras-set.jpg', 'decor', 13)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-varillas-nervado', 'Difusor de Varillas — Frasco Nervado', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Cerámica nervada · varillas negras', 'uploads/difusor-varillas-nervado.jpg', 'decor', 14)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-varillas-vidrio-tallado', 'Difusor de Varillas — Vidrio Tallado', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Frasco tallado · varillas naturales', 'uploads/difusor-varillas-vidrio-tallado.jpg', 'decor', 15)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-varillas-tapa-madera', 'Difusor de Varillas — Tapa de Madera', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Frasco de vidrio con tapa de madera', 'uploads/difusor-varillas-tapa-madera.jpg', 'decor', 16)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-varillas-ceramica-negra', 'Difusor de Varillas — Cerámica Negra', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Cerámica negra mate · varillas negras', 'uploads/difusor-varillas-ceramica-negra.jpg', 'decor', 17)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-varillas-ceramica-taupe', 'Difusor de Varillas — Cerámica Taupe', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Cerámica taupe · varillas naturales', 'uploads/difusor-varillas-ceramica-taupe.jpg', 'decor', 18)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-varillas-ceramica-crema', 'Difusor de Varillas — Cerámica Crema', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Cerámica crema · varillas negras', 'uploads/difusor-varillas-ceramica-crema.jpg', 'decor', 19)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-flor-tela-blanca', 'Difusor de Flor de Tela Blanca', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Flor de tela · 120 ml', 'uploads/difusor-flor-tela-blanca.jpg', 'decor', 20)
+on conflict (slug) do nothing;
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+values ('difusor-flor-tela-beige', 'Difusor de Flor de Tela Beige', (select id from new_innovarte.categorias where slug='aromatizadores'), 'Flor de tela · 120 ml', 'uploads/difusor-flor-tela-beige.jpg', 'decor', 21)
 on conflict (slug) do nothing;
 
 -- Bouquet (arreglos de velas flor)
@@ -569,7 +607,7 @@ on conflict (clave) do nothing;
 
 -- ---------- Configuración (hero, insumos, contacto) ----------
 insert into new_innovarte.configuracion (clave, valor)
-values ('hero', '{"videoDesktop":"","videoMobile":"","poster":"uploads/portada-velas-artesanales.jpg","fallback":"uploads/portada-velas-artesanales.jpg"}'::jsonb)
+values ('hero', '{"videoDesktop":"","videoMobile":"","poster":"uploads/portada-velas-set.jpg","fallback":"uploads/portada-velas-set.jpg"}'::jsonb)
 on conflict (clave) do nothing;
 insert into new_innovarte.configuracion (clave, valor)
 values ('insumos', '{"publicado":true,"mensaje":"Próximamente: insumos seleccionados para tus propias creaciones."}'::jsonb)
