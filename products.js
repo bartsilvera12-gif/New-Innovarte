@@ -65,7 +65,7 @@
       descEn: 'Flower-shaped candle arrangements in boxes and baskets, ready to gift.',
       img: U + 'bouquet-crema-corazon.jpg' },
     // Difusores para autos: frascos de aroma para el coche.
-    { id: 'difusores-auto', slug: 'difusores-auto', name: 'Difusores para Autos', es: 'Difusores para Autos', en: 'Car Diffusers',
+    { id: 'difusores-para-autos', slug: 'difusores-para-autos', name: 'Difusores Para Autos', es: 'Difusores Para Autos', en: 'Car Diffusers',
       order: 8, active: true, featured: false,
       descEs: 'Difusores de aroma para el auto, en frasco con tapa de madera.',
       descEn: 'Car air diffusers in a glass bottle with wooden cap.',
@@ -148,8 +148,8 @@
     L('bouquet-rosa',          'Bouquet Rosa',               'velas', 'Arreglo en caja',     'bouquet-rosa.jpg'),
 
     // Difusores para autos
-    L('difusor-auto',          'Difusor para Auto',          'difusores-auto', 'Frasco 9 ml con varillas', 'difusor-auto.jpg'),
-    L('difusor-auto-colgante', 'Difusor Colgante para Auto', 'difusores-auto', 'Para colgar · 9 ml',       'difusor-auto-colgante.jpg'),
+    L('difusor-auto',          'Difusor para Auto',          'difusores-para-autos', 'Frasco 9 ml con varillas', 'difusor-auto.jpg'),
+    L('difusor-auto-colgante', 'Difusor Colgante para Auto', 'difusores-para-autos', 'Para colgar · 9 ml',       'difusor-auto-colgante.jpg'),
 
     // Velas (colección artesanal previa)
     L('iv-flores-bandeja',   'Flores en Bandeja',        'velas', 'Colección Floral',    'WhatsApp Image 2026-07-20 at 13.32.07.jpeg'),

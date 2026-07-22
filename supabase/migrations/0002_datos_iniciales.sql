@@ -26,7 +26,7 @@ insert into new_innovarte.categorias (slug, nombre, nombre_en, descripcion, desc
 values ('bouquet', 'Bouquet', 'Bouquet', 'Arreglos de velas con forma de flores, en caja y canasta, listos para regalar.', 'Flower-shaped candle arrangements in boxes and baskets, ready to gift.', 'uploads/bouquet-crema-corazon.jpg', 7, false, false)
 on conflict (slug) do nothing;
 insert into new_innovarte.categorias (slug, nombre, nombre_en, descripcion, descripcion_en, imagen, orden, activa, destacada)
-values ('difusores-auto', 'Difusores para Autos', 'Car Diffusers', 'Difusores de aroma para el auto, en frasco con tapa de madera.', 'Car air diffusers in a glass bottle with wooden cap.', 'uploads/difusor-auto.jpg', 8, true, false)
+values ('difusores-para-autos', 'Difusores Para Autos', 'Car Diffusers', 'Difusores de aroma para el auto, en frasco con tapa de madera.', 'Car air diffusers in a glass bottle with wooden cap.', 'uploads/difusor-auto.jpg', 8, true, false)
 on conflict (slug) do nothing;
 
 -- ---------- Productos ----------
@@ -385,10 +385,10 @@ values ('velas-espiral-oval', 'Vela Espiral Oval', (select id from new_innovarte
 on conflict (slug) do nothing;
 -- Difusores para autos
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('difusor-auto', 'Difusor para Auto', (select id from new_innovarte.categorias where slug='difusores-auto'), 'Frasco 9 ml con varillas', 'uploads/difusor-auto.jpg', 'decor', 1)
+values ('difusor-auto', 'Difusor para Auto', (select id from new_innovarte.categorias where slug='difusores-para-autos'), 'Frasco 9 ml con varillas', 'uploads/difusor-auto.jpg', 'decor', 1)
 on conflict (slug) do nothing;
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
-values ('difusor-auto-colgante', 'Difusor Colgante para Auto', (select id from new_innovarte.categorias where slug='difusores-auto'), 'Para colgar · 9 ml', 'uploads/difusor-auto-colgante.jpg', 'decor', 2)
+values ('difusor-auto-colgante', 'Difusor Colgante para Auto', (select id from new_innovarte.categorias where slug='difusores-para-autos'), 'Para colgar · 9 ml', 'uploads/difusor-auto-colgante.jpg', 'decor', 2)
 on conflict (slug) do nothing;
 
 -- Bouquet (arreglos de velas flor)
