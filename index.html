@@ -360,9 +360,9 @@ class Component extends DCLogic {
   renderVals(){
     // Editar aquí los datos de las cards de colecciones destacadas
     const promos = [
-      { title:'Rosa Serena', desc:'Aroma a rosas, peonías y vainilla suave.', img:'https://static.wixstatic.com/media/c78faf_32737f49c38a4b958effb92e55b9e90c~mv2.jpg', alt:'Vela floral rosada en vaso de cristal acanalado — Rosa Serena', href:'catalogo.dc.html#signature' },
-      { title:'Dulce Amanecer', desc:'Aroma a frutos rojos, jazmín y crema.', img:'https://static.wixstatic.com/media/c78faf_1d1585f6443548209782d1603a66652c~mv2.jpg', alt:'Vela escultórica en cascada de rosas — Dulce Amanecer', href:'catalogo.dc.html#signature' },
-      { title:'Jardín Rosado', desc:'Aroma a flores frescas, bergamota y sándalo.', img:'https://static.wixstatic.com/media/c78faf_345da3bb2fc541789859077808654a76~mv2.jpg', alt:'Vela esfera floral rosada — Jardín Rosado', href:'catalogo.dc.html#fragrance' }
+      { title:'Rosa Serena', desc:'Aroma a rosas, peonías y vainilla suave.', img:'uploads/velas-peonia.jpg', alt:'Velas peonía color crema — Rosa Serena', href:'catalogo.dc.html#velas' },
+      { title:'Dulce Amanecer', desc:'Aroma a frutos rojos, jazmín y crema.', img:'uploads/bouquet-crema-corazon.jpg', alt:'Bouquet de rosas color crema — Dulce Amanecer', href:'catalogo.dc.html#velas' },
+      { title:'Jardín Rosado', desc:'Aroma a flores frescas, bergamota y sándalo.', img:'uploads/bouquet-marfil.jpg', alt:'Bouquet de tulipanes color marfil — Jardín Rosado', href:'catalogo.dc.html#velas' }
     ];
     const velas = (window.INNOV_PRODUCTS||[]).filter(p=>p.cat==='velas').slice(0,14);
     const coleccion = ((window.INNOV_CONTENT&&window.INNOV_CONTENT.coleccion)||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
