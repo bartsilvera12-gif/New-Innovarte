@@ -639,7 +639,7 @@ on conflict (clave) do nothing;
 
 -- ---------- Configuración (hero, insumos, contacto) ----------
 insert into new_innovarte.configuracion (clave, valor)
-values ('hero', '{"videoDesktop":"","videoMobile":"","poster":"uploads/portada-velas-artesanales.jpg","fallback":"uploads/portada-velas-artesanales.jpg"}'::jsonb)
+values ('hero', '{"videoDesktop":"","videoMobile":"","poster":"uploads/portada-velas-set.jpg","fallback":"uploads/portada-velas-set.jpg"}'::jsonb)
 on conflict (clave) do nothing;
 insert into new_innovarte.configuracion (clave, valor)
 values ('insumos', '{"publicado":true,"mensaje":"Próximamente: insumos seleccionados para tus propias creaciones."}'::jsonb)

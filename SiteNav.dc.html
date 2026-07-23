@@ -11,7 +11,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="site-config.js"></script>
 <script src="cart-store.js"></script>
 <script src="i18n.js"></script>
 <style>
@@ -26,131 +25,86 @@
     .ann-dup { display:inline; }
   }
   @media (prefers-reduced-motion: reduce) { .ann-inner { animation:none !important; } }
-
-  /* --- Menú de escritorio con desplegables --- */
-  .nav-desktop { display:flex; align-items:center; gap:24px; font-size:12px; letter-spacing:.16em; text-transform:uppercase; }
-  .nav-item { position:relative; }
-  .navlink { position:relative; color:#4B3621; display:inline-flex; align-items:center; gap:5px; cursor:pointer; white-space:nowrap; }
-  .navlink::after { content:''; position:absolute; left:0; bottom:-6px; width:0; height:1px; background:#C8A96A; transition:width .4s cubic-bezier(.22,.61,.36,1); }
-  .nav-item:hover .navlink::after, .navlink:hover::after { width:100%; }
-  .navlink .caret { width:8px; height:8px; transition:transform .3s ease; opacity:.6; }
-  .nav-item:hover .navlink .caret { transform:rotate(180deg); }
-  .dropdown {
-    position:absolute; top:calc(100% + 14px); left:50%; transform:translateX(-50%) translateY(8px);
-    min-width:250px; background:#FFFDF7; border:1px solid rgba(200,169,106,.28); border-radius:12px;
-    box-shadow:0 26px 50px -28px rgba(75,54,33,.5); padding:12px; z-index:80;
-    opacity:0; visibility:hidden; pointer-events:none;
-    transition:opacity .32s cubic-bezier(.22,.61,.36,1), transform .32s cubic-bezier(.22,.61,.36,1), visibility .32s;
-  }
-  .dropdown::before { content:''; position:absolute; top:-14px; left:0; right:0; height:14px; } /* puente para el hover */
-  .nav-item:hover .dropdown, .nav-item:focus-within .dropdown { opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0); }
-  .dropdown a { display:block; padding:10px 14px; font-size:12.5px; letter-spacing:.02em; text-transform:none; color:#4B3621; border-radius:7px; transition:background .25s ease, padding-left .25s ease; }
-  .dropdown a:hover { background:#F3EEE6; padding-left:19px; }
-  .dropdown .dd-all { margin-top:6px; border-top:1px solid rgba(200,169,106,.2); color:#9C7A50; font-size:11px; letter-spacing:.14em; text-transform:uppercase; }
-  @media (prefers-reduced-motion: reduce) { .dropdown, .dropdown a, .navlink .caret { transition:none !important; } }
-
-  .innav .logo-link img { transition:transform .5s cubic-bezier(.22,.61,.36,1), height .35s cubic-bezier(.22,.61,.36,1); }
+  .navlink { position:relative; color:#4B3621; }
+  .navlink::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:#C8A96A; transition:width .4s cubic-bezier(.22,.61,.36,1); }
+  .navlink:hover::after { width:100%; }
+  .navlink:hover { color:#4B3621; }
+  .innav .logo-link img { transition:transform .5s cubic-bezier(.22,.61,.36,1), filter .5s ease, height .35s cubic-bezier(.22,.61,.36,1); }
+  /* Sin drop-shadow: el logo es un JPEG opaco y la sombra dibujaria su cuadrado. */
   .innav .logo-link:hover img { transform:scale(1.06); }
-  .icon-btn { transition:opacity .3s ease, color .3s ease; }
+  .icon-btn { transition:opacity .3s ease; }
   .icon-btn:hover { opacity:.6; }
   .cart-x:hover { color:#7A6754; }
   .co-btn { transition:background .4s ease, letter-spacing .4s ease; }
   .co-btn:hover { background:#C8A96A !important; color:#4B3621 !important; letter-spacing:.24em !important; }
-
-  /* Botón de WhatsApp */
-  .wa-btn { display:inline-flex; align-items:center; gap:7px; background:#4B3621; color:#F7F1E6; border:none; padding:8px 13px; border-radius:20px; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; transition:background .35s ease; text-decoration:none; white-space:nowrap; }
-  .wa-btn:hover { background:#3E6B45; color:#fff; }
-  .wa-btn svg { flex-shrink:0; }
-
-  /* Buscador */
-  .search-bar { max-height:0; overflow:hidden; background:#FFFDF7; border-bottom:1px solid rgba(200,169,106,.18); transition:max-height .4s cubic-bezier(.22,.61,.36,1); }
-  .search-bar.open { max-height:90px; }
-  .search-form { max-width:1320px; margin:0 auto; padding:14px 40px; display:flex; gap:12px; align-items:center; }
-  .search-form input { flex:1; font-family:'Jost',sans-serif; font-size:15px; font-weight:300; color:#4B3621; background:#F7F1E6; border:1px solid rgba(200,169,106,.35); border-radius:24px; padding:12px 20px; outline:none; transition:border-color .3s ease; }
-  .search-form input:focus { border-color:#C8A96A; }
-  @media (prefers-reduced-motion: reduce) { .search-bar { transition:none !important; } }
-
-  /* --- Barra fija que se achica al desplazar --- */
+  /* --- Barra fija que se achica al desplazar ---
+     El sticky va en el contenedor de la cabecera, no en el <nav>: un elemento
+     sticky solo puede fijarse dentro de su padre, y .innav mide apenas lo mismo
+     que la franja + el nav. Al fijar el bloque entero, la barra acompaña toda
+     la página. La franja se retrae al desplazar para no ocupar lugar. */
   .innav-host { position:sticky; top:0; z-index:60; }
   .nav-inner { transition:padding-top .3s cubic-bezier(.22,.61,.36,1), padding-bottom .3s cubic-bezier(.22,.61,.36,1); }
   .innav nav { transition:box-shadow .35s ease; }
   .innav .ann-bar { max-height:60px; transition:max-height .35s cubic-bezier(.22,.61,.36,1), opacity .25s ease; }
   .innav.nav-shrink .ann-bar { max-height:0; opacity:0; }
   .innav.nav-shrink .nav-inner { padding-top:8px !important; padding-bottom:8px !important; }
-  .innav.nav-shrink .logo-link img { height:54px !important; }
+  .innav.nav-shrink .logo-link img { height:56px !important; }
   .innav.nav-shrink nav { box-shadow:0 6px 22px -14px rgba(75,54,33,.4); }
   @media (prefers-reduced-motion: reduce) {
     .innav .ann-bar, .nav-inner, .innav .logo-link img { transition:none !important; }
   }
-
-  /* --- Menú móvil (hamburguesa + acordeón) --- */
+  /* --- Menú móvil (hamburguesa) --- */
   .nav-burger { display:none; flex-direction:column; justify-content:center; gap:5px; width:40px; height:40px; background:none; border:none; cursor:pointer; padding:8px; }
   .nav-burger span { display:block; width:23px; height:2px; background:#4B3621; border-radius:2px; transition:transform .35s cubic-bezier(.22,.61,.36,1), opacity .25s ease; }
   .nav-burger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
   .nav-burger.open span:nth-child(2) { opacity:0; }
   .nav-burger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
   .mobile-overlay { position:fixed; inset:0; background:rgba(75,54,33,.42); z-index:94; opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease; }
-  .mobile-panel { position:fixed; top:0; right:0; height:100%; width:min(340px,88vw); background:#F7F1E6; z-index:95; transform:translateX(100%); transition:transform .45s cubic-bezier(.4,0,.1,1); display:flex; flex-direction:column; box-shadow:-30px 0 60px -30px rgba(75,54,33,.5); }
-  .mobile-panel .mp-head { display:flex; align-items:center; justify-content:space-between; padding:22px 26px 12px; }
-  .mp-scroll { flex:1; overflow-y:auto; padding:4px 26px 20px; }
-  .mp-search { display:flex; gap:8px; margin:6px 0 14px; }
-  .mp-search input { flex:1; font-family:'Jost',sans-serif; font-size:14px; color:#4B3621; background:#FFFDF7; border:1px solid rgba(200,169,106,.35); border-radius:22px; padding:11px 16px; outline:none; }
-  .mp-link { display:block; font-family:'Jost',sans-serif; font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:#4B3621; padding:16px 2px; border-bottom:1px solid rgba(200,169,106,.16); transition:color .3s ease; }
-  .mp-link:hover { color:#7A6754; }
-  .acc { border-bottom:1px solid rgba(200,169,106,.16); }
-  .acc-head { width:100%; display:flex; align-items:center; justify-content:space-between; background:none; border:none; cursor:pointer; font-family:'Jost',sans-serif; font-size:14px; letter-spacing:.14em; text-transform:uppercase; color:#4B3621; padding:16px 2px; }
-  .acc-head .caret { width:11px; height:11px; opacity:.6; transition:transform .35s cubic-bezier(.22,.61,.36,1); }
-  .acc.open .acc-head .caret { transform:rotate(180deg); }
-  .acc-body { max-height:0; overflow:hidden; transition:max-height .4s cubic-bezier(.22,.61,.36,1); }
-  .acc-body-inner { padding:2px 0 12px; }
-  .acc-body a { display:block; font-family:'Jost',sans-serif; font-size:13px; letter-spacing:.02em; text-transform:none; color:#7A6754; padding:9px 14px; transition:color .25s ease, padding-left .25s ease; }
-  .acc-body a:hover { color:#4B3621; padding-left:19px; }
-  .acc-body .acc-all { color:#9C7A50; text-transform:uppercase; font-size:11px; letter-spacing:.12em; }
-  @media (prefers-reduced-motion: reduce) { .acc-body, .acc-head .caret { transition:none !important; } }
-
-  /* Umbral de hamburguesa: con las categorías + desplegables el menú necesita
-     más ancho; por debajo de 1180px pasamos a hamburguesa. */
-  @media (max-width:1180px) {
-    .nav-desktop, .nav-wa-desktop { display:none !important; }
+  .mobile-panel { position:fixed; top:0; right:0; height:100%; width:min(330px,86vw); background:#F7F1E6; z-index:95; transform:translateX(100%); transition:transform .45s cubic-bezier(.4,0,.1,1); display:flex; flex-direction:column; padding:26px 28px; box-shadow:-30px 0 60px -30px rgba(75,54,33,.5); }
+  .mobile-panel .mp-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .mobile-panel a { font-family:'Jost',sans-serif; font-size:15px; letter-spacing:.16em; text-transform:uppercase; color:#4B3621; padding:17px 2px; border-bottom:1px solid rgba(200,169,106,.16); transition:color .3s ease, padding-left .3s ease; }
+  .mobile-panel a:hover { color:#7A6754; padding-left:8px; }
+  /* Umbral de la hamburguesa: con 7 enlaces, el menu completo necesita ~1050px
+     para entrar en una linea. Por debajo de 1080px se pasa a hamburguesa para
+     que el menu no se parta en dos lineas. */
+  @media (max-width:1080px) {
+    .nav-desktop { display:none !important; }
     .nav-burger { display:flex; }
-    .nav-inner { padding:12px 20px !important; gap:12px !important; }
+    .nav-inner { padding:12px 20px !important; gap:14px !important; }
     .innav .logo-link img { height:60px !important; }
     .innav.nav-shrink .logo-link img { height:46px !important; }
     .innav.nav-shrink .nav-inner { padding-top:7px !important; padding-bottom:7px !important; }
     .innav .ann-inner { font-size:10px !important; letter-spacing:.16em !important; padding-top:9px !important; padding-bottom:9px !important; }
-    .search-form { padding:12px 20px; }
   }
-  @media (min-width:1181px) { .mobile-panel, .mobile-overlay { display:none; } }
+  @media (min-width:1081px) { .mobile-panel, .mobile-overlay { display:none; } }
 </style>
 </helmet>
 
 <div class="innav">
   <div class="ann-bar" style="background:#E7D6B8; color:#4B3621; text-transform:uppercase; overflow:hidden;">
     <div class="ann-inner">
-      <span data-i18n="ann">Diseño artesanal para tu hogar · Velas · Cerámica · Aromas · Regalos</span>
-      <span class="ann-dup" aria-hidden="true" data-i18n="ann">Diseño artesanal para tu hogar · Velas · Cerámica · Aromas · Regalos</span>
+      <span data-i18n="ann">Diseño artesanal para tu hogar · Velas · Cerámica · Concreto decorativo · Aromatizadores</span>
+      <span class="ann-dup" aria-hidden="true" data-i18n="ann">Diseño artesanal para tu hogar · Velas · Cerámica · Concreto decorativo · Aromatizadores</span>
     </div>
   </div>
 
   <nav style="background:rgba(247,241,230,.97); border-bottom:1px solid rgba(200,169,106,.18);">
     <div class="nav-inner" style="max-width:1320px; margin:0 auto; padding:14px 40px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
-      <a href="index.html" class="logo-link" style="display:flex; align-items:center; flex-shrink:0;">
+      <a href="index.html" class="logo-link" style="display:flex; align-items:center;">
         <img src="uploads/logo-innovarte.jpg" alt="Innovarte — Artesanía Creativa" style="height:80px; width:auto; display:block; clip-path:circle(47.5%);">
       </a>
-
-      <!-- Menú de escritorio (se completa desde site-config.js) -->
-      <div class="nav-desktop" data-desktop-menu></div>
-
-      <div style="display:flex; align-items:center; gap:16px; flex-shrink:0;">
-        <a class="wa-btn nav-wa-desktop" data-wa-link href="#" target="_blank" rel="noopener" aria-label="WhatsApp">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6 0l.9-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3 0 .1 0 .6-.2 1.2Z"/></svg>
-          <span data-i18n="nav_wa">WhatsApp</span>
-        </a>
-        <button class="icon-btn" data-search-toggle style="background:none; border:none; cursor:pointer; color:#4B3621; display:flex; align-items:center;" aria-label="Buscar">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
-        </button>
+      <div class="nav-desktop" style="display:flex; align-items:center; gap:26px; font-size:12px; letter-spacing:.16em; text-transform:uppercase;">
+        <a class="navlink" href="index.html" data-i18n="nav_home">Inicio</a>
+        <a class="navlink" href="catalogo.dc.html" data-i18n="nav_shop">Tienda</a>
+        <a class="navlink" href="insumos.dc.html" data-i18n="nav_insumos">Insumos</a>
+        <a class="navlink" href="cursos.dc.html" data-i18n="nav_cursos">Cursos</a>
+        <a class="navlink" href="historia.dc.html" data-i18n="nav_hist">Nuestra Historia</a>
+        <a class="navlink" href="personalizacion.dc.html" data-i18n="nav_pers">Personalización</a>
+        <a class="navlink" href="galeria.dc.html" data-i18n="nav_gal">Colecciones</a>
+      </div>
+      <div style="display:flex; align-items:center; gap:18px;">
         <button class="icon-btn" onClick="{{ toggleLang }}" style="background:none; border:1px solid rgba(200,169,106,.4); color:#4B3621; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.12em; padding:7px 11px; cursor:pointer; border-radius:2px;" data-lang-label>EN</button>
-        <button class="icon-btn" onClick="{{ toggleCart }}" style="position:relative; background:none; border:none; cursor:pointer; color:#4B3621; display:flex; align-items:center;" aria-label="Carrito">
+        <button class="icon-btn" onClick="{{ toggleCart }}" style="position:relative; background:none; border:none; cursor:pointer; color:#4B3621; display:flex; align-items:center;">
           <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
           <sc-if value="{{ hasCart }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; top:-8px; right:-9px; background:#4B3621; color:#fff; font-size:10px; min-width:17px; height:17px; border-radius:9px; display:flex; align-items:center; justify-content:center; padding:0 4px; font-weight:500;">{{ cartCount }}</span></sc-if>
         </button>
@@ -158,14 +112,6 @@
           <span></span><span></span><span></span>
         </button>
       </div>
-    </div>
-
-    <!-- Buscador desplegable -->
-    <div class="search-bar" data-search-bar>
-      <form class="search-form" data-search-form action="catalogo.dc.html" method="get" role="search">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A6754" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
-        <input type="search" name="q" data-search-input placeholder="Buscar velas, aromas, cerámicas…" aria-label="Buscar productos">
-      </form>
     </div>
   </nav>
 
@@ -175,20 +121,13 @@
       <span style="font-family:'Cormorant Garamond',serif; font-size:23px; color:#4B3621;" data-i18n="nav_menu">Menú</span>
       <button class="cart-x" onClick="{{ closeMenu }}" style="background:none; border:none; cursor:pointer; color:#4B3621; font-size:28px; line-height:1;">×</button>
     </div>
-    <div class="mp-scroll">
-      <form class="mp-search" data-search-form action="catalogo.dc.html" method="get" role="search">
-        <input type="search" name="q" placeholder="Buscar…" aria-label="Buscar productos">
-        <button type="submit" class="icon-btn" style="background:none; border:1px solid rgba(200,169,106,.4); border-radius:22px; padding:0 14px; cursor:pointer; color:#4B3621;" aria-label="Buscar">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
-        </button>
-      </form>
-      <!-- Enlaces (se completan desde site-config.js) -->
-      <div data-mobile-list></div>
-      <a class="wa-btn" data-wa-link href="#" target="_blank" rel="noopener" style="margin-top:20px; width:100%; justify-content:center; padding:14px 0;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6 0l.9-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3 0 .1 0 .6-.2 1.2Z"/></svg>
-        <span data-i18n="nav_wa">WhatsApp</span>
-      </a>
-    </div>
+    <a href="index.html" onClick="{{ closeMenu }}" data-i18n="nav_home">Inicio</a>
+    <a href="catalogo.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_shop">Tienda</a>
+    <a href="insumos.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_insumos">Insumos</a>
+    <a href="cursos.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_cursos">Cursos</a>
+    <a href="historia.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_hist">Nuestra Historia</a>
+    <a href="personalizacion.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_pers">Personalización</a>
+    <a href="galeria.dc.html" onClick="{{ closeMenu }}" data-i18n="nav_gal">Colecciones</a>
   </aside>
 
   <div data-cart-overlay onClick="{{ toggleCart }}" style="position:fixed; inset:0; background:rgba(75,54,33,.4); z-index:90; opacity:0; visibility:hidden; transition:opacity .4s ease, visibility .4s ease;"></div>
@@ -225,18 +164,14 @@
         <span data-i18n="cart_items">Artículos</span><span>{{ cartCount }}</span>
       </div>
       <button class="co-btn" onClick="{{ checkout }}" style="width:100%; background:#4B3621; color:#fff; border:none; padding:17px 0; font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="cart_checkout">Pedir por correo</button>
-      <a class="wa-btn" data-wa-link href="#" target="_blank" rel="noopener" style="margin-top:10px; width:100%; justify-content:center; padding:15px 0; background:#3E6B45;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6 0l.9-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3 0 .1 0 .6-.2 1.2Z"/></svg>
-        <span data-i18n="cart_wa">Pedir por WhatsApp</span>
-      </a>
-      <div style="text-align:center; font-size:11.5px; color:#7A6754; margin-top:11px; font-weight:300;" data-i18n="cart_note">Confirmamos precio y disponibilidad por correo o WhatsApp.</div>
+      <div style="text-align:center; font-size:11.5px; color:#7A6754; margin-top:11px; font-weight:300;" data-i18n="cart_note">Confirmamos precio y disponibilidad por correo.</div>
     </div>
   </aside>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { cart: [], open: false, menu: false, search: false };
+  state = { cart: [], open: false, menu: false };
 
   componentDidMount(){
     if(window.InnovCart){
@@ -248,13 +183,11 @@ class Component extends DCLogic {
       });
     }
     if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
-
+    /* El sticky se aplica al contenedor que envuelve la cabecera (ver
+       .innav-host en el <style>), porque .innav mide lo mismo que su contenido
+       y ahi la barra no tendria margen para quedarse fija. */
     const cab=document.querySelector('.innav');
     if(cab && cab.parentElement) cab.parentElement.classList.add('innav-host');
-
-    this.buildMenus();
-    this.wireExtras();
-
     this._shrunk=false;
     this._onNavScroll=()=>{
       const y=window.scrollY||document.documentElement.scrollTop||0;
@@ -266,86 +199,6 @@ class Component extends DCLogic {
     this.sync();
   }
   componentDidUpdate(){ this.sync(); if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); }
-
-  esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  caretSvg(){ return '<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
-
-  /* Construye el menú de escritorio y el acordeón móvil desde site-config.js. */
-  buildMenus(){
-    if(this._menusBuilt) return;
-    // site-config.js llega por el <helmet> y puede cargar despues del mount:
-    // reintentamos hasta que INNOV_TAX este disponible.
-    if(!(window.INNOV_TAX && window.INNOV_TAX.length)){
-      this._menuTries=(this._menuTries||0)+1;
-      if(this._menuTries<80) setTimeout(()=>this.buildMenus(), 40);
-      return;
-    }
-    this._menusBuilt=true;
-    const tax=window.INNOV_TAX||[], extra=window.INNOV_NAV_EXTRA||[], esc=this.esc.bind(this);
-
-    // --- Escritorio ---
-    const d=document.querySelector('[data-desktop-menu]');
-    if(d){
-      let html='<a class="navlink" href="index.html" data-i18n="nav_home">Inicio</a>';
-      tax.forEach(c=>{
-        html+='<div class="nav-item">'+
-          '<a class="navlink" href="catalogo.dc.html?cat='+esc(c.slug)+'">'+esc(c.name)+this.caretSvg()+'</a>'+
-          '<div class="dropdown">'+
-            c.subs.map(s=>'<a href="catalogo.dc.html?cat='+esc(c.slug)+'&sub='+esc(s.slug)+'">'+esc(s.name)+'</a>').join('')+
-            '<a class="dd-all" href="catalogo.dc.html?cat='+esc(c.slug)+'">Ver todo →</a>'+
-          '</div></div>';
-      });
-      extra.forEach(e=>{ html+='<a class="navlink" href="'+esc(e.href)+'"'+(e.i18n?' data-i18n="'+esc(e.i18n)+'"':'')+'>'+esc(e.name)+'</a>'; });
-      d.innerHTML=html;
-    }
-
-    // --- Móvil (acordeón) ---
-    const m=document.querySelector('[data-mobile-list]');
-    if(m){
-      let html='<a class="mp-link" href="index.html" data-i18n="nav_home">Inicio</a>';
-      tax.forEach(c=>{
-        html+='<div class="acc">'+
-          '<button class="acc-head" type="button" data-acc>'+esc(c.name)+this.caretSvg()+'</button>'+
-          '<div class="acc-body"><div class="acc-body-inner">'+
-            c.subs.map(s=>'<a href="catalogo.dc.html?cat='+esc(c.slug)+'&sub='+esc(s.slug)+'">'+esc(s.name)+'</a>').join('')+
-            '<a class="acc-all" href="catalogo.dc.html?cat='+esc(c.slug)+'">Ver todo</a>'+
-          '</div></div></div>';
-      });
-      extra.forEach(e=>{ html+='<a class="mp-link" href="'+esc(e.href)+'"'+(e.i18n?' data-i18n="'+esc(e.i18n)+'"':'')+'>'+esc(e.name)+'</a>'; });
-      m.innerHTML=html;
-      // Acordeón: abrir/cerrar cada categoría.
-      m.querySelectorAll('[data-acc]').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          const acc=btn.parentElement, body=btn.nextElementSibling, open=acc.classList.toggle('open');
-          body.style.maxHeight = open ? (body.firstElementChild.scrollHeight+'px') : '0px';
-        });
-      });
-    }
-    // Enlaces de WhatsApp (misma config; ya cargó con INNOV_TAX).
-    var waTxt='¡Hola! Quiero hacer una consulta sobre sus productos.';
-    var waHref=(window.INNOV_waLink ? window.INNOV_waLink(waTxt) : '#');
-    document.querySelectorAll('[data-wa-link]').forEach(function(a){ a.setAttribute('href', waHref); });
-    if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
-  }
-
-  /* Enlaces de WhatsApp, buscador y su cierre. */
-  wireExtras(){
-    if(this._extrasWired) return; this._extrasWired=true;
-    const bar=document.querySelector('[data-search-bar]'), input=document.querySelector('[data-search-input]');
-    const tgl=document.querySelector('[data-search-toggle]');
-    if(tgl && bar){
-      tgl.addEventListener('click', ()=>{
-        const open=bar.classList.toggle('open');
-        if(open && input) setTimeout(()=>input.focus(), 60);
-      });
-    }
-    // Enter en un buscador vacío no navega a una búsqueda sin término.
-    document.querySelectorAll('[data-search-form]').forEach(f=>{
-      f.addEventListener('submit', (e)=>{ const i=f.querySelector('input'); if(!i || !i.value.trim()){ e.preventDefault(); } });
-    });
-    // Cerrar el buscador con Escape.
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && bar) bar.classList.remove('open'); });
-  }
 
   sync(){
     const ov=document.querySelector('[data-cart-overlay]'); const dr=document.querySelector('[data-cart-drawer]');

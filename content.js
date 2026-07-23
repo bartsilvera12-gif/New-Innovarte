@@ -31,8 +31,8 @@
     hero: {
       videoDesktop: '',                              // '' = usar imagen de portada
       videoMobile:  '',                              // '' = usar imagen de portada
-      poster:       U + 'portada-velas-artesanales.jpg',
-      fallback:     U + 'portada-velas-artesanales.jpg'
+      poster:       U + 'portada-velas-set.jpg',
+      fallback:     U + 'portada-velas-set.jpg'
     },
 
     /* ---------------------------------------------------------------------

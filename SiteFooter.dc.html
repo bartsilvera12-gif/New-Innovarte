@@ -9,101 +9,46 @@
 <x-dc>
 <helmet>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="site-config.js"></script>
 <style>
+  /* Pie de pagina invertido: fondo chocolate, texto beige, acentos champagne. */
   .foot a { color:#E7D6B8; text-decoration:none; transition:color .3s ease; font-family:'Jost',sans-serif; }
   .foot a:hover { color:#C8A96A; }
-  .foot .fcol-title { font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:#C8A96A; margin-bottom:20px; }
-  .foot .fcol-links { display:flex; flex-direction:column; gap:12px; font-weight:300; font-size:14px; }
-  .rr-foot { max-width:1320px; margin:0 auto; padding:76px 40px 40px; display:grid; grid-template-columns:1.6fr 1fr 1fr 1.2fr; gap:44px; }
-  .foot .wa-foot { display:inline-flex; align-items:center; gap:8px; color:#E7D6B8; }
-  .foot .wa-foot svg { flex-shrink:0; }
-  .pay { display:inline-flex; align-items:center; justify-content:center; height:26px; padding:0 9px; border:1px solid rgba(200,169,106,.35); border-radius:4px; font-size:10px; letter-spacing:.08em; color:#C8A96A; text-transform:uppercase; }
-  @media (max-width:900px){ .rr-foot { grid-template-columns:1fr 1fr; gap:36px; } }
-  @media (max-width:560px){ .rr-foot { grid-template-columns:1fr; gap:30px; padding:56px 26px 30px; } }
 </style>
 </helmet>
 
 <footer class="foot" id="contacto" style="background:#4B3621; color:#E7D6B8;">
-  <div class="rr-foot">
+  <div class="rr-foot" style="max-width:1320px; margin:0 auto; padding:80px 40px 40px; display:grid; grid-template-columns:1.5fr 1fr 1.2fr; gap:50px;">
     <div>
       <div style="font-family:'Cormorant Garamond',serif; font-size:34px; font-weight:600; color:#F7F1E6; line-height:1;">InnovArte</div>
       <div style="font-size:10px; letter-spacing:.42em; text-transform:uppercase; color:#C8A96A; margin-top:5px;">Diseño artesanal · Home Decor</div>
-      <p style="color:#E7D6B8; font-weight:300; font-size:14.5px; line-height:1.75; margin-top:22px; max-width:340px;" data-i18n="foot_desc">Velas artesanales de cera de soja, aromas para el hogar y piezas decorativas hechas a mano para transformar tus espacios en ambientes de calma y bienestar.</p>
-      <a class="wa-foot" data-wa-link href="#" target="_blank" rel="noopener" style="margin-top:22px;">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6 0l.9-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3 0 .1 0 .6-.2 1.2Z"/></svg>
-        <span data-i18n="foot_wa">Escribinos por WhatsApp</span>
-      </a>
+      <p style="color:#E7D6B8; font-weight:300; font-size:15px; line-height:1.75; margin-top:22px; max-width:340px;" data-i18n="foot_desc">Velas artesanales de cera de soja, aromatizadores, difusores y piezas decorativas de cerámica y concreto para transformar tu hogar. Hechas a mano entre Paraguay y Estados Unidos.</p>
     </div>
-
     <div>
-      <div class="fcol-title" data-i18n="foot_cats">Categorías</div>
-      <div class="fcol-links" data-foot-cats>
-        <a href="catalogo.dc.html">Tienda</a>
-      </div>
-    </div>
-
-    <div>
-      <div class="fcol-title" data-i18n="foot_explore">Explorar</div>
-      <div class="fcol-links">
+      <div style="font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:#C8A96A; margin-bottom:20px;" data-i18n="foot_shop">Tienda</div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-weight:300;">
+        <a href="catalogo.dc.html" data-i18n="nav_shop">Tienda</a>
+        <a href="insumos.dc.html" data-i18n="nav_insumos">Insumos</a>
+        <a href="cursos.dc.html" data-i18n="nav_cursos">Cursos</a>
         <a href="historia.dc.html" data-i18n="nav_hist">Nuestra Historia</a>
         <a href="personalizacion.dc.html" data-i18n="nav_pers">Personalización</a>
         <a href="galeria.dc.html" data-i18n="nav_gal">Colecciones</a>
-        <a href="cursos.dc.html" data-i18n="nav_cursos">Cursos</a>
-        <a href="insumos.dc.html" data-i18n="nav_insumos">Insumos</a>
       </div>
     </div>
-
     <div>
-      <div class="fcol-title" data-i18n="foot_contact">Contacto</div>
-      <div class="fcol-links">
+      <div style="font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:#C8A96A; margin-bottom:20px;" data-i18n="foot_contact">Contacto</div>
+      <div style="display:flex; flex-direction:column; gap:12px; font-weight:300;">
         <a href="mailto:innovartecandles@gmail.com">innovartecandles@gmail.com</a>
         <a href="https://www.instagram.com/innovartecandles" target="_blank" rel="noopener">Instagram · @innovartecandles</a>
-        <span style="color:#E7D6B8;">Paraguay &amp; Estados Unidos</span>
+        <span style="color:#E7D6B8;">Paraguay & Estados Unidos</span>
         <span style="color:#E7D6B8;" data-i18n="foot_ship">Envíos a todo EE. UU.</span>
-        <!-- TODO: horario real de atención -->
-        <span style="color:#E7D6B8;" data-i18n="foot_hours">Atención por WhatsApp · Lun a Sáb</span>
       </div>
     </div>
   </div>
-
-  <div style="max-width:1320px; margin:0 auto; padding:22px 40px; border-top:1px solid rgba(200,169,106,.22); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-    <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; font-size:12px; color:#C8A96A; letter-spacing:.06em;">
-      <span>© 2025 InnovArte Handmade.</span>
-      <a href="personalizacion.dc.html" data-i18n="foot_policies">Políticas &amp; consultas</a>
-    </div>
-    <!-- TODO: confirmar métodos de pago reales -->
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span style="font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:#7A6754;" data-i18n="foot_pay">Pagos</span>
-      <span class="pay">Transferencia</span>
-      <span class="pay">Efectivo</span>
-      <span class="pay">Tarjeta</span>
-    </div>
+  <div style="max-width:1320px; margin:0 auto; padding:22px 40px; border-top:1px solid rgba(200,169,106,.22); display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:12px; color:#C8A96A; letter-spacing:.06em;">
+    <span>© 2025 InnovArte Handmade. All rights reserved.</span>
+    <span data-i18n="foot_made">Hecho por Neura</span>
   </div>
 </footer>
 </x-dc>
-<script type="text/x-dc" data-dc-script>
-class Component extends DCLogic {
-  componentDidMount(){ this.build(); if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); }
-  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); }
-  esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  build(){
-    if(this._built) return;
-    if(!(window.INNOV_TAX && window.INNOV_TAX.length)){
-      this._t=(this._t||0)+1; if(this._t<80) setTimeout(()=>this.build(), 40); return;
-    }
-    this._built=true;
-    const esc=this.esc.bind(this);
-    const c=document.querySelector('[data-foot-cats]');
-    if(c){ c.innerHTML=(window.INNOV_TAX||[]).map(cat=>'<a href="catalogo.dc.html?cat='+esc(cat.slug)+'">'+esc(cat.name)+'</a>').join('')
-      + '<a href="catalogo.dc.html">'+ (window.InnovI18N&&InnovI18N.lang==='en'?'All products':'Ver todo') +'</a>'; }
-    const waTxt='¡Hola! Quiero hacer una consulta sobre sus productos.';
-    const href=(window.INNOV_waLink? window.INNOV_waLink(waTxt) : '#');
-    document.querySelectorAll('.foot [data-wa-link]').forEach(a=>a.setAttribute('href', href));
-    if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
-  }
-  renderVals(){ return {}; }
-}
-</script>
 </body>
 </html>
