@@ -71,7 +71,7 @@ window.INNOV_findCat = function (slug) {
    `img` es la imagen del banner de la categoría.                            */
 window.INNOV_CATMAP = {
   velas: {
-    dbcats: ['velas', 'bandeja-con-flores'],
+    dbcats: ['velas'],
     img: 'uploads/velas-peonia.jpg',
     sub: function (p) {
       var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
@@ -82,7 +82,7 @@ window.INNOV_CATMAP = {
     }
   },
   aromas: {
-    dbcats: ['aromatizadores', 'difusores-para-autos'],
+    dbcats: ['aromatizadores'],
     img: 'uploads/difusor-varillas-natural.jpg',
     sub: function (p) {
       var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
@@ -99,6 +99,27 @@ window.INNOV_CATMAP = {
       return null;
     }
   },
-  ceramicas: { dbcats: [], img: 'uploads/difusor-varillas-ceramica-taupe.jpg', sub: function () { return null; } },
-  kits:      { dbcats: [], img: 'uploads/bandeja-flores-ovalada-rosa.jpg',    sub: function () { return null; } }
+  ceramicas: {
+    dbcats: ['ceramica'],
+    img: 'uploads/difusor-varillas-ceramica-taupe.jpg',
+    sub: function (p) {
+      var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
+      if (/bandeja/.test(t)) return 'bandejas';
+      if (/cuenco|bowl/.test(t)) return 'cuencos';
+      if (/florero|jarr[oó]n|vasija/.test(t)) return 'floreros';
+      if (/portavela|candelabro|porta\s*vela/.test(t)) return 'portavelas';
+      return 'piezas';
+    }
+  },
+  kits: {
+    dbcats: ['kits'],
+    img: 'uploads/bandeja-flores-ovalada-rosa.jpg',
+    sub: function (p) {
+      var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
+      if (/cer[aá]mica/.test(t)) return 'kits-ceramica';
+      if (/aroma|difusor|spray/.test(t)) return 'kits-aromas';
+      if (/vela/.test(t)) return 'kits-velas';
+      return 'regalos-personalizados';
+    }
+  }
 };
