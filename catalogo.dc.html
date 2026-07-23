@@ -79,7 +79,12 @@
   <sc-if value="{{ hasBanner }}" hint-placeholder-val="{{ true }}">
     <section class="cat-banner">
       <div class="cat-banner-box" data-reveal>
-        <img src="{{ bannerImg }}" alt="{{ title }}" loading="lazy">
+        <sc-if value="{{ bannerVideo }}" hint-placeholder-val="{{ false }}">
+          <video src="{{ bannerVideo }}" poster="{{ bannerImg }}" autoplay muted loop playsinline preload="metadata" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"></video>
+        </sc-if>
+        <sc-if value="{{ noBannerVideo }}" hint-placeholder-val="{{ true }}">
+          <img src="{{ bannerImg }}" alt="{{ title }}" loading="lazy">
+        </sc-if>
         <div class="ov"></div>
         <div class="cat-banner-inner">
           <div style="font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:#E7D6B8; margin-bottom:14px;" data-i18n="catpg_eye2">Colección</div>
@@ -234,7 +239,7 @@ class Component extends DCLogic {
       if(st.sub && st.sub!=='all') prods=prods.filter(p=>m.sub(p)===st.sub);
       prods=this.sortList(prods);
       var chips=[{slug:'all',name:'Todo'}].concat(cd.subs||[]);
-      return Object.assign({ hasBanner:true, plainHeader:false, bannerImg:m.img, title:cd.name, subtitle:cd.desc||'',
+      return Object.assign({ hasBanner:true, plainHeader:false, bannerImg:m.img, bannerVideo:m.video||'', noBannerVideo:!m.video, title:cd.name, subtitle:cd.desc||'',
         subchips:chips, groups:[{ title:'', products:prods }], empty:prods.length===0 }, H);
     }
 

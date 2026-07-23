@@ -73,6 +73,7 @@ window.INNOV_CATMAP = {
   velas: {
     dbcats: ['velas'],
     img: 'uploads/velas-peonia.jpg',
+    video: 'uploads/portada-velas-animada.mp4',   // banner animado (autoplay/loop); img queda de fallback
     sub: function (p) {
       var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
       if (/especial|edici[oó]n|limitad/.test(t)) return 'especiales';
