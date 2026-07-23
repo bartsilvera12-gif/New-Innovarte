@@ -4,14 +4,15 @@ window.InnovI18N = {
   orig: new WeakMap(),
   en: {
     ann: "Artisan design for your home · Candles · Ceramics · Decorative concrete · Home fragrance",
-    nav_home: "Home", nav_shop: "Shop", nav_hist: "Our Story", nav_pers: "Custom", nav_gal: "Collections", nav_contact: "Contact", nav_menu: "Menu",
+    nav_home: "Home", nav_shop: "Shop", nav_hist: "Our Story", nav_pers: "Custom", nav_gal: "Collections", nav_contact: "Contact", nav_menu: "Menu", nav_wa: "WhatsApp",
     cart_title: "Your cart", cart_empty: "Your cart is empty", cart_empty_sub: "Add your favorite pieces to request them.",
-    cart_remove: "Remove", cart_items: "Items", cart_checkout: "Request by email",
-    cart_note: "We'll confirm price and availability by email.", add: "Add", added: "Added to cart",
+    cart_remove: "Remove", cart_items: "Items", cart_checkout: "Request by email", cart_wa: "Order via WhatsApp",
+    cart_note: "We'll confirm price and availability by email or WhatsApp.", add: "Add", added: "Added to cart",
     promo_eye: "Featured", promo_h: "Featured collections", promo_btn: "View collection",
     vel_eye: "More candles", vel_h: "Discover our candles",
     foot_desc: "Handcrafted soy candles, home fragrance, reed diffusers and decorative ceramic and concrete pieces to transform your home. Handmade between Paraguay and the USA.",
     foot_shop: "Shop", foot_contact: "Contact", foot_made: "Made by Neura", foot_follow: "Follow",
+    foot_wa: "Message us on WhatsApp", foot_cats: "Categories", foot_explore: "Explore", foot_hours: "WhatsApp support · Mon–Sat", foot_policies: "Policies & inquiries", foot_pay: "Payments",
 
     hero_eye: "Artisan design for the home",
     hero_h1: "We inspire homes with<br>design, scent &amp; art", hero_h1b: "We inspire homes with design, scent and art",
