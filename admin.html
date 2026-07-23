@@ -339,7 +339,15 @@
   async function subirImagen(file){
     var ext = (file.name.split('.').pop()||'jpg').toLowerCase();
     var base = slugify(file.name.replace(/\.[^.]+$/,'')) || 'imagen';
-    var nombre = base + '-' + Date.now() + '.' + ext;
+    // OJO: el hosting (LiteSpeed) intercepta CUALQUIER ruta que termine en
+    // .jpg/.jpeg/.png/.gif y la responde con 404 ANTES de llegar a api.php, así
+    // que la subida por el panel fallaba con "Error 404". Guardamos el objeto con
+    // una clave SIN esa extensión (el tipo real de la imagen viaja en la cabecera
+    // content-type). Así la subida (POST) y la posterior lectura pública (GET),
+    // ambas por el puente api.php, pasan sin ser interceptadas.
+    var tipos = { jpg:'image/jpeg', jpeg:'image/jpeg', png:'image/png', webp:'image/webp', gif:'image/gif' };
+    var mime = file.type || tipos[ext] || 'application/octet-stream';
+    var nombre = 'productos/' + base + '-' + Date.now();   // sin extensión de imagen
     var cfg = window.INNOV_SB;
 
     // Subimos el archivo como cuerpo binario crudo (no multipart/form-data).
@@ -358,7 +366,7 @@
       headers:{
         apikey: cfg.anonKey,
         authorization: 'Bearer ' + token,
-        'content-type': file.type || 'application/octet-stream'
+        'content-type': mime
       },
       body: file
     });
