@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<title>Tienda — Innovarte | Velas, aromatizadores, cerámica y concreto</title>
-<meta name="description" content="Explorá la colección de Innovarte: velas artesanales de cera de soja, aromatizadores, difusores y piezas decorativas de cerámica y concreto, hechas a mano.">
+<title>Tienda — Innovarte | Velas, aromas para el hogar, cerámicas y regalos</title>
+<meta name="description" content="Explorá la colección de Innovarte: velas artesanales, aromas para el hogar, cerámicas decorativas y kits de regalo, hechos a mano.">
 <meta property="og:title" content="Tienda — Innovarte">
-<meta property="og:description" content="Velas, aromatizadores y piezas decorativas de cerámica y concreto, hechas a mano.">
+<meta property="og:description" content="Velas, aromas para el hogar, cerámicas decorativas y regalos, hechos a mano.">
 <meta property="og:type" content="website">
 <script src="supabase-config.js?v=2"></script>
 <script src="datos-remotos.js?v=2"></script>
@@ -20,6 +20,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="responsive.css">
+<script src="site-config.js?v=2"></script>
 <script src="cart-store.js?v=2"></script>
 <script src="i18n.js?v=2"></script>
 <script src="products.js?v=2"></script>
@@ -31,57 +32,110 @@
   body { background:#F7F1E6; color:#4B3621; font-family:'Jost',sans-serif; -webkit-font-smoothing:antialiased; }
   a { color:#7A6754; text-decoration:none; }
   ::selection { background:#E7D6B8; color:#4B3621; }
-  @keyframes riseIn { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
-  .prodcard { background:#F7F1E6; border-radius:12px; overflow:hidden; box-shadow:0 14px 34px -26px rgba(75,54,33,.4); padding-bottom:20px; transition:transform .55s cubic-bezier(.22,.61,.36,1), box-shadow .55s ease; }
+  .prodcard { background:#FFFDF7; border-radius:12px; overflow:hidden; box-shadow:0 14px 34px -26px rgba(75,54,33,.4); padding-bottom:20px; transition:transform .55s cubic-bezier(.22,.61,.36,1), box-shadow .55s ease; }
   .prodcard:hover { transform:translateY(-7px); box-shadow:0 36px 56px -30px rgba(200,169,106,.6); }
   .prodcard > *:not(.pm) { padding-left:20px; padding-right:20px; }
-  .prodcard .pm { border-radius:0 !important; }
   .prodcard .pm img { transition:transform 1.2s cubic-bezier(.22,.61,.36,1); }
-  .prodcard:hover .pm img { transform:scale(1.07); }
-  .addbtn { transition:all .4s ease; background:#FFFDF7 !important; color:#4B3621 !important; border:1px solid rgba(200,169,106,.35) !important; border-radius:40px !important; }
-  .addbtn:hover { background:#E7D6B8 !important; color:#4B3621 !important; border-color:#E7D6B8 !important; letter-spacing:.26em !important; }
-  .filt { transition:all .35s ease; cursor:pointer; }
-  .filt:hover { color:#4B3621; }
+  .prodcard:hover .pm img { transform:scale(1.06); }
+  .addbtn { transition:all .4s ease; }
+  .addbtn:hover { background:#E7D6B8 !important; color:#4B3621 !important; border-color:#E7D6B8 !important; letter-spacing:.24em !important; }
+
+  /* Breadcrumbs */
+  .crumbs { max-width:1320px; margin:0 auto; padding:20px 40px 0; }
+  .crumbs a { color:#9C7A50; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; transition:color .3s ease; }
+  .crumbs a:hover { color:#4B3621; }
+  .crumbs .sep { color:#C8A96A; margin:0 9px; font-size:11px; }
+  .crumbs .cur { color:#4B3621; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; }
+
+  /* Banner de categoría */
+  .cat-banner { position:relative; max-width:1600px; margin:20px auto 0; padding:0 24px; }
+  .cat-banner-box { position:relative; border-radius:12px; overflow:hidden; min-height:300px; display:flex; align-items:center; }
+  .cat-banner-box img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .cat-banner-box .ov { position:absolute; inset:0; background:linear-gradient(90deg, rgba(60,44,28,.62) 0%, rgba(60,44,28,.3) 60%, rgba(60,44,28,.1) 100%); }
+  .cat-banner-inner { position:relative; z-index:2; padding:clamp(34px,5vw,64px); color:#fff; max-width:560px; }
+
+  /* Toolbar: chips + orden */
+  .toolbar { position:sticky; top:0; z-index:40; background:rgba(247,241,230,.97); border-bottom:1px solid rgba(200,169,106,.16); }
+  .toolbar-inner { max-width:1320px; margin:0 auto; padding:14px 40px; display:flex; gap:14px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .chips { display:flex; gap:9px; flex-wrap:wrap; }
+  .chip { cursor:pointer; border:1px solid rgba(75,54,33,.24); background:transparent; color:#7A6754; padding:9px 17px; border-radius:40px; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.14em; text-transform:uppercase; transition:all .3s ease; }
+  .chip:hover { color:#4B3621; border-color:#C8A96A; }
+  .chip.on { background:#4B3621; color:#fff; border-color:#4B3621; }
+  .sortbar { display:flex; gap:7px; align-items:center; flex-shrink:0; }
+  .sortbar .lbl { font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:#9C7A50; margin-right:3px; }
+  .sortb { cursor:pointer; background:none; border:none; color:#7A6754; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.1em; text-transform:uppercase; padding:6px 8px; border-bottom:1px solid transparent; transition:all .3s ease; }
+  .sortb.on { color:#4B3621; border-bottom-color:#C8A96A; }
+  @media (prefers-reduced-motion: reduce){ .prodcard, .prodcard .pm img, .chip, .sortb, .crumbs a { transition:none !important; } }
 </style>
 </helmet>
 
 <div class="rr-page" style="overflow-x:hidden;">
   <dc-import name="SiteNav" hint-size="100%,120px"></dc-import>
 
-  <section style="max-width:1320px; margin:0 auto; padding:80px 40px 40px; text-align:center;">
-    <div style="font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:#7A6754; margin-bottom:16px;" data-i18n="catpg_eye">La colección completa</div>
-    <h1 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(42px,5.5vw,74px); color:#4B3621; line-height:1.02;" data-i18n="catpg_h">Tienda</h1>
-    <p style="max-width:580px; margin:20px auto 0; color:#7A6754; font-weight:300; font-size:16px; line-height:1.7;" data-i18n="catpg_sub">Cada pieza se vierte a mano en lotes pequeños con cera de soya natural. Añade tus favoritas y solicítalas por mensaje.</p>
-  </section>
+  <!-- Breadcrumbs (se pintan desde JS) -->
+  <nav class="crumbs" aria-label="Ruta de navegación" data-crumbs></nav>
 
-  <div style="position:sticky; top:0; z-index:40; background:rgba(247,241,230,.97); border-bottom:1px solid rgba(200,169,106,.16);">
-    <div style="max-width:1320px; margin:0 auto; padding:16px 40px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-      <button class="filt" data-cat="all" onClick="{{ setFilter }}" style="border:1px solid; padding:10px 20px; border-radius:40px; font-family:'Jost',sans-serif; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; background:transparent;" data-i18n="filter_all">Todo</button>
-      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
-        <button class="filt" data-cat="{{ c.id }}" onClick="{{ setFilter }}" style="border:1px solid; padding:10px 20px; border-radius:40px; font-family:'Jost',sans-serif; font-size:11.5px; letter-spacing:.16em; text-transform:uppercase; background:transparent;">{{ c.name }}</button>
-      </sc-for>
+  <!-- Encabezado: banner de categoría o título simple -->
+  <sc-if value="{{ hasBanner }}" hint-placeholder-val="{{ true }}">
+    <section class="cat-banner">
+      <div class="cat-banner-box" data-reveal>
+        <img src="{{ bannerImg }}" alt="{{ title }}" loading="lazy">
+        <div class="ov"></div>
+        <div class="cat-banner-inner">
+          <div style="font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:#E7D6B8; margin-bottom:14px;" data-i18n="catpg_eye2">Colección</div>
+          <h1 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(38px,5vw,64px); line-height:1.04;">{{ title }}</h1>
+          <p style="font-weight:300; font-size:16px; line-height:1.7; margin-top:14px; color:#F3E4D8; max-width:440px;">{{ subtitle }}</p>
+        </div>
+      </div>
+    </section>
+  </sc-if>
+  <sc-if value="{{ plainHeader }}" hint-placeholder-val="{{ false }}">
+    <section style="max-width:1320px; margin:0 auto; padding:34px 40px 8px; text-align:center;">
+      <h1 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(40px,5vw,70px); color:#4B3621; line-height:1.02;">{{ title }}</h1>
+      <p style="max-width:580px; margin:16px auto 0; color:#7A6754; font-weight:300; font-size:16px; line-height:1.7;">{{ subtitle }}</p>
+    </section>
+  </sc-if>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-inner">
+      <div class="chips">
+        <sc-for list="{{ subchips }}" as="s" hint-placeholder-count="0">
+          <button class="chip" data-sub="{{ s.slug }}" onClick="{{ setSub }}">{{ s.name }}</button>
+        </sc-for>
+      </div>
+      <div class="sortbar">
+        <span class="lbl" data-i18n="sort_by">Ordenar</span>
+        <button class="sortb" data-sort="novedades" onClick="{{ setSort }}" data-i18n="sort_new">Novedades</button>
+        <button class="sortb" data-sort="nombre" onClick="{{ setSort }}" data-i18n="sort_az">Nombre A–Z</button>
+      </div>
     </div>
   </div>
 
-  <section style="max-width:1320px; margin:0 auto; padding:48px 40px 100px;">
+  <section style="max-width:1320px; margin:0 auto; padding:44px 40px 100px;">
     <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
       <div style="text-align:center; padding:70px 24px 90px; color:#7A6754;">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="margin-bottom:16px; opacity:.7;"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
         <div style="font-family:'Cormorant Garamond',serif; font-size:clamp(26px,3.4vw,38px); color:#7A6754; line-height:1.2;" data-i18n="cat_empty_h">Próximamente</div>
         <p style="max-width:460px; margin:16px auto 0; font-size:15px; font-weight:300; line-height:1.7;" data-i18n="cat_empty_p">Estamos preparando piezas nuevas para esta categoría. Muy pronto vas a poder descubrirlas aquí.</p>
+        <a href="catalogo.dc.html" style="display:inline-block; margin-top:26px; color:#9C7A50; font-size:12px; letter-spacing:.18em; text-transform:uppercase; border-bottom:1px solid rgba(200,169,106,.4); padding-bottom:4px;" data-i18n="cat_empty_cta">Ver toda la tienda</a>
       </div>
     </sc-if>
     <sc-for list="{{ groups }}" as="g" hint-placeholder-count="1">
-      <div style="margin-bottom:34px;">
+      <div style="margin-bottom:38px;">
         <sc-if value="{{ g.title }}">
-          <h2 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(24px,2.8vw,34px); color:#4B3621; margin:10px 0 20px; padding-bottom:12px; border-bottom:1px solid rgba(200,169,106,.28);">{{ g.title }}</h2>
+          <div style="display:flex; align-items:baseline; justify-content:space-between; gap:16px; margin:10px 0 22px; padding-bottom:12px; border-bottom:1px solid rgba(200,169,106,.28); flex-wrap:wrap;">
+            <h2 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(24px,2.8vw,34px); color:#4B3621;">{{ g.title }}</h2>
+            <a href="{{ g.href }}" style="color:#9C7A50; font-size:11px; letter-spacing:.16em; text-transform:uppercase;">{{ g.more }}</a>
+          </div>
         </sc-if>
         <div class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:36px 26px;">
           <sc-for list="{{ g.products }}" as="p" hint-placeholder-count="8">
             <div class="prodcard" style="display:flex; flex-direction:column;">
-              <div class="pm" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></div>
+              <div class="pm" style="aspect-ratio:1; overflow:hidden; background:#F7F1E6;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></div>
               <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px; color:#4B3621;">{{ p.name }}</div>
               <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">{{ p.sub }}</div>
-              <button class="addbtn" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+              <button class="addbtn" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" onClick="{{ addToCart }}" style="margin-top:14px; background:#FFFDF7; border:1px solid rgba(200,169,106,.35); color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:40px;" data-i18n="add">Añadir</button>
             </div>
           </sc-for>
         </div>
@@ -93,101 +147,107 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:1000}}">
-// Sub-secciones dentro de la categoría Velas, en orden.
-const SUBCATS = [
-  { key:'recipiente',  title:'Velas de recipiente' },
-  { key:'concreto',    title:'Velas en concreto' },
-  { key:'decorativas', title:'Velas decorativas' },
-  { key:'souvenir',    title:'Souvenir' },
-  { key:'bouquet',     title:'Bouquet' },
-  { key:'bandeja-flores', title:'Bandeja con Flores' }
-];
-// Deriva la sub-sección de un producto de velas por su slug/id.
-function subcatDe(p){
-  const s = String(p.slug || p.id || '');
-  if(/^velas-vidrio-|^velas-lata-/.test(s)) return 'recipiente';
-  if(/^velas-ceramica-/.test(s)) return 'concreto';
-  if(/^bouquet-/.test(s)) return 'bouquet';
-  if(/^bandeja-flores-/.test(s) || s === 'iv-flores-bandeja') return 'bandeja-flores';
-  if(/^deco-(angel|bautismo|cruz-comunion|comunion|corazon-manos|confirmacion|marg-confesion|marg-babyshower|marg-aniversario|marg-caja)/.test(s)) return 'souvenir';
-  return 'decorativas'; // resto: velas decorativas + escultóricas previas
-}
-
-// Sub-secciones dentro de Aromatizadores.
-const AROMA_SUBCATS = [
-  { key:'home-spray', title:'Home Spray' },
-  { key:'wax-melts',  title:'Wax Melts' },
-  { key:'difusores',  title:'Difusores' }
-];
-function aromaSubcat(p){
-  const s = String(p.slug || p.id || '');
-  if(/^aroma-homespray-/.test(s)) return 'home-spray';
-  if(/^aroma-(waxmelt|hornillo)-/.test(s)) return 'wax-melts';
-  if(/wax\s*melt/i.test(p.sub || '')) return 'wax-melts';   // productos previos "Wax Melts"
-  return 'difusores'; // difusores de varillas, sets, vessels y demás
-}
-
-// Config de sub-secciones por categoría (las demás se muestran sin agrupar).
-const SUBSECCIONES = {
-  velas:          { lista: SUBCATS,       fn: subcatDe },
-  aromatizadores: { lista: AROMA_SUBCATS, fn: aromaSubcat }
-};
-function gruposDe(catId, all){
-  const prods = all.filter(p => p.cat === catId);
-  const cfg = SUBSECCIONES[catId];
-  if(!cfg) return prods.length ? [{ title:'', products:prods }] : [];
-  return cfg.lista
-    .map(sc => ({ title:sc.title, products:prods.filter(p => cfg.fn(p) === sc.key) }))
-    .filter(g => g.products.length > 0);
-}
-
 class Component extends DCLogic {
-  state = { filter: 'all' };
+  state = (function(){
+    var p = new URLSearchParams((typeof location!=='undefined' && location.search) || '');
+    return { cat: p.get('cat')||'', sub: p.get('sub')||'all', q: (p.get('q')||'').trim(), sort: 'novedades' };
+  })();
 
   componentDidMount(){
-    const h=(window.location.hash||'').replace('#','');
-    const cats=(window.INNOV_CATS||[]).map(c=>c.id);
-    if(h && cats.indexOf(h)>=0) this.setState({ filter:h });
+    // site-config.js puede llegar por el helmet; si no está, reintentamos.
+    if(!window.INNOV_CATMAP){ if((this._t=(this._t||0)+1)<100){ setTimeout(()=>this.componentDidMount(),40); } return; }
     if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
-    this.syncFilter();
+    this.paintCrumbs(); this.syncChips();
+    this.forceUpdate();
   }
-  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); this.syncFilter(); }
+  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); this.paintCrumbs(); this.syncChips(); }
 
-  syncFilter(){
-    document.querySelectorAll('.filt').forEach(b=>{
-      const on=b.getAttribute('data-cat')===this.state.filter;
-      b.style.background=on?'#4B3621':'transparent';
-      b.style.color=on?'#fff':'#7A6754';
-      b.style.borderColor=on?'#4B3621':'rgba(75,54,33,.28)';
-    });
+  esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  catDef(){ return (window.INNOV_TAX||[]).filter(c=>c.slug===this.state.cat)[0]||null; }
+
+  updateUrl(patch){
+    var p=new URLSearchParams(location.search||'');
+    Object.keys(patch).forEach(function(k){ var v=patch[k]; if(v && v!=='all') p.set(k,v); else p.delete(k); });
+    var qs=p.toString();
+    history.replaceState(null,'',location.pathname+(qs?('?'+qs):''));
   }
 
-  setFilter=(e)=>{ this.setState({ filter:e.currentTarget.getAttribute('data-cat') }); }
+  setSub=(e)=>{ var sub=e.currentTarget.getAttribute('data-sub'); this.updateUrl({sub:sub}); this.setState({sub:sub}); }
+  setSort=(e)=>{ this.setState({sort:e.currentTarget.getAttribute('data-sort')}); }
+
+  syncChips(){
+    document.querySelectorAll('.chip').forEach(b=>{ b.classList.toggle('on', b.getAttribute('data-sub')===this.state.sub); });
+    document.querySelectorAll('.sortb').forEach(b=>{ b.classList.toggle('on', b.getAttribute('data-sort')===this.state.sort); });
+  }
+
+  paintCrumbs(){
+    var el=document.querySelector('[data-crumbs]'); if(!el) return;
+    var st=this.state, cd=this.catDef(), sep='<span class="sep">/</span>';
+    var parts=['<a href="index.html">Inicio</a>'];
+    if(st.q){
+      parts.push(sep+'<a href="catalogo.dc.html">Tienda</a>', sep+'<span class="cur">Búsqueda</span>');
+    } else if(cd){
+      parts.push(sep+'<a href="catalogo.dc.html">Tienda</a>');
+      if(st.sub && st.sub!=='all'){
+        parts.push(sep+'<a href="catalogo.dc.html?cat='+this.esc(cd.slug)+'">'+this.esc(cd.name)+'</a>');
+        var sd=(cd.subs||[]).filter(s=>s.slug===st.sub)[0];
+        parts.push(sep+'<span class="cur">'+this.esc(sd?sd.name:st.sub)+'</span>');
+      } else {
+        parts.push(sep+'<span class="cur">'+this.esc(cd.name)+'</span>');
+      }
+    } else {
+      parts.push(sep+'<span class="cur">Tienda</span>');
+    }
+    el.innerHTML=parts.join('');
+  }
+
+  sortList(list){
+    var a=list.slice();
+    if(this.state.sort==='nombre') a.sort((x,y)=>String(x.name||'').localeCompare(String(y.name||''),'es'));
+    return a; // 'novedades' = orden de la base (orden)
+  }
 
   addToCart=(e)=>{
-    const b=e.currentTarget;
+    var b=e.currentTarget;
     if(window.InnovCart){ InnovCart.add(b.getAttribute('data-id'), b.getAttribute('data-name'), b.getAttribute('data-img')); InnovCart.openCart(); }
   }
 
   renderVals(){
-    // Solo productos de la línea decorativa (los insumos viven en su propia página).
-    const all=(window.INNOV_PRODUCTS||[]).filter(p=>(p.linea||'decor')==='decor');
-    const cats=(window.INNOV_CATS||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
-    const f=this.state.filter;
-    let groups=[];
-    if(f==='all'){
-      // Todas las categorías activas, cada una con sus sub-secciones (o plana).
-      cats.forEach(c=>{
-        const g=gruposDe(c.id, all);
-        // Las categorías planas (sin sub-secciones) llevan su nombre como título.
-        if(!SUBSECCIONES[c.id] && g.length) g[0].title=c.name;
-        groups=groups.concat(g);
-      });
-    } else {
-      groups=gruposDe(f, all);
+    var H={ setSub:this.setSub, setSort:this.setSort, addToCart:this.addToCart };
+    var catmap=window.INNOV_CATMAP, tax=window.INNOV_TAX||[];
+    if(!catmap){ return Object.assign({ hasBanner:false, plainHeader:true, title:'Tienda', subtitle:'', subchips:[], groups:[], empty:false }, H); }
+    var all=(window.INNOV_PRODUCTS||[]).filter(p=>(p.linea||'decor')==='decor');
+    var st=this.state, cd=this.catDef();
+
+    // --- Búsqueda ---
+    if(st.q){
+      var q=st.q.toLowerCase();
+      var res=this.sortList(all.filter(p=>((p.name||'')+' '+(p.sub||'')).toLowerCase().indexOf(q)>=0));
+      return Object.assign({ hasBanner:false, plainHeader:true, title:'Resultados', subtitle:'“'+st.q+'” · '+res.length+' producto'+(res.length===1?'':'s'),
+        subchips:[], groups:[{ title:'', products:res }], empty:res.length===0 }, H);
     }
-    const total=groups.reduce((n,g)=>n+g.products.length,0);
-    return { cats, groups, empty:total===0, setFilter:this.setFilter, addToCart:this.addToCart };
+
+    // --- Categoría ---
+    if(cd && catmap[cd.slug]){
+      var m=catmap[cd.slug];
+      var prods=all.filter(p=>m.dbcats.indexOf(p.cat)>=0);
+      if(st.sub && st.sub!=='all') prods=prods.filter(p=>m.sub(p)===st.sub);
+      prods=this.sortList(prods);
+      var chips=[{slug:'all',name:'Todo'}].concat(cd.subs||[]);
+      return Object.assign({ hasBanner:true, plainHeader:false, bannerImg:m.img, title:cd.name, subtitle:cd.desc||'',
+        subchips:chips, groups:[{ title:'', products:prods }], empty:prods.length===0 }, H);
+    }
+
+    // --- Tienda (todo): agrupado por categoría nueva ---
+    var groups=[];
+    tax.forEach(function(c){
+      var mm=catmap[c.slug]; if(!mm || !mm.dbcats.length) return;
+      var ps=all.filter(p=>mm.dbcats.indexOf(p.cat)>=0);
+      if(ps.length) groups.push({ title:c.name, href:'catalogo.dc.html?cat='+c.slug, more:'Ver categoría →', products:ps.slice(0,8) });
+    });
+    var total=groups.reduce((n,g)=>n+g.products.length,0);
+    return Object.assign({ hasBanner:false, plainHeader:true, title:'Tienda', subtitle:'Explorá velas, aromas para el hogar, cerámicas y regalos — hechos a mano.',
+      subchips:[], groups:groups, empty:total===0 }, H);
   }
 }
 </script>

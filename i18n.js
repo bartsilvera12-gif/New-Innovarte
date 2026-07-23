@@ -21,6 +21,7 @@ window.InnovI18N = {
     ben4_t: "Personal care", ben4_p: "We guide you on WhatsApp from start to finish.",
     occ_bday: "Birthdays", occ_wed: "Weddings", occ_event: "Events", occ_corp: "Corporate", occ_dates: "Special dates",
     pers_wa: "Request a custom gift",
+    catpg_eye2: "Collection", sort_by: "Sort", sort_new: "Newest", sort_az: "Name A–Z", cat_empty_cta: "View full shop",
 
     hero_eye: "Artisan design for the home",
     hero_h1: "We inspire homes with<br>design, scent &amp; art", hero_h1b: "We inspire homes with design, scent and art",

@@ -62,3 +62,43 @@ window.INNOV_NAV_EXTRA = [
 window.INNOV_findCat = function (slug) {
   return (window.INNOV_TAX || []).filter(function (c) { return c.slug === slug; })[0] || null;
 };
+
+/* --- Mapeo de la taxonomía nueva a los productos que YA existen en la base ---
+   Cada categoría nueva se arma con una o más categorías reales de Supabase
+   (`dbcats`) y una función `sub(p)` que clasifica cada producto en una
+   subcategoría por su slug/subtítulo. Así el catálogo filtra por categoría y
+   subcategoría sin necesidad de renombrar nada en la base todavía.
+   `img` es la imagen del banner de la categoría.                            */
+window.INNOV_CATMAP = {
+  velas: {
+    dbcats: ['velas', 'bandeja-con-flores'],
+    img: 'uploads/velas-peonia.jpg',
+    sub: function (p) {
+      var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
+      if (/especial|edici[oó]n|limitad/.test(t)) return 'especiales';
+      if (/^velas-vidrio-|^velas-lata-|recipiente/.test(s)) return 'recipiente';
+      if (/^bouquet-|^bandeja-flores-|^iv-flores-bandeja$/.test(s)) return 'bouquets';
+      return 'decorativas';
+    }
+  },
+  aromas: {
+    dbcats: ['aromatizadores', 'difusores-para-autos'],
+    img: 'uploads/difusor-varillas-natural.jpg',
+    sub: function (p) {
+      var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
+      if (/^difusor-auto/.test(s)) return 'difusores-auto';
+      if (/^difusor-varillas-|^difusor-flor-tela-/.test(s)) return 'difusores-varillas';
+      if (/^aroma-hornillo-|hornito/.test(t)) return 'hornitos';
+      if (/^aroma-waxmelt-/.test(s)) return 'wax-melts';
+      if (/^aroma-homespray-set/.test(s)) return 'spray-textil';
+      if (/^aroma-homespray-/.test(s)) return 'home-spray';
+      if (/textil/.test(t)) return 'spray-textil';
+      if (/wax\s*melt/.test(t)) return 'wax-melts';
+      if (/el[eé]ctric/.test(t)) return 'difusores-electricos';
+      if (/varilla/.test(t)) return 'difusores-varillas';
+      return null;
+    }
+  },
+  ceramicas: { dbcats: [], img: 'uploads/difusor-varillas-ceramica-taupe.jpg', sub: function () { return null; } },
+  kits:      { dbcats: [], img: 'uploads/bandeja-flores-ovalada-rosa.jpg',    sub: function () { return null; } }
+};
