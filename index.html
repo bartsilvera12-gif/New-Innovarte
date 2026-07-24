@@ -38,6 +38,15 @@
   image-slot { --is-bg:#F7F1E6; }
   @keyframes riseIn { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
   @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  /* Carrusel de "Piezas destacadas": cinta con movimiento continuo. Se pausa al
+     pasar el mouse o al enfocar una card (para poder interactuar). */
+  .pd-carousel { overflow:hidden; -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3.5%,#000 96.5%,transparent 100%); mask-image:linear-gradient(90deg,transparent 0,#000 3.5%,#000 96.5%,transparent 100%); }
+  .pd-track { display:flex; width:max-content; animation:pd-marquee 38s linear infinite; }
+  .pd-carousel:hover .pd-track, .pd-carousel:focus-within .pd-track { animation-play-state:paused; }
+  .pd-track .prodcard { flex:0 0 300px; margin-right:26px; }
+  @keyframes pd-marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  @media (max-width:640px) { .pd-track .prodcard { flex:0 0 74%; margin-right:16px; } }
+  @media (prefers-reduced-motion:reduce) { .pd-track { animation:none; } }
   .mq { color:#4B3621; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:23px; padding-right:34px; white-space:nowrap; }
   @media (max-width:640px) { .mq { font-size:19px; padding-right:24px; } }
   .rise1 { animation:riseIn 1s cubic-bezier(.22,.61,.36,1) .15s both; }
@@ -220,30 +229,56 @@
       </div>
       <a href="catalogo.dc.html" style="color:#7A6754; font-size:12px; letter-spacing:.18em; text-transform:uppercase; border-bottom:1px solid rgba(200,169,106,.4); padding-bottom:4px;" data-i18n="see_all">Ver toda la tienda</a>
     </div>
-    <div data-reveal class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:30px 26px;">
-      <div class="prodcard" style="display:flex; flex-direction:column;">
-        <button type="button" class="pm" onClick="{{ openDetail }}" data-id="deco-ramo-rosas" data-name="Vela Ramo de Rosas" data-img="uploads/bouquet-rosas-vela.jpg" data-cat="velas" aria-label="Ver detalle de Vela Ramo de Rosas" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/bouquet-rosas-vela.jpg" alt="Vela Ramo de Rosas" style="width:100%; height:100%; object-fit:cover;"></button>
-        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Vela Ramo de Rosas</div>
-        <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Velas</div>
-        <button class="addbtn" data-id="deco-ramo-rosas" data-name="Vela Ramo de Rosas" data-img="uploads/bouquet-rosas-vela.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
-      </div>
-      <div class="prodcard" style="display:flex; flex-direction:column;">
-        <button type="button" class="pm" onClick="{{ openDetail }}" data-id="velas-peonia" data-name="Vela Peonía" data-img="uploads/souvenir-peonia.jpg" data-cat="velas" aria-label="Ver detalle de Vela Peonía" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/souvenir-peonia.jpg" alt="Vela Peonía" style="width:100%; height:100%; object-fit:cover;"></button>
-        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Vela Peonía</div>
-        <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Velas</div>
-        <button class="addbtn" data-id="velas-peonia" data-name="Vela Peonía" data-img="uploads/souvenir-peonia.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
-      </div>
-      <div class="prodcard" style="display:flex; flex-direction:column;">
-        <button type="button" class="pm" onClick="{{ openDetail }}" data-id="deco-jirafa" data-name="Souvenir Animalitos" data-img="uploads/souvenir-animalitos.jpg" data-cat="velas" aria-label="Ver detalle de Souvenir Animalitos" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/souvenir-animalitos.jpg" alt="Souvenir Animalitos" style="width:100%; height:100%; object-fit:cover;"></button>
-        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Souvenir Animalitos</div>
-        <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Souvenir</div>
-        <button class="addbtn" data-id="deco-jirafa" data-name="Souvenir Animalitos" data-img="uploads/souvenir-animalitos.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
-      </div>
-      <div class="prodcard" style="display:flex; flex-direction:column;">
-        <button type="button" class="pm" onClick="{{ openDetail }}" data-id="difusor-varillas-natural" data-name="Difusor de Varillas Naturales" data-img="uploads/difusor-varillas-natural.jpg" data-cat="aromas" aria-label="Ver detalle de Difusor de Varillas Naturales" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/difusor-varillas-natural.jpg" alt="Difusor de Varillas Naturales" style="width:100%; height:100%; object-fit:cover;"></button>
-        <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Difusor de Varillas Naturales</div>
-        <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Aromas para el Hogar</div>
-        <button class="addbtn" data-id="difusor-varillas-natural" data-name="Difusor de Varillas Naturales" data-img="uploads/difusor-varillas-natural.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+    <div data-reveal class="pd-carousel" aria-label="Carrusel de piezas destacadas">
+      <div class="pd-track">
+        <div class="prodcard" style="display:flex; flex-direction:column;">
+          <button type="button" class="pm" onClick="{{ openDetail }}" data-id="deco-ramo-rosas" data-name="Vela Ramo de Rosas" data-img="uploads/bouquet-rosas-vela.jpg" data-cat="velas" aria-label="Ver detalle de Vela Ramo de Rosas" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/bouquet-rosas-vela.jpg" alt="Vela Ramo de Rosas" style="width:100%; height:100%; object-fit:cover;"></button>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Vela Ramo de Rosas</div>
+          <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Velas</div>
+          <button class="addbtn" data-id="deco-ramo-rosas" data-name="Vela Ramo de Rosas" data-img="uploads/bouquet-rosas-vela.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+        </div>
+        <div class="prodcard" style="display:flex; flex-direction:column;">
+          <button type="button" class="pm" onClick="{{ openDetail }}" data-id="velas-peonia" data-name="Vela Peonía" data-img="uploads/souvenir-peonia.jpg" data-cat="velas" aria-label="Ver detalle de Vela Peonía" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/souvenir-peonia.jpg" alt="Vela Peonía" style="width:100%; height:100%; object-fit:cover;"></button>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Vela Peonía</div>
+          <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Velas</div>
+          <button class="addbtn" data-id="velas-peonia" data-name="Vela Peonía" data-img="uploads/souvenir-peonia.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+        </div>
+        <div class="prodcard" style="display:flex; flex-direction:column;">
+          <button type="button" class="pm" onClick="{{ openDetail }}" data-id="deco-jirafa" data-name="Souvenir Animalitos" data-img="uploads/souvenir-animalitos.jpg" data-cat="velas" aria-label="Ver detalle de Souvenir Animalitos" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/souvenir-animalitos.jpg" alt="Souvenir Animalitos" style="width:100%; height:100%; object-fit:cover;"></button>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Souvenir Animalitos</div>
+          <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Souvenir</div>
+          <button class="addbtn" data-id="deco-jirafa" data-name="Souvenir Animalitos" data-img="uploads/souvenir-animalitos.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+        </div>
+        <div class="prodcard" style="display:flex; flex-direction:column;">
+          <button type="button" class="pm" onClick="{{ openDetail }}" data-id="difusor-varillas-natural" data-name="Difusor de Varillas Naturales" data-img="uploads/difusor-varillas-natural.jpg" data-cat="aromas" aria-label="Ver detalle de Difusor de Varillas Naturales" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/difusor-varillas-natural.jpg" alt="Difusor de Varillas Naturales" style="width:100%; height:100%; object-fit:cover;"></button>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Difusor de Varillas Naturales</div>
+          <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Aromas para el Hogar</div>
+          <button class="addbtn" data-id="difusor-varillas-natural" data-name="Difusor de Varillas Naturales" data-img="uploads/difusor-varillas-natural.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+        </div>
+        <div class="prodcard" aria-hidden="true" style="display:flex; flex-direction:column;">
+          <button type="button" class="pm" onClick="{{ openDetail }}" data-id="deco-ramo-rosas" data-name="Vela Ramo de Rosas" data-img="uploads/bouquet-rosas-vela.jpg" data-cat="velas" aria-label="Ver detalle de Vela Ramo de Rosas" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/bouquet-rosas-vela.jpg" alt="Vela Ramo de Rosas" style="width:100%; height:100%; object-fit:cover;"></button>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Vela Ramo de Rosas</div>
+          <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Velas</div>
+          <button class="addbtn" data-id="deco-ramo-rosas" data-name="Vela Ramo de Rosas" data-img="uploads/bouquet-rosas-vela.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+        </div>
+        <div class="prodcard" aria-hidden="true" style="display:flex; flex-direction:column;">
+          <button type="button" class="pm" onClick="{{ openDetail }}" data-id="velas-peonia" data-name="Vela Peonía" data-img="uploads/souvenir-peonia.jpg" data-cat="velas" aria-label="Ver detalle de Vela Peonía" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/souvenir-peonia.jpg" alt="Vela Peonía" style="width:100%; height:100%; object-fit:cover;"></button>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Vela Peonía</div>
+          <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Velas</div>
+          <button class="addbtn" data-id="velas-peonia" data-name="Vela Peonía" data-img="uploads/souvenir-peonia.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+        </div>
+        <div class="prodcard" aria-hidden="true" style="display:flex; flex-direction:column;">
+          <button type="button" class="pm" onClick="{{ openDetail }}" data-id="deco-jirafa" data-name="Souvenir Animalitos" data-img="uploads/souvenir-animalitos.jpg" data-cat="velas" aria-label="Ver detalle de Souvenir Animalitos" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/souvenir-animalitos.jpg" alt="Souvenir Animalitos" style="width:100%; height:100%; object-fit:cover;"></button>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Souvenir Animalitos</div>
+          <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Souvenir</div>
+          <button class="addbtn" data-id="deco-jirafa" data-name="Souvenir Animalitos" data-img="uploads/souvenir-animalitos.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+        </div>
+        <div class="prodcard" aria-hidden="true" style="display:flex; flex-direction:column;">
+          <button type="button" class="pm" onClick="{{ openDetail }}" data-id="difusor-varillas-natural" data-name="Difusor de Varillas Naturales" data-img="uploads/difusor-varillas-natural.jpg" data-cat="aromas" aria-label="Ver detalle de Difusor de Varillas Naturales" style="aspect-ratio:1; overflow:hidden; border-radius:4px; background:#F7F1E6; border:none; padding:0; width:100%; display:block; cursor:pointer;"><img src="uploads/difusor-varillas-natural.jpg" alt="Difusor de Varillas Naturales" style="width:100%; height:100%; object-fit:cover;"></button>
+          <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px;">Difusor de Varillas Naturales</div>
+          <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">Aromas para el Hogar</div>
+          <button class="addbtn" data-id="difusor-varillas-natural" data-name="Difusor de Varillas Naturales" data-img="uploads/difusor-varillas-natural.jpg" onClick="{{ addToCart }}" style="margin-top:14px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="add">Añadir</button>
+        </div>
       </div>
     </div>
   </section>
