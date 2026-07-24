@@ -165,7 +165,18 @@ class Component extends DCLogic {
     this.paintCrumbs(); this.syncChips();
     this.forceUpdate();
   }
-  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); this.paintCrumbs(); this.syncChips(); }
+  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); this.paintCrumbs(); this.syncChips(); this.setupBannerVideo(); }
+
+  /* El runtime DC descarta los atributos booleanos sin valor (muted/loop/
+     autoplay), así que los forzamos por propiedad. muted debe ir ANTES de
+     play() para que el navegador permita el autoplay. */
+  setupBannerVideo(){
+    var v = document.querySelector('.cat-banner-box video');
+    if(!v || v._innovSet) return;
+    v._innovSet = true;
+    v.muted = true; v.loop = true; v.playsInline = true; v.setAttribute('playsinline','');
+    var pr = v.play(); if(pr && pr.catch) pr.catch(function(){});
+  }
 
   esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   catDef(){ return (window.INNOV_TAX||[]).filter(c=>c.slug===this.state.cat)[0]||null; }
