@@ -71,6 +71,9 @@
   @media (prefers-reduced-motion: reduce) { .search-bar { transition:none !important; } }
 
   /* --- Barra fija que se achica al desplazar --- */
+  /* Evita que el scroll-anchoring del navegador reajuste el scroll cuando la
+     barra cambia de altura al encoger — eso realimentaba el parpadeo. */
+  html { overflow-anchor:none; }
   .innav-host { position:sticky; top:0; z-index:60; }
   .nav-inner { transition:padding-top .3s cubic-bezier(.22,.61,.36,1), padding-bottom .3s cubic-bezier(.22,.61,.36,1); }
   .innav nav { transition:box-shadow .35s ease; }
@@ -258,7 +261,14 @@ class Component extends DCLogic {
     this._shrunk=false;
     this._onNavScroll=()=>{
       const y=window.scrollY||document.documentElement.scrollTop||0;
-      const s=y>50;
+      // Histéresis: encoge al pasar 160px y expande al bajar de 40px. La zona
+      // muerta (120px) es MAYOR que el salto de altura que produce colapsar la
+      // barra de anuncio (~80px), así el propio "encoger" no vuelve a cruzar el
+      // umbral en sentido inverso. Sin esto (umbral único en 50) el
+      // scroll-anchoring re-cruzaba el umbral y la barra parpadeaba cerca del tope.
+      let s=this._shrunk;
+      if(!s && y>160) s=true;
+      else if(s && y<40) s=false;
       if(s!==this._shrunk){ this._shrunk=s; const n=document.querySelector('.innav'); if(n) n.classList.toggle('nav-shrink', s); }
     };
     window.addEventListener('scroll', this._onNavScroll, { passive:true });
