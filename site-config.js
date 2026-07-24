@@ -64,6 +64,17 @@ window.INNOV_findCat = function (slug) {
   return (window.INNOV_TAX || []).filter(function (c) { return c.slug === slug; })[0] || null;
 };
 
+/* Devuelve la sección de INNOV_TAX cuya `dbcats` incluye ese slug de categoría de
+   la base — sirve para poblar el selector de sub-sección en el panel admin. */
+window.INNOV_seccionDeCat = function (catSlug) {
+  var tax = window.INNOV_TAX || [], map = window.INNOV_CATMAP || {};
+  for (var i = 0; i < tax.length; i++) {
+    var m = map[tax[i].slug];
+    if (m && (m.dbcats || []).indexOf(catSlug) >= 0) return tax[i];
+  }
+  return null;
+};
+
 /* --- Mapeo de la taxonomía nueva a los productos que YA existen en la base ---
    Cada categoría nueva se arma con una o más categorías reales de Supabase
    (`dbcats`) y una función `sub(p)` que clasifica cada producto en una
@@ -76,6 +87,7 @@ window.INNOV_CATMAP = {
     img: 'uploads/velas-peonia.jpg',
     video: 'uploads/portada-velas-animada.mp4',   // banner animado (autoplay/loop); img queda de fallback
     sub: function (p) {
+      if (p && p.subcat) return p.subcat;   // sub-sección elegida en el panel manda
       var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
       if (/especial|edici[oó]n|limitad/.test(t)) return 'especiales';
       if (/souvenir|baby/.test(t)) return 'souvenir';
@@ -88,6 +100,7 @@ window.INNOV_CATMAP = {
     dbcats: ['aromatizadores'],
     img: 'uploads/difusor-varillas-natural.jpg',
     sub: function (p) {
+      if (p && p.subcat) return p.subcat;   // sub-sección elegida en el panel manda
       var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
       if (/^difusor-auto/.test(s)) return 'difusores-auto';
       if (/^difusor-varillas-|^difusor-flor-tela-/.test(s)) return 'difusores-varillas';
@@ -106,6 +119,7 @@ window.INNOV_CATMAP = {
     dbcats: ['ceramica'],
     img: 'uploads/difusor-varillas-ceramica-taupe.jpg',
     sub: function (p) {
+      if (p && p.subcat) return p.subcat;   // sub-sección elegida en el panel manda
       var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
       if (/bandeja/.test(t)) return 'bandejas';
       if (/cuenco|bowl/.test(t)) return 'cuencos';
@@ -118,6 +132,7 @@ window.INNOV_CATMAP = {
     dbcats: ['kits'],
     img: 'uploads/bandeja-flores-ovalada-rosa.jpg',
     sub: function (p) {
+      if (p && p.subcat) return p.subcat;   // sub-sección elegida en el panel manda
       var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
       if (/cer[aá]mica/.test(t)) return 'kits-ceramica';
       if (/aroma|difusor|spray/.test(t)) return 'kits-aromas';

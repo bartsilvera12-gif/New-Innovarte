@@ -70,7 +70,7 @@
         return { id: p.slug, slug: p.slug, name: p.nombre,
                  cat: (porId[p.categoria_id] || {}).slug || '',
                  sub: p.subtitulo, img: p.imagen, linea: p.linea || 'decor',
-                 desc: p.descripcion || '', precio: p.precio };
+                 subcat: p.subcat || '', desc: p.descripcion || '', precio: p.precio };
       }),
       content: {
         hero: conf.hero || {},

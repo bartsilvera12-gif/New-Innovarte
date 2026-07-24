@@ -266,6 +266,7 @@
 <script src="supabase-config.js?v=2"></script>
 <script src="products.js?v=2"></script>
 <script src="content.js?v=2"></script>
+<script src="site-config.js?v=6"></script>
 <script>
 (function(){
   'use strict';
@@ -297,10 +298,10 @@
     orden:c.order||0, activa:c.active!==false, destacada:!!c.featured }; }
 
   function prodDeBD(r, porId){ return { id:r.id, slug:r.slug, name:r.nombre,
-    cat:(porId[r.categoria_id]||{}).slug||'', sub:r.subtitulo, img:r.imagen,
+    cat:(porId[r.categoria_id]||{}).slug||'', sub:r.subtitulo, subcat:r.subcat||'', img:r.imagen,
     linea:r.linea, order:r.orden }; }
   function prodABD(p, porSlug){ return { slug:p.slug||p.id, nombre:p.name,
-    categoria_id:(porSlug[p.cat]||{}).id||null, subtitulo:p.sub||null,
+    categoria_id:(porSlug[p.cat]||{}).id||null, subtitulo:p.sub||null, subcat:p.subcat||null,
     imagen:p.img||null, linea:p.linea||'decor', orden:p.order||0 }; }
 
   /* --- Cargar todo desde Supabase --- */
@@ -584,8 +585,16 @@
       }).join('')+'</tbody></table>';
   }
 
+  /* Llena el desplegable de sub-sección según la categoría elegida (desde INNOV_TAX). */
+  function pintarSubcat(catSlug, selected){
+    var sel=$('#p-subcat'); if(!sel) return;
+    var sec = window.INNOV_seccionDeCat ? INNOV_seccionDeCat(catSlug) : null;
+    var subs = (sec && sec.subs) || [];
+    sel.innerHTML = '<option value="">Automática (según subtítulo)</option>' +
+      subs.map(function(s){ return '<option value="'+esc(s.slug)+'"'+(s.slug===selected?' selected':'')+'>'+esc(s.name)+'</option>'; }).join('');
+  }
   function formProd(p){
-    var nuevo=!p; p=p||{id:'',name:'',cat:(S.cats[0]||{}).id||'',sub:'',img:'',linea:'decor'};
+    var nuevo=!p; p=p||{id:'',name:'',cat:(S.cats[0]||{}).id||'',sub:'',subcat:'',img:'',linea:'decor'};
     abrirModal(nuevo?'Nuevo producto':'Editar producto',
       '<div class="campo"><label for="p-name">Nombre *</label><input type="text" id="p-name" value="'+esc(p.name)+'" required></div>'+
       '<div class="fila">'+
@@ -596,6 +605,7 @@
           '<option value="decor" '+((p.linea||'decor')==='decor'?'selected':'')+'>Decoración (tienda)</option>'+
           '<option value="insumos" '+(p.linea==='insumos'?'selected':'')+'>Insumos</option>'+
         '</select></div></div>'+
+      '<div class="campo"><label for="p-subcat">Sub-sección</label><select id="p-subcat"></select><div class="ayuda">Dónde aparece dentro de la categoría (en la tienda). "Automática" la deduce del subtítulo o el nombre.</div></div>'+
       '<div class="campo"><label for="p-sub">Subtítulo</label><input type="text" id="p-sub" value="'+esc(p.sub||'')+'" placeholder="Ej. Colección Floral"></div>'+
       '<div class="campo"><label for="p-img">Imagen *</label>'+
         '<input type="text" id="p-img" value="'+esc(p.img||'')+'" placeholder="Subí un archivo o pegá una dirección">'+
@@ -611,6 +621,7 @@
         while(nuevo && S.products.some(function(x){return x.slug===slug;})){ slug=base+'-'+(k++); }
         var porSlug={}; S.cats.forEach(function(c){ porSlug[c.slug]=c; });
         var fila=prodABD({ slug:slug, name:name, cat:$('#p-cat').value, sub:$('#p-sub').value.trim(),
+                           subcat:($('#p-subcat')?$('#p-subcat').value:''),
                            img:img, linea:$('#p-linea').value, order:p.order||0 }, porSlug);
         var r = nuevo ? await sb.from('productos').insert(fila)
                       : await sb.from('productos').update(fila).eq('id',p.id);
@@ -618,7 +629,11 @@
         await cargarDatos(); pintarTodo();
         aviso(nuevo?'Producto creado':'Producto actualizado'); return true;
       },
-      function(){ campoImagen('#p-img','#p-file','#p-prev','#p-estado'); });
+      function(){
+        campoImagen('#p-img','#p-file','#p-prev','#p-estado');
+        pintarSubcat($('#p-cat').value, p.subcat||'');
+        $('#p-cat').addEventListener('change', function(){ pintarSubcat(this.value, ''); });
+      });
   }
 
   $('#btn-nuevo-prod').addEventListener('click',function(){ if(!S.cats.length){aviso('Creá una categoría primero',true);return;} formProd(null); });
