@@ -10,7 +10,7 @@
 <meta property="og:description" content="Velas, aromas para el hogar, cerámicas decorativas y regalos, hechos a mano.">
 <meta property="og:type" content="website">
 <script src="supabase-config.js?v=2"></script>
-<script src="datos-remotos.js?v=2"></script>
+<script src="datos-remotos.js?v=3"></script>
 </head>
 <body>
 <x-dc>
@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="responsive.css">
 <script src="site-config.js?v=4"></script>
 <script src="cart-store.js?v=2"></script>
+<script src="product-modal.js?v=1"></script>
 <script src="i18n.js?v=2"></script>
 <script src="products.js?v=2"></script>
 <script src="content.js?v=2"></script>
@@ -137,8 +138,8 @@
         <div class="rr-g4" style="display:grid; grid-template-columns:repeat(4,1fr); gap:36px 26px;">
           <sc-for list="{{ g.products }}" as="p" hint-placeholder-count="8">
             <div class="prodcard" style="display:flex; flex-direction:column;">
-              <div class="pm" style="aspect-ratio:1; overflow:hidden; background:#F7F1E6;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></div>
-              <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:15px; color:#4B3621;">{{ p.name }}</div>
+              <button type="button" class="pm" onClick="{{ openDetail }}" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" data-sub="{{ p.sub }}" data-desc="{{ p.desc }}" data-precio="{{ p.precio }}" data-cat="{{ p.cat }}" aria-label="Ver detalle de {{ p.name }}" style="aspect-ratio:1; overflow:hidden; background:#F7F1E6; border:none; padding:0; margin:0; width:100%; display:block; cursor:pointer;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></button>
+              <button type="button" onClick="{{ openDetail }}" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" data-sub="{{ p.sub }}" data-desc="{{ p.desc }}" data-precio="{{ p.precio }}" data-cat="{{ p.cat }}" style="text-align:left; background:none; border:none; padding:0; margin:15px 0 0; cursor:pointer; font-family:'Cormorant Garamond',serif; font-size:22px; color:#4B3621;">{{ p.name }}</button>
               <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">{{ p.sub }}</div>
               <button class="addbtn" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" onClick="{{ addToCart }}" style="margin-top:14px; background:#FFFDF7; border:1px solid rgba(200,169,106,.35); color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:40px;" data-i18n="add">Añadir</button>
             </div>
@@ -245,8 +246,17 @@ class Component extends DCLogic {
     if(window.InnovCart){ InnovCart.add(b.getAttribute('data-id'), b.getAttribute('data-name'), b.getAttribute('data-img')); InnovCart.openCart(); }
   }
 
+  openDetail=(e)=>{
+    var b=e.currentTarget;
+    if(window.InnovProductModal) InnovProductModal.open({
+      id:b.getAttribute('data-id'), name:b.getAttribute('data-name'), img:b.getAttribute('data-img'),
+      sub:b.getAttribute('data-sub'), desc:b.getAttribute('data-desc'),
+      precio:b.getAttribute('data-precio'), cat:b.getAttribute('data-cat')
+    });
+  }
+
   renderVals(){
-    var H={ setSub:this.setSub, setSort:this.setSort, addToCart:this.addToCart };
+    var H={ setSub:this.setSub, setSort:this.setSort, addToCart:this.addToCart, openDetail:this.openDetail };
     var catmap=window.INNOV_CATMAP, tax=window.INNOV_TAX||[];
     if(!catmap){ return Object.assign({ hasBanner:false, plainHeader:true, title:'Tienda', subtitle:'', subchips:[], groups:[], empty:false }, H); }
     var all=(window.INNOV_PRODUCTS||[]).filter(p=>(p.linea||'decor')==='decor');
