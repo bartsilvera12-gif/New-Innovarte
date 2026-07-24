@@ -216,10 +216,18 @@
       <div id="coleccion-campos"></div>
     </div>
 
-    <div class="card">
+    <div class="card" style="margin-bottom:20px">
       <h3 style="font-size:22px;margin-bottom:14px">Página de Insumos</h3>
       <div class="check"><input type="checkbox" id="ins-pub"><label for="ins-pub">Publicar insumos (si está desmarcado se muestra “Próximamente”)</label></div>
       <div class="campo"><label for="ins-msg">Mensaje de “Próximamente”</label><textarea id="ins-msg"></textarea></div>
+    </div>
+
+    <div class="card">
+      <h3 style="font-size:22px;margin-bottom:4px">Aromas de aromatizadores</h3>
+      <p class="ayuda" style="margin-bottom:16px">Aparecen en el modal de detalle de los productos de <b>Aromas para el Hogar</b>. Escribí <b>un aroma por línea</b>. Como pueden cambiar por temporada, editá esta lista cuando quieras.</p>
+      <div class="campo"><label for="ar-items">Lista de aromas (uno por línea)</label><textarea id="ar-items" style="min-height:190px" placeholder="Sándalo&#10;Vainilla&#10;Peonía…"></textarea></div>
+      <div class="campo"><label for="ar-nota">Nota de temporada (aparece debajo de los aromas)</label><input type="text" id="ar-nota" placeholder="Los aromas disponibles pueden variar según la temporada."></div>
+      <div class="ayuda">Se guarda solo al terminar de escribir.</div>
     </div>
   </section>
 
@@ -343,6 +351,7 @@
     S.content = {
       hero: conf.hero||{}, insumos: conf.insumos||{publicado:false,mensaje:''},
       subsecciones: conf.subsecciones||null,
+      aromas: conf.aromas||null,
       textos: textos, colecciones: [],
       coleccion: (ch.data||[]).map(function(r){ return { id:r.clave, title:r.titulo,
         subtitle:r.subtitulo, video:r.video, videoMobile:r.video_movil, poster:r.poster,
@@ -984,6 +993,9 @@
     $('#prev-hero').innerHTML=h.poster?'<img src="'+esc(h.poster)+'" alt="" style="max-height:150px;border-radius:9px;border:1px solid var(--borde)">':'';
     var ins=S.content.insumos||(S.content.insumos={publicado:false,mensaje:''});
     $('#ins-pub').checked=!!ins.publicado; $('#ins-msg').value=ins.mensaje||'';
+    var ar=S.content.aromas||{items:[],nota:''};
+    if($('#ar-items')) $('#ar-items').value=(ar.items||[]).join('\n');
+    if($('#ar-nota')) $('#ar-nota').value=ar.nota||'';
 
     $('#coleccion-campos').innerHTML=(S.content.coleccion||[]).map(function(c,i){
       return '<div style="border-top:1px solid var(--borde);padding-top:16px;margin-top:16px">'+
@@ -1015,8 +1027,21 @@
     else aviso('Contenido guardado');
   }
 
+  var tAromas=null;
+  function guardarAromasDiferido(){ clearTimeout(tAromas); tAromas=setTimeout(guardarAromas,900); }
+  async function guardarAromas(){
+    var items=($('#ar-items').value||'').split('\n').map(function(s){return s.trim();}).filter(Boolean);
+    var nota=($('#ar-nota').value||'').trim();
+    var valor={ items:items, nota:nota };
+    S.content.aromas=valor;
+    var r=await sb.from('configuracion').upsert([{ clave:'aromas', valor:valor }],{onConflict:'clave'});
+    if(r.error) aviso('No se pudieron guardar los aromas: '+r.error.message, true);
+    else aviso('Aromas guardados');
+  }
+
   $('#v-contenido').addEventListener('input',function(e){
     var t=e.target;
+    if(t.id==='ar-items'||t.id==='ar-nota'){ guardarAromasDiferido(); return; }
     if(t.id==='h-vd')S.content.hero.videoDesktop=t.value.trim();
     if(t.id==='h-vm')S.content.hero.videoMobile=t.value.trim();
     if(t.id==='h-po')S.content.hero.poster=t.value.trim();

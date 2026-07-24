@@ -83,6 +83,7 @@
         insumos: conf.insumos || { publicado: false, mensaje: '' },
         cursos: conf.cursos || { publicado: false, mensaje: '' },
         subsecciones: conf.subsecciones || null,   // sub-secciones editables del panel
+        aromas: conf.aromas || null,               // aromas de aromatizadores (editables del panel)
         textos: { es: es, en: en },
         colecciones: [],
         coleccion: tarjetas.map(function (t) {

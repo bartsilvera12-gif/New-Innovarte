@@ -26,6 +26,11 @@
     '.ipm-desc{color:#5f5346;font-weight:300;font-size:15px;line-height:1.75;margin-top:18px;}' +
     '.ipm-price{font-family:"Cormorant Garamond",serif;font-size:28px;color:#4B3621;margin-top:18px;}' +
     '.ipm-note{color:#7A6754;font-weight:300;font-size:13.5px;line-height:1.6;margin-top:16px;font-style:italic;}' +
+    '.ipm-aromas{margin-top:22px;}' +
+    '.ipm-aromas-h{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#9C7A50;margin-bottom:11px;}' +
+    '.ipm-aromas-chips{display:flex;flex-wrap:wrap;gap:7px;}' +
+    '.ipm-chip{font-size:12px;color:#4B3621;background:#EFE7D8;border:1px solid rgba(200,169,106,.45);border-radius:30px;padding:5px 12px;}' +
+    '.ipm-aromas-nota{color:#7A6754;font-weight:300;font-size:12.5px;line-height:1.55;margin-top:12px;font-style:italic;}' +
     '.ipm-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:auto;padding-top:28px;}' +
     '.ipm-btn{flex:1 1 auto;min-width:150px;text-align:center;padding:15px 20px;font-family:"Jost",sans-serif;' +
     'font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:3px;' +
@@ -48,9 +53,10 @@
     ceramicas: 'Cerámicas Decorativas', ceramica: 'Cerámicas Decorativas', kits: 'Kits y Regalos'
   };
 
-  var overlay, elImg, elEye, elName, elSub, elDesc, elPrice, elNote, elAdd, elWa, lastFocus, cur;
+  var overlay, elImg, elEye, elName, elSub, elDesc, elPrice, elNote, elAromas, elAdd, elWa, lastFocus, cur;
 
   function el(html) { var d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
   function build() {
     var style = document.createElement('style'); style.textContent = CSS; document.head.appendChild(style);
@@ -66,6 +72,7 @@
       '    <p class="ipm-desc"></p>' +
       '    <div class="ipm-price"></div>' +
       '    <div class="ipm-note"></div>' +
+      '    <div class="ipm-aromas" style="display:none"></div>' +
       '    <div class="ipm-actions">' +
       '      <button type="button" class="ipm-btn ipm-btn-fill ipm-add">Añadir al carrito</button>' +
       '      <a class="ipm-btn ipm-btn-ghost ipm-wa" target="_blank" rel="noopener">Consultar por WhatsApp</a>' +
@@ -77,6 +84,7 @@
     elEye = overlay.querySelector('.ipm-eye'); elName = overlay.querySelector('.ipm-name');
     elSub = overlay.querySelector('.ipm-sub'); elDesc = overlay.querySelector('.ipm-desc');
     elPrice = overlay.querySelector('.ipm-price'); elNote = overlay.querySelector('.ipm-note');
+    elAromas = overlay.querySelector('.ipm-aromas');
     elAdd = overlay.querySelector('.ipm-add'); elWa = overlay.querySelector('.ipm-wa');
 
     overlay.querySelector('.ipm-close').addEventListener('click', close);
@@ -125,6 +133,22 @@
     var precio = fmtPrecio(cur.precio);
     set(elPrice, precio);
     set(elNote, precio ? '' : 'Consultá precio y disponibilidad por WhatsApp o agregando al carrito.');
+    // Aromas disponibles (solo aromatizadores). La lista es editable desde el panel
+    // y puede variar según la temporada; por eso se muestra la nota aclaratoria.
+    var ar = (window.INNOV_CONTENT && window.INNOV_CONTENT.aromas) || window.INNOV_AROMAS || null;
+    var esAroma = (cur.cat === 'aromatizadores' || cur.cat === 'aromas');
+    if (esAroma && ar && ar.items && ar.items.length) {
+      elAromas.innerHTML =
+        '<div class="ipm-aromas-h">Aromas disponibles</div>' +
+        '<div class="ipm-aromas-chips">' +
+          ar.items.map(function (a) { return '<span class="ipm-chip">' + esc(a) + '</span>'; }).join('') +
+        '</div>' +
+        (ar.nota ? '<div class="ipm-aromas-nota">' + esc(ar.nota) + '</div>' : '');
+      elAromas.style.display = '';
+    } else {
+      elAromas.style.display = 'none';
+      elAromas.innerHTML = '';
+    }
     elWa.href = waLink(cur.name);
     overlay.classList.add('on');
     document.documentElement.style.overflow = 'hidden';
