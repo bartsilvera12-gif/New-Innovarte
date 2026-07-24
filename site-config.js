@@ -25,6 +25,7 @@ window.INNOV_TAX = [
   { slug:'velas', name:'Velas', desc:'Velas artesanales de cera de soja.', subs:[
     { slug:'recipiente',  name:'Velas en recipiente' },
     { slug:'decorativas', name:'Velas decorativas' },
+    { slug:'souvenir',    name:'Souvenir' },
     { slug:'bouquets',    name:'Bouquets de velas' },
     { slug:'especiales',  name:'Ediciones especiales' }
   ]},
@@ -77,6 +78,7 @@ window.INNOV_CATMAP = {
     sub: function (p) {
       var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
       if (/especial|edici[oó]n|limitad/.test(t)) return 'especiales';
+      if (/souvenir|baby/.test(t)) return 'souvenir';
       if (/^velas-vidrio-|^velas-lata-|recipiente/.test(s)) return 'recipiente';
       if (/^bouquet-|^bandeja-flores-|^iv-flores-bandeja$/.test(s)) return 'bouquets';
       return 'decorativas';
