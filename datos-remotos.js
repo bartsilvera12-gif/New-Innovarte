@@ -33,6 +33,12 @@
     window.INNOV_CONTENT  = d.content;
     window.INNOV_REMOTO   = true;    // evita que products.js/content.js los pisen
 
+    // Sub-secciones editadas desde el panel (mapa { seccion:[{slug,name}] }).
+    // site-config.js las vuelca sobre INNOV_TAX. Dejamos la variable global y,
+    // si site-config ya cargó, aplicamos en el acto (cubre ambos órdenes de carga).
+    window.INNOV_SUBS_DB = (d.content && d.content.subsecciones) || null;
+    if (window.INNOV_SUBS_DB && window.INNOV_setSubs) window.INNOV_setSubs(window.INNOV_SUBS_DB);
+
     // Mismo ayudante que define content.js (colecciones vigentes según la fecha)
     window.INNOV_activeCollections = function () {
       var hoy = new Date(); hoy.setHours(0, 0, 0, 0);
@@ -76,6 +82,7 @@
         hero: conf.hero || {},
         insumos: conf.insumos || { publicado: false, mensaje: '' },
         cursos: conf.cursos || { publicado: false, mensaje: '' },
+        subsecciones: conf.subsecciones || null,   // sub-secciones editables del panel
         textos: { es: es, en: en },
         colecciones: [],
         coleccion: tarjetas.map(function (t) {

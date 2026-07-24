@@ -75,6 +75,25 @@ window.INNOV_seccionDeCat = function (catSlug) {
   return null;
 };
 
+/* --- Sub-secciones editables desde el panel -------------------------------
+   El panel de administración guarda las sub-secciones en la base
+   (`configuracion.subsecciones`) como un mapa { seccion: [{slug,name}, …] }.
+   `datos-remotos.js` lo deja en `window.INNOV_SUBS_DB` y esta función lo vuelca
+   sobre INNOV_TAX, para que el menú (SiteNav), el catálogo y el selector del
+   panel muestren siempre las sub-secciones vigentes. Si una sección no viene en
+   el mapa, conserva las de fábrica de arriba (red de seguridad).            */
+window.INNOV_setSubs = function (map) {
+  if (!map || typeof map !== 'object') return;
+  (window.INNOV_TAX || []).forEach(function (sec) {
+    var arr = map[sec.slug];
+    if (Array.isArray(arr)) {
+      sec.subs = arr
+        .filter(function (s) { return s && s.slug && s.name; })
+        .map(function (s) { return { slug: String(s.slug), name: String(s.name) }; });
+    }
+  });
+};
+
 /* --- Mapeo de la taxonomía nueva a los productos que YA existen en la base ---
    Cada categoría nueva se arma con una o más categorías reales de Supabase
    (`dbcats`) y una función `sub(p)` que clasifica cada producto en una
@@ -141,3 +160,8 @@ window.INNOV_CATMAP = {
     }
   }
 };
+
+/* Si los datos en vivo (datos-remotos.js) ya trajeron sub-secciones editadas
+   desde el panel, aplicarlas ahora sobre INNOV_TAX. (La otra vía: datos-remotos
+   llama a INNOV_setSubs en cuanto esta función existe.) */
+if (window.INNOV_SUBS_DB) window.INNOV_setSubs(window.INNOV_SUBS_DB);

@@ -118,6 +118,7 @@
   <nav id="nav">
     <button data-v="dashboard" aria-current="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</button>
     <button data-v="categorias"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h10"/></svg> Categorías</button>
+    <button data-v="subsecciones"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="4.5" cy="6" r="1.3"/><circle cx="4.5" cy="12" r="1.3"/><circle cx="4.5" cy="18" r="1.3"/><path d="M9 6h11M9 12h11M9 18h11" stroke-linecap="round"/></svg> Sub-secciones</button>
     <button data-v="productos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg> Productos</button>
     <button data-v="textos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h16M4 18h9"/><path d="M17 16v5M14.5 18.5h5" stroke-linecap="round"/></svg> Textos</button>
     <button data-v="historia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></svg> Historia</button>
@@ -149,6 +150,13 @@
       <button class="btn btn-p" id="btn-nueva-cat">+ Nueva categoría</button></div>
     <div class="banner">Una categoría <b>sin productos</b> se puede ocultar para que no se vea vacía en la tienda. Solo se puede eliminar si no tiene productos asociados.</div>
     <div id="tabla-cats"></div>
+  </section>
+
+  <!-- ============ SUB-SECCIONES ============ -->
+  <section class="vista" id="v-subsecciones">
+    <div class="top"><div><h1>Sub-secciones</h1><p>Las divisiones dentro de cada categoría. Aparecen en el menú desplegable y en los filtros de la tienda.</p></div></div>
+    <div class="banner">Creá, renombrá, reordená (↑ ↓) o eliminá sub-secciones. Después, en cada producto, elegís su sub-sección con el desplegable <b>“Sub-sección”</b>. <b>Los cambios se guardan solos.</b></div>
+    <div id="subsec-cont"></div>
   </section>
 
   <!-- ============ PRODUCTOS ============ -->
@@ -270,7 +278,7 @@
 <script src="supabase-config.js?v=2"></script>
 <script src="products.js?v=2"></script>
 <script src="content.js?v=2"></script>
-<script src="site-config.js?v=6"></script>
+<script src="site-config.js?v=7"></script>
 <script>
 (function(){
   'use strict';
@@ -328,8 +336,11 @@
     (ts.data||[]).forEach(function(t){ if(t.es!=null)textos.es[t.clave]=t.es; if(t.en!=null)textos.en[t.clave]=t.en; });
 
     var conf={}; (cfg.data||[]).forEach(function(r){ conf[r.clave]=r.valor||{}; });
+    // Sub-secciones editadas: volcarlas sobre INNOV_TAX para el selector y el administrador.
+    if(conf.subsecciones && window.INNOV_setSubs) INNOV_setSubs(conf.subsecciones);
     S.content = {
       hero: conf.hero||{}, insumos: conf.insumos||{publicado:false,mensaje:''},
+      subsecciones: conf.subsecciones||null,
       textos: textos, colecciones: [],
       coleccion: (ch.data||[]).map(function(r){ return { id:r.clave, title:r.titulo,
         subtitle:r.subtitulo, video:r.video, videoMobile:r.video_movil, poster:r.poster,
@@ -454,6 +465,7 @@
     [].forEach.call(document.querySelectorAll('.vista'),function(v){v.classList.remove('activa');});
     $('#v-'+b.dataset.v).classList.add('activa');
     if(b.dataset.v==='exportar') pintarExport();
+    if(b.dataset.v==='subsecciones') pintarSubsecciones();
   });
 
   /* ---------- dashboard ---------- */
@@ -559,6 +571,123 @@
         await cargarDatos(); pintarTodo();
       } else b.disabled=false;
     }
+  });
+
+  /* ---------- sub-secciones ---------- */
+  // Devuelve la sección de INNOV_TAX por su slug.
+  function secPorSlug(slug){ return (window.INNOV_TAX||[]).find(function(s){return s.slug===slug;}); }
+  // Arma el mapa completo { seccion:[{slug,name}] } desde INNOV_TAX (lo que se guarda).
+  function subsMap(){
+    var map={};
+    (window.INNOV_TAX||[]).forEach(function(sec){
+      map[sec.slug]=(sec.subs||[]).map(function(s){ return { slug:s.slug, name:s.name }; });
+    });
+    return map;
+  }
+  // Persiste el mapa completo en configuracion.subsecciones.
+  async function guardarSubs(){
+    var map=subsMap(); S.content.subsecciones=map;
+    var r=await sb.from('configuracion').upsert([{ clave:'subsecciones', valor:map }],{onConflict:'clave'});
+    if(r.error){ aviso('No se pudo guardar: '+r.error.message, true); return false; }
+    aviso('Sub-secciones guardadas'); return true;
+  }
+
+  function filaSub(secSlug,s,i,total){
+    return '<div class="sub-fila" data-sec="'+esc(secSlug)+'" data-slug="'+esc(s.slug)+'" '+
+      'style="display:flex;gap:8px;align-items:center;margin-bottom:9px">'+
+      '<input type="text" class="sub-nombre" value="'+esc(s.name)+'" aria-label="Nombre de la sub-sección" style="flex:1;min-width:120px">'+
+      '<code style="font-size:11px;color:var(--marron-medio);white-space:nowrap" title="Identificador interno">'+esc(s.slug)+'</code>'+
+      '<button type="button" class="btn btn-s btn-mini" data-sub-up '+(i===0?'disabled':'')+' aria-label="Subir">↑</button>'+
+      '<button type="button" class="btn btn-s btn-mini" data-sub-down '+(i===total-1?'disabled':'')+' aria-label="Bajar">↓</button>'+
+      '<button type="button" class="btn btn-d btn-mini" data-sub-del>Eliminar</button>'+
+    '</div>';
+  }
+  function pintarSubsecciones(){
+    var cont=$('#subsec-cont'); if(!cont) return;
+    var tax=window.INNOV_TAX||[];
+    if(!tax.length){ cont.innerHTML='<div class="vacio">No hay categorías con sub-secciones.</div>'; return; }
+    cont.innerHTML=tax.map(function(sec){
+      var subs=sec.subs||[];
+      var n=S.products.filter(function(p){return (window.INNOV_seccionDeCat && (INNOV_seccionDeCat(p.cat)||{}).slug===sec.slug);}).length;
+      return '<div class="card" style="margin-bottom:18px" data-sec="'+esc(sec.slug)+'">'+
+        '<div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px">'+
+          '<div><h3 style="font-size:22px">'+esc(sec.name)+'</h3>'+
+            '<div class="ayuda" style="margin-top:2px">'+n+' producto'+(n===1?'':'s')+' en esta categoría</div></div>'+
+          '<button type="button" class="btn btn-s btn-mini" data-sub-add="'+esc(sec.slug)+'">+ Agregar sub-sección</button>'+
+        '</div>'+
+        (subs.length
+          ? '<div class="subs-lista">'+subs.map(function(s,i){ return filaSub(sec.slug,s,i,subs.length); }).join('')+'</div>'
+          : '<div class="ayuda">Todavía no hay sub-secciones en esta categoría.</div>')+
+      '</div>';
+    }).join('');
+  }
+
+  // Alta de sub-sección (modal para pedir el nombre y generar el slug).
+  function formSub(secSlug){
+    var sec=secPorSlug(secSlug); if(!sec) return;
+    abrirModal('Nueva sub-sección en “'+sec.name+'”',
+      '<div class="campo"><label for="ns-name">Nombre *</label><input type="text" id="ns-name" placeholder="Ej. Velas aromáticas" required></div>'+
+      '<div class="ayuda">El identificador interno (slug) se genera solo a partir del nombre.</div>'+
+      '<div id="ns-err"></div>',
+      async function(){
+        var name=$('#ns-name').value.trim();
+        if(!name){ $('#ns-err').innerHTML='<div class="error">Poné un nombre.</div>'; return false; }
+        var base=slugify(name)||'sub', slug=base, k=2;
+        while((sec.subs||[]).some(function(x){return x.slug===slug;})){ slug=base+'-'+(k++); }
+        sec.subs=(sec.subs||[]).concat([{ slug:slug, name:name }]);
+        if(await guardarSubs()){ pintarSubsecciones(); return true; }
+        sec.subs=sec.subs.filter(function(x){return x.slug!==slug;});   // revertir si falló
+        return false;
+      });
+  }
+
+  // Clicks dentro del administrador de sub-secciones (agregar / eliminar / reordenar).
+  $('#subsec-cont').addEventListener('click',async function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.subAdd!=null){ formSub(b.dataset.subAdd); return; }
+    var fila=b.closest('.sub-fila'); if(!fila) return;
+    var sec=secPorSlug(fila.dataset.sec); if(!sec) return;
+    var idx=(sec.subs||[]).findIndex(function(x){return x.slug===fila.dataset.slug;});
+    if(idx<0) return;
+
+    if(b.hasAttribute('data-sub-del')){
+      var s=sec.subs[idx], slug=s.slug;
+      var dbcats=((window.INNOV_CATMAP||{})[sec.slug]||{}).dbcats||[];
+      var afectados=S.products.filter(function(p){ return p.subcat===slug && dbcats.indexOf(p.cat)>=0; });
+      var msg='¿Eliminar la sub-sección “'+s.name+'”?'+(afectados.length?(' Hay '+afectados.length+' producto(s) asignado(s); pasarán a “Automática”.'):'');
+      if(!confirm(msg)) return;
+      var backup=sec.subs.slice();
+      sec.subs.splice(idx,1);
+      if(await guardarSubs()){
+        if(afectados.length){
+          await Promise.all(afectados.map(function(p){ return sb.from('productos').update({subcat:null}).eq('id',p.id); }));
+          await cargarDatos();
+        }
+        pintarSubsecciones();
+      } else { sec.subs=backup; }
+      return;
+    }
+    if(b.hasAttribute('data-sub-up') && idx>0){
+      var a=sec.subs[idx-1]; sec.subs[idx-1]=sec.subs[idx]; sec.subs[idx]=a;
+      if(await guardarSubs()) pintarSubsecciones();
+      return;
+    }
+    if(b.hasAttribute('data-sub-down') && idx<sec.subs.length-1){
+      var c=sec.subs[idx+1]; sec.subs[idx+1]=sec.subs[idx]; sec.subs[idx]=c;
+      if(await guardarSubs()) pintarSubsecciones();
+      return;
+    }
+  });
+
+  // Renombrar: se guarda 900 ms después de dejar de escribir (no re-pinta para no perder el foco).
+  var tSub=null;
+  $('#subsec-cont').addEventListener('input',function(e){
+    var inp=e.target.closest('.sub-nombre'); if(!inp) return;
+    var fila=inp.closest('.sub-fila'); if(!fila) return;
+    var sec=secPorSlug(fila.dataset.sec); if(!sec) return;
+    var s=(sec.subs||[]).find(function(x){return x.slug===fila.dataset.slug;}); if(!s) return;
+    s.name=inp.value;
+    clearTimeout(tSub); tSub=setTimeout(guardarSubs,900);
   });
 
   /* ---------- productos ---------- */
@@ -885,7 +1014,7 @@
   });
 
   /* ---------- init ---------- */
-  function pintarTodo(){ pintarDashboard(); pintarCats(); pintarProds(); pintarContenido(); pintarTextos(); }
+  function pintarTodo(){ pintarDashboard(); pintarCats(); pintarSubsecciones(); pintarProds(); pintarContenido(); pintarTextos(); }
 
   (async function(){
     if(!iniciarCliente()){
