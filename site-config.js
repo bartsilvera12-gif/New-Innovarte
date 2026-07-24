@@ -7,9 +7,9 @@
    ============================================================================ */
 
 /* --- WhatsApp del negocio -------------------------------------------------
-   TODO: reemplazar por el número REAL, en formato internacional, solo dígitos
-   (sin +, espacios ni guiones). Ejemplo Paraguay: 595985123456              */
-window.INNOV_WA = '595000000000';
+   Número en formato internacional, solo dígitos (sin +, espacios ni guiones).
+   Actual: +1 (385) 230-9294  (Estados Unidos).                              */
+window.INNOV_WA = '13852309294';
 
 /* Devuelve un enlace wa.me con un mensaje opcional ya codificado. */
 window.INNOV_waLink = function (texto) {
