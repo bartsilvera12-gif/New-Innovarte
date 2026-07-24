@@ -201,7 +201,7 @@
     <div class="vel-track" data-reveal>
       <sc-for list="{{ velas }}" as="p" hint-placeholder-count="6">
         <div class="vel-card" style="display:flex; flex-direction:column;">
-          <a href="catalogo.dc.html#signature" class="vm" style="display:block; aspect-ratio:3/4; overflow:hidden; border-radius:8px; background:#F7F1E6;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></a>
+          <a href="catalogo.dc.html?cat=velas" class="vm" aria-label="{{ p.name }}" style="display:block; aspect-ratio:3/4; overflow:hidden; border-radius:8px; background:#F7F1E6;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></a>
           <div style="font-family:'Cormorant Garamond',serif; font-size:22px; margin-top:14px; color:#4B3621;">{{ p.name }}</div>
           <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">{{ p.sub }}</div>
           <button class="addbtn" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" onClick="{{ addToCart }}" style="margin-top:12px; background:transparent; border:1px solid #4B3621; color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:40px;" data-i18n="add">Añadir</button>
@@ -355,14 +355,21 @@ class Component extends DCLogic {
   }
 
   renderVals(){
-    // Editar aquí los datos de las cards de colecciones destacadas
+    // Cada card del home abre la Tienda ya filtrada (?cat=/&sub=), reutilizando
+    // el filtro del catálogo. Mapea el id de la card a la categoría real.
+    const catUrl = (id) => {
+      const m = { velas:'velas', aromas:'aromas', aromatizadores:'aromas',
+                  ceramica:'ceramicas', ceramicas:'ceramicas', concreto:'ceramicas', kits:'kits' };
+      return 'catalogo.dc.html?cat=' + (m[String(id)] || id);
+    };
+    // Colecciones destacadas → cada una abre la sub-sección de Velas que la representa
     const promos = [
-      { title:'Rosa Serena', desc:'Aroma a rosas, peonías y vainilla suave.', img:'uploads/velas-peonia.jpg', alt:'Velas peonía color crema — Rosa Serena', href:'catalogo.dc.html#velas' },
-      { title:'Dulce Amanecer', desc:'Aroma a frutos rojos, jazmín y crema.', img:'uploads/bouquet-crema-corazon.jpg', alt:'Bouquet de rosas color crema — Dulce Amanecer', href:'catalogo.dc.html#velas' },
-      { title:'Jardín Rosado', desc:'Aroma a flores frescas, bergamota y sándalo.', img:'uploads/bouquet-marfil.jpg', alt:'Bouquet de tulipanes color marfil — Jardín Rosado', href:'catalogo.dc.html#velas' }
+      { title:'Rosa Serena', desc:'Aroma a rosas, peonías y vainilla suave.', img:'uploads/velas-peonia.jpg', alt:'Velas peonía color crema — Rosa Serena', href:'catalogo.dc.html?cat=velas&sub=decorativas' },
+      { title:'Dulce Amanecer', desc:'Aroma a frutos rojos, jazmín y crema.', img:'uploads/bouquet-crema-corazon.jpg', alt:'Bouquet de rosas color crema — Dulce Amanecer', href:'catalogo.dc.html?cat=velas&sub=bouquets' },
+      { title:'Jardín Rosado', desc:'Aroma a flores frescas, bergamota y sándalo.', img:'uploads/bouquet-marfil.jpg', alt:'Bouquet de tulipanes color marfil — Jardín Rosado', href:'catalogo.dc.html?cat=velas&sub=bouquets' }
     ];
     const velas = (window.INNOV_PRODUCTS||[]).filter(p=>p.cat==='velas').slice(0,14);
-    const coleccion = ((window.INNOV_CONTENT&&window.INNOV_CONTENT.coleccion)||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0));
+    const coleccion = ((window.INNOV_CONTENT&&window.INNOV_CONTENT.coleccion)||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0)).map(c=>Object.assign({}, c, { href: catUrl(c.id) }));
     return { addToCart:this.addToCart, promos, velas, coleccion, prevVel:this.prevVel, nextVel:this.nextVel };
   }
 }

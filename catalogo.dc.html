@@ -102,7 +102,7 @@
   </sc-if>
 
   <!-- Toolbar -->
-  <div class="toolbar">
+  <div class="toolbar" id="tienda-grid" style="scroll-margin-top:96px;">
     <div class="toolbar-inner">
       <div class="chips">
         <sc-for list="{{ subchips }}" as="s" hint-placeholder-count="0">
@@ -165,7 +165,24 @@ class Component extends DCLogic {
     this.paintCrumbs(); this.syncChips();
     this.forceUpdate();
   }
-  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); this.paintCrumbs(); this.syncChips(); this.setupBannerVideo(); }
+  componentDidUpdate(){ if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); this.paintCrumbs(); this.syncChips(); this.setupBannerVideo(); this.scrollToGridOnce(); }
+
+  /* Al entrar en la Tienda con un filtro por URL (?cat/?sub/?q), desplaza suave
+     una sola vez hasta la grilla para caer directo en los productos. No dispara
+     al cambiar de chip (ya se está en la grilla). Respeta reduce-motion. */
+  scrollToGridOnce(){
+    if(this._scrolledGrid) return;
+    var p = new URLSearchParams((location && location.search) || '');
+    if(!(p.get('cat') || p.get('sub') || p.get('q'))){ this._scrolledGrid = true; return; }
+    var el = document.getElementById('tienda-grid');
+    if(!el) return;
+    this._scrolledGrid = true;
+    var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    requestAnimationFrame(function(){
+      try{ el.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block:'start' }); }
+      catch(e){ el.scrollIntoView(); }
+    });
+  }
 
   /* El runtime DC descarta los atributos booleanos sin valor (muted/loop/
      autoplay), así que los forzamos por propiedad. muted debe ir ANTES de
