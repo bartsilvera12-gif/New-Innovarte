@@ -173,6 +173,7 @@
         <option value="insumos">Insumos</option>
       </select>
     </div>
+    <div class="banner">Para cambiar el orden en que aparecen en la tienda: <b>arrastrá</b> una fila desde el icono <b>⠿</b>, o usá las flechas <b>↑ ↓</b>. <b>Tip:</b> filtrá por categoría (y sub-sección) para acomodar los productos de ese grupo. Se guarda solo.</div>
     <div id="tabla-prods"></div>
   </section>
 
@@ -713,7 +714,7 @@
       if(l && (p.linea||'decor')!==l) return false;
       if(sub && subDeProducto(p)!==sub) return false;
       return true;
-    });
+    }).sort(function(a,b){ return (a.order||0)-(b.order||0); });   // mismo orden que la tienda
   }
   function pintarProds(){
     // Categoría: preservar la selección al reconstruir (si no, se resetea sola y el filtro no aplica).
@@ -730,19 +731,25 @@
     var f=prodsFiltrados();
     $('#cuenta-prod').textContent=f.length+' de '+S.products.length+' productos';
     if(!f.length){ $('#tabla-prods').innerHTML='<div class="vacio">No hay productos que coincidan.</div>'; return; }
-    $('#tabla-prods').innerHTML='<table><thead><tr><th></th><th>Nombre</th><th>Categoría</th><th>Sub-sección</th><th>Subtítulo</th><th>Línea</th><th></th></tr></thead><tbody>'+
-      f.map(function(p){
+    $('#tabla-prods').innerHTML='<table><thead><tr><th></th><th></th><th>Nombre</th><th>Categoría</th><th>Sub-sección</th><th>Subtítulo</th><th>Línea</th><th></th></tr></thead><tbody>'+
+      f.map(function(p,idx){
         var c=S.cats.find(function(x){return x.slug===p.cat;});
         var subNm=subNombre(p);
         var subCell = subNm ? (esc(subNm)+(p.subcat?'':' <span style="font-size:10px;color:#B39257">· auto</span>')) : '<span style="color:#B39257">—</span>';
-        return '<tr><td><img class="thumb" src="'+esc(p.img)+'" alt="" loading="lazy"></td>'+
+        return '<tr data-p-id="'+esc(p.id)+'">'+
+          '<td style="width:24px;text-align:center"><span data-drag-handle draggable="true" title="Arrastrá para reordenar" style="cursor:grab;color:#C8A96A;font-size:16px;user-select:none;line-height:1">⠿</span></td>'+
+          '<td><img class="thumb" src="'+esc(p.img)+'" alt="" loading="lazy"></td>'+
           '<td><b>'+esc(p.name)+'</b><div style="font-size:11.5px;color:var(--marron-medio)">'+esc(p.id)+'</div></td>'+
           '<td>'+esc(c?c.name:p.cat)+'</td>'+
           '<td style="color:var(--marron-medio)">'+subCell+'</td>'+
           '<td style="color:var(--marron-medio)">'+esc(p.sub||'')+'</td>'+
           '<td>'+((p.linea||'decor')==='insumos'?'Insumos':'Decoración')+'</td>'+
-          '<td><div class="acciones"><button class="btn btn-s btn-mini" data-p-edit="'+esc(p.id)+'">Editar</button>'+
-          '<button class="btn btn-d btn-mini" data-p-del="'+esc(p.id)+'">Eliminar</button></div></td></tr>';
+          '<td><div class="acciones">'+
+            '<button class="btn btn-s btn-mini" data-p-up '+(idx===0?'disabled':'')+' title="Subir" aria-label="Subir">↑</button>'+
+            '<button class="btn btn-s btn-mini" data-p-down '+(idx===f.length-1?'disabled':'')+' title="Bajar" aria-label="Bajar">↓</button>'+
+            '<button class="btn btn-s btn-mini" data-p-edit="'+esc(p.id)+'">Editar</button>'+
+            '<button class="btn btn-d btn-mini" data-p-del="'+esc(p.id)+'">Eliminar</button>'+
+          '</div></td></tr>';
       }).join('')+'</tbody></table>';
   }
 
@@ -813,6 +820,64 @@
         await cargarDatos(); pintarTodo();
       } else b.disabled=false;
     }
+    if(b.hasAttribute('data-p-up')||b.hasAttribute('data-p-down')){
+      var tr=b.closest('tr[data-p-id]'); if(!tr) return;
+      var id=tr.getAttribute('data-p-id');
+      var f=prodsFiltrados(), i=f.findIndex(function(x){return x.id===id;});
+      var j=b.hasAttribute('data-p-up')? i-1 : i+1;
+      if(i<0||j<0||j>=f.length) return;
+      await guardarOrden(reordenarLista(f, i, j));
+    }
+  });
+
+  /* ---------- reordenar productos (arrastrar + flechas) ---------- */
+  // Mueve el elemento de `from` a `to` reasignando los MISMOS valores de orden
+  // (permutados), así los productos de OTRAS categorías no se tocan. Si hay
+  // empates, normaliza a consecutivos desde el mínimo. Devuelve los que cambiaron.
+  function reordenarLista(f, from, to){
+    if(from===to) return [];
+    var arr=f.slice(); var moved=arr.splice(from,1)[0]; arr.splice(to,0,moved);
+    var vals=f.map(function(p){return p.order||0;}).sort(function(a,b){return a-b;});
+    var dup=vals.some(function(v,i){return i>0 && v===vals[i-1];});
+    if(dup){ var base=vals[0]; vals=vals.map(function(_,i){return base+i;}); }
+    var cambios=[];
+    arr.forEach(function(p,k){ if((p.order||0)!==vals[k]){ p.order=vals[k]; cambios.push(p); } });
+    return cambios;
+  }
+  async function guardarOrden(cambios){
+    if(!cambios.length) return;
+    var r=await Promise.all(cambios.map(function(p){ return sb.from('productos').update({orden:p.order}).eq('id',p.id); }));
+    var err=r.find(function(x){return x.error;});
+    if(err){ aviso('No se pudo guardar el orden: '+err.error.message, true); await cargarDatos(); }
+    else aviso('Orden actualizado');
+    S.products.sort(function(a,b){return (a.order||0)-(b.order||0);});
+    pintarProds();
+  }
+
+  var _dragId=null;
+  function limpiarMarcas(){ document.querySelectorAll('#tabla-prods tr').forEach(function(r){ r.style.boxShadow=''; r.style.opacity=''; }); }
+  $('#tabla-prods').addEventListener('dragstart',function(e){
+    var h=e.target.closest('[data-drag-handle]'); if(!h){ e.preventDefault(); return; }
+    var tr=h.closest('tr[data-p-id]'); if(!tr) return;
+    _dragId=tr.getAttribute('data-p-id'); tr.style.opacity='.45';
+    if(e.dataTransfer){ e.dataTransfer.effectAllowed='move'; try{ e.dataTransfer.setData('text/plain', _dragId); }catch(_){ } }
+  });
+  $('#tabla-prods').addEventListener('dragend',function(){ _dragId=null; limpiarMarcas(); });
+  $('#tabla-prods').addEventListener('dragover',function(e){
+    if(!_dragId) return; e.preventDefault(); if(e.dataTransfer) e.dataTransfer.dropEffect='move';
+    var tr=e.target.closest('tr[data-p-id]');
+    document.querySelectorAll('#tabla-prods tr').forEach(function(r){ r.style.boxShadow=''; });
+    if(tr && tr.getAttribute('data-p-id')!==_dragId) tr.style.boxShadow='inset 0 3px 0 0 var(--champan)';
+  });
+  $('#tabla-prods').addEventListener('drop',async function(e){
+    if(!_dragId) return; e.preventDefault();
+    var tr=e.target.closest('tr[data-p-id]'); var dragId=_dragId; _dragId=null; limpiarMarcas();
+    if(!tr) return;
+    var targetId=tr.getAttribute('data-p-id'); if(targetId===dragId) return;
+    var f=prodsFiltrados();
+    var from=f.findIndex(function(p){return p.id===dragId;}), to=f.findIndex(function(p){return p.id===targetId;});
+    if(from<0||to<0) return;
+    await guardarOrden(reordenarLista(f, from, to));
   });
 
   /* ---------- textos e historia ---------- */
