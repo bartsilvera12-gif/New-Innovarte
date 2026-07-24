@@ -29,8 +29,8 @@
        Si ambos quedan vacíos (''), se muestra la imagen de 'fallback'.
        --------------------------------------------------------------------- */
     hero: {
-      videoDesktop: '',                              // '' = usar imagen de portada
-      videoMobile:  '',                              // '' = usar imagen de portada
+      videoDesktop: U + 'portada-home-animada.mp4',  // video de portada (poster/fallback = imagen)
+      videoMobile:  '',                              // '' = usa el de escritorio
       poster:       U + 'portada-velas-set.jpg',
       fallback:     U + 'portada-velas-set.jpg'
     },
