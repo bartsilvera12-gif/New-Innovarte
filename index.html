@@ -286,7 +286,7 @@
   <!-- SOBRE LA MARCA -->
   <section style="background:#F7F1E6; margin-top:50px;">
     <div class="rr-g2 rr-pad" style="max-width:1320px; margin:0 auto; padding:104px 40px; display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center;">
-      <div data-reveal style="aspect-ratio:4/5; border-radius:4px; overflow:hidden; box-shadow:0 40px 70px -40px rgba(75,54,33,.4);"><image-slot id="about-home" shape="rect" fit="cover" src="uploads/WhatsApp Image 2026-07-20 at 13.32.04.jpeg" placeholder="Piezas Innovarte"></image-slot></div>
+      <div data-reveal style="aspect-ratio:4/5; border-radius:4px; overflow:hidden; box-shadow:0 40px 70px -40px rgba(75,54,33,.4);"><video id="about-video" data-about-video poster="uploads/sobre-innovarte-poster.jpg" muted loop playsinline preload="metadata" aria-hidden="true" style="width:100%; height:100%; object-fit:cover; display:block;"></video></div>
       <div data-reveal>
         <div style="font-size:12px; letter-spacing:.4em; text-transform:uppercase; color:#7A6754; margin-bottom:16px;" data-i18n="marca_eye">Sobre Innovarte</div>
         <h2 style="font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(32px,3.8vw,50px); line-height:1.12; color:#4B3621;" data-i18n="marca_h">Creamos espacios que inspiran calma, belleza y bienestar.</h2>
@@ -337,6 +337,7 @@ class Component extends DCLogic {
   componentDidMount(){
     this.initHeroVideo();
     this.initColeccion();
+    this.initAboutVideo();
     if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
     this._io = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{ if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='none'; this._io.unobserve(e.target); } });
@@ -379,6 +380,23 @@ class Component extends DCLogic {
       });
     },{ threshold:0.35 });
     vids.forEach(v=>{ if(v.getAttribute('data-src')) io.observe(v); });
+  }
+
+  initAboutVideo(){
+    const vid=document.getElementById('about-video');
+    if(!vid) return;
+    const rm=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    vid.muted=true; vid.defaultMuted=true; vid.loop=true; vid.playsInline=true; vid.setAttribute('playsinline','');
+    const SRC='uploads/sobre-innovarte.mp4';
+    if(rm) return;                       // reduce-motion: queda el póster estático
+    if(!('IntersectionObserver' in window)){ vid.src=SRC; const p=vid.play&&vid.play(); if(p&&p.catch)p.catch(()=>{}); return; }
+    const io=new IntersectionObserver((es)=>{
+      es.forEach(e=>{
+        if(e.isIntersecting){ if(!vid.getAttribute('src')) vid.setAttribute('src',SRC); const p=vid.play&&vid.play(); if(p&&p.catch)p.catch(()=>{}); }
+        else if(vid.pause){ vid.pause(); }
+      });
+    },{ threshold:0.35 });
+    io.observe(vid);
   }
 
   scrollVel=(dir)=>{ const t=document.querySelector('.vel-track'); if(t) t.scrollBy({ left:dir*Math.min(t.clientWidth*0.85,640), behavior:'smooth' }); }
