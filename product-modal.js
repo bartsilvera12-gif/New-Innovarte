@@ -29,7 +29,9 @@
     '.ipm-aromas{margin-top:22px;}' +
     '.ipm-aromas-h{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#9C7A50;margin-bottom:11px;}' +
     '.ipm-aromas-chips{display:flex;flex-wrap:wrap;gap:7px;}' +
-    '.ipm-chip{font-size:12px;color:#4B3621;background:#EFE7D8;border:1px solid rgba(200,169,106,.45);border-radius:30px;padding:5px 12px;}' +
+    '.ipm-chip{font-size:12px;color:#4B3621;background:#EFE7D8;border:1px solid rgba(200,169,106,.45);border-radius:30px;padding:6px 13px;cursor:pointer;font-family:inherit;transition:background .2s,color .2s,border-color .2s;}' +
+    '.ipm-chip:hover{border-color:#C8A96A;}' +
+    '.ipm-chip.on{background:#4B3621;color:#fff;border-color:#4B3621;}' +
     '.ipm-aromas-nota{color:#7A6754;font-weight:300;font-size:12.5px;line-height:1.55;margin-top:12px;font-style:italic;}' +
     '.ipm-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:auto;padding-top:28px;}' +
     '.ipm-btn{flex:1 1 auto;min-width:150px;text-align:center;padding:15px 20px;font-family:"Jost",sans-serif;' +
@@ -102,8 +104,21 @@
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
     elAdd.addEventListener('click', function () {
-      if (window.InnovCart && cur) { InnovCart.add(cur.id, cur.name, cur.img); InnovCart.openCart(); }
+      if (window.InnovCart && cur) {
+        InnovCart.add(cur.id, cur.name, cur.img, { aroma: cur.aroma || '', slug: cur.id, cat: cur.cat });
+        InnovCart.openCart();
+      }
       close();
+    });
+    // Selección de aroma (chips): un aroma a la vez; volver a tocarlo lo des-selecciona.
+    elAromas.addEventListener('click', function (e) {
+      var chip = e.target.closest('.ipm-chip'); if (!chip) return;
+      var was = chip.classList.contains('on');
+      elAromas.querySelectorAll('.ipm-chip').forEach(function (c) { c.classList.remove('on'); c.setAttribute('aria-pressed', 'false'); });
+      if (!was) { chip.classList.add('on'); chip.setAttribute('aria-pressed', 'true'); cur.aroma = chip.getAttribute('data-aroma') || ''; }
+      else { cur.aroma = ''; }
+      elAdd.textContent = cur.aroma ? ('Añadir · ' + cur.aroma) : 'Añadir al carrito';
+      elWa.href = waLink(cur.name, cur.aroma, cur.id);
     });
   }
 
@@ -113,8 +128,13 @@
     try { return 'Gs. ' + n.toLocaleString('es-PY'); } catch (e) { return 'Gs. ' + n; }
   }
 
-  function waLink(name) {
-    var msg = '¡Hola! Quiero consultar por: ' + (name || '');
+  function prodLink(slug) {
+    var origin = (typeof location !== 'undefined' && location.origin) ? location.origin : '';
+    return origin + '/catalogo.dc.html?producto=' + encodeURIComponent(slug || '');
+  }
+  function waLink(name, aroma, slug) {
+    var msg = '¡Hola! Quiero consultar por: ' + (name || '') +
+      (aroma ? ' (Aroma: ' + aroma + ')' : '') + '\n' + prodLink(slug);
     if (window.INNOV_waLink) return window.INNOV_waLink(msg);
     return 'https://wa.me/' + (window.INNOV_WA || '') + '?text=' + encodeURIComponent(msg);
   }
@@ -137,11 +157,13 @@
     // y puede variar según la temporada; por eso se muestra la nota aclaratoria.
     var ar = (window.INNOV_CONTENT && window.INNOV_CONTENT.aromas) || window.INNOV_AROMAS || null;
     var esAroma = (cur.cat === 'aromatizadores' || cur.cat === 'aromas');
+    cur.aroma = '';
+    elAdd.textContent = 'Añadir al carrito';
     if (esAroma && ar && ar.items && ar.items.length) {
       elAromas.innerHTML =
-        '<div class="ipm-aromas-h">Aromas disponibles</div>' +
+        '<div class="ipm-aromas-h">Elegí tu aroma</div>' +
         '<div class="ipm-aromas-chips">' +
-          ar.items.map(function (a) { return '<span class="ipm-chip">' + esc(a) + '</span>'; }).join('') +
+          ar.items.map(function (a) { return '<button type="button" class="ipm-chip" data-aroma="' + esc(a) + '" aria-pressed="false">' + esc(a) + '</button>'; }).join('') +
         '</div>' +
         (ar.nota ? '<div class="ipm-aromas-nota">' + esc(ar.nota) + '</div>' : '');
       elAromas.style.display = '';
@@ -149,7 +171,7 @@
       elAromas.style.display = 'none';
       elAromas.innerHTML = '';
     }
-    elWa.href = waLink(cur.name);
+    elWa.href = waLink(cur.name, cur.aroma, cur.id);
     overlay.classList.add('on');
     document.documentElement.style.overflow = 'hidden';
     setTimeout(function () { try { overlay.querySelector('.ipm-close').focus(); } catch (e) {} }, 30);

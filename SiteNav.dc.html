@@ -213,13 +213,14 @@
           <div style="width:56px; height:56px; border-radius:3px; overflow:hidden; flex-shrink:0; background:#F7F1E6;"><img src="{{ item.img }}" alt="{{ item.name }}" style="width:100%; height:100%; object-fit:cover;"></div>
           <div style="flex:1;">
             <div style="font-family:'Cormorant Garamond',serif; font-size:19px; color:#4B3621; line-height:1.1;">{{ item.name }}</div>
+            <div style="font-size:12px; color:#7A6754; margin-top:2px; letter-spacing:.02em;">{{ item.aromaLabel }}</div>
             <div style="display:flex; align-items:center; gap:11px; margin-top:8px;">
-              <button data-id="{{ item.id }}" onClick="{{ decItem }}" style="width:25px; height:25px; border:1px solid rgba(75,54,33,.35); background:none; color:#4B3621; cursor:pointer; border-radius:2px; font-size:15px;">−</button>
+              <button data-key="{{ item.key }}" onClick="{{ decItem }}" style="width:25px; height:25px; border:1px solid rgba(75,54,33,.35); background:none; color:#4B3621; cursor:pointer; border-radius:2px; font-size:15px;">−</button>
               <span style="min-width:18px; text-align:center; font-size:15px;">{{ item.qty }}</span>
-              <button data-id="{{ item.id }}" onClick="{{ incItem }}" style="width:25px; height:25px; border:1px solid rgba(75,54,33,.35); background:none; color:#4B3621; cursor:pointer; border-radius:2px; font-size:15px;">+</button>
+              <button data-key="{{ item.key }}" onClick="{{ incItem }}" style="width:25px; height:25px; border:1px solid rgba(75,54,33,.35); background:none; color:#4B3621; cursor:pointer; border-radius:2px; font-size:15px;">+</button>
             </div>
           </div>
-          <button data-id="{{ item.id }}" onClick="{{ removeItem }}" style="background:none; border:none; color:#7A6754; cursor:pointer; font-size:11px; letter-spacing:.1em; text-transform:uppercase;" data-i18n="cart_remove">Quitar</button>
+          <button data-key="{{ item.key }}" onClick="{{ removeItem }}" style="background:none; border:none; color:#7A6754; cursor:pointer; font-size:11px; letter-spacing:.1em; text-transform:uppercase;" data-i18n="cart_remove">Quitar</button>
         </div>
       </sc-for>
     </div>
@@ -228,7 +229,7 @@
         <span data-i18n="cart_items">Artículos</span><span>{{ cartCount }}</span>
       </div>
       <button class="co-btn" onClick="{{ checkout }}" style="width:100%; background:#4B3621; color:#fff; border:none; padding:17px 0; font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:2px;" data-i18n="cart_checkout">Pedir por correo</button>
-      <a class="wa-btn" data-wa-link href="#" target="_blank" rel="noopener" style="margin-top:10px; width:100%; justify-content:center; padding:15px 0; background:#3E6B45;">
+      <a class="wa-btn" data-cart-wa href="#" target="_blank" rel="noopener" style="margin-top:10px; width:100%; justify-content:center; padding:15px 0; background:#3E6B45;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2Zm5.8 14.2c-.2.7-1.4 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.1.1.3 0 .5l-.4.5-.3.3c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6 0l.9-1c.2-.2.4-.2.6-.1l1.9.9c.3.1.4.2.5.3 0 .1 0 .6-.2 1.2Z"/></svg>
         <span data-i18n="cart_wa">Pedir por WhatsApp</span>
       </a>
@@ -367,29 +368,53 @@ class Component extends DCLogic {
     if(bg){ bg.classList.toggle('open', !!this.state.menu); }
     if(typeof document!=='undefined'&&document.body){ document.body.style.overflow=(this.state.open||this.state.menu)?'hidden':''; }
     const innav=document.querySelector('.innav'); if(innav) innav.classList.toggle('nav-shrink', !!this._shrunk);
+    this.updateCartWa();
   }
 
   toggleCart=()=>{ this.setState(s=>({ open:!s.open, menu:false })); }
   toggleMenu=()=>{ this.setState(s=>({ menu:!s.menu, open:false })); }
   closeMenu=()=>{ this.setState({ menu:false }); }
   toggleLang=()=>{ if(window.InnovI18N){ InnovI18N.toggle(); this.forceUpdate(); } }
-  incItem=(e)=>{ InnovCart.inc(e.currentTarget.getAttribute('data-id')); }
-  decItem=(e)=>{ InnovCart.dec(e.currentTarget.getAttribute('data-id')); }
-  removeItem=(e)=>{ InnovCart.remove(e.currentTarget.getAttribute('data-id')); }
+  incItem=(e)=>{ InnovCart.inc(e.currentTarget.getAttribute('data-key')); }
+  decItem=(e)=>{ InnovCart.dec(e.currentTarget.getAttribute('data-key')); }
+  removeItem=(e)=>{ InnovCart.remove(e.currentTarget.getAttribute('data-key')); }
 
   checkout=()=>{
     const cart=this.state.cart; if(!cart.length) return;
     const en=window.InnovI18N && InnovI18N.lang==='en';
     const subject=en?'Order — InnovArte Handmade':'Pedido — InnovArte Handmade';
     const head=en?'Hello! I would like to request:':'¡Hola! Me gustaría solicitar:';
-    const lines=cart.map(i=>`• ${i.name} x${i.qty}`).join('\n');
-    const foot=en?'\nName:\nCity:\nPreferred scent/color:':'\nNombre:\nCiudad:\nAroma/color preferido:';
+    const lines=cart.map(i=>this.cartLine(i,en)).join('\n\n');
+    const foot=en?'\nName:\nCity:':'\nNombre:\nCiudad:';
     const body=encodeURIComponent(head+'\n\n'+lines+'\n'+foot);
     window.location.href='mailto:innovartecandles@gmail.com?subject='+encodeURIComponent(subject)+'&body='+body;
   }
 
+  /* Link absoluto que abre el producto en el catálogo (?producto=slug). */
+  prodLink(slug){ var o=(typeof location!=='undefined'&&location.origin)?location.origin:''; return o+'/catalogo.dc.html?producto='+encodeURIComponent(slug||''); }
+  /* Una línea de pedido: nombre (+ aroma) x cantidad, con el link del producto debajo. */
+  cartLine(i,en){ var ar=i.aroma?((en?' — Scent: ':' — Aroma: ')+i.aroma):''; return '• '+i.name+ar+' x'+i.qty+'\n'+this.prodLink(i.slug||i.id); }
+
+  /* Arma el mensaje del carrito (con aromas y links) para el botón "Pedir por WhatsApp". */
+  updateCartWa(){
+    var btn=document.querySelector('[data-cart-wa]'); if(!btn) return;
+    var cart=this.state.cart||[], en=window.InnovI18N && InnovI18N.lang==='en', msg;
+    if(!cart.length){
+      msg=en?'Hello! I have a question about your products.':'¡Hola! Quiero hacer una consulta sobre sus productos.';
+    } else {
+      var head=en?'Hello! I would like to request:':'¡Hola! Me gustaría solicitar:';
+      var foot=en?'\nName:\nCity:':'\nNombre:\nCiudad:';
+      msg=head+'\n\n'+cart.map((i)=>this.cartLine(i,en)).join('\n\n')+'\n'+foot;
+    }
+    btn.setAttribute('href', window.INNOV_waLink?window.INNOV_waLink(msg):('https://wa.me/'+(window.INNOV_WA||'')+'?text='+encodeURIComponent(msg)));
+  }
+
   renderVals(){
-    const cart=this.state.cart;
+    const en=window.InnovI18N && InnovI18N.lang==='en';
+    const cart=(this.state.cart||[]).map(i=>Object.assign({}, i, {
+      key: i.key || i.id,
+      aromaLabel: i.aroma ? ((en?'Scent: ':'Aroma: ')+i.aroma) : ''
+    }));
     const cartCount=cart.reduce((n,i)=>n+i.qty,0);
     return { cart, cartCount, hasCart:cartCount>0, cartEmpty:cart.length===0,
       toggleCart:this.toggleCart, toggleLang:this.toggleLang,
