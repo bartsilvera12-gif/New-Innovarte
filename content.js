@@ -49,7 +49,7 @@
 
       { id: 'aromas',   order: 2, active: true,
         title: 'Aromatizadores', subtitle: 'Difusores, home sprays y textiles',
-        video: U + 'WhatsApp Video 2026-07-20 at 13.32.10.mp4', videoMobile: '',
+        video: U + 'innovarte_ambiente_7s.mp4', videoMobile: '',
         poster: U + 'WhatsApp Image 2026-07-20 at 13.32.08.jpeg',
         href: 'catalogo.dc.html#aromatizadores' },
 
