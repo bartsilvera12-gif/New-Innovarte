@@ -65,7 +65,7 @@
   };
 
   var overlay, elImg, elEye, elName, elSub, elDesc, elPrice, elNote, elAromas, elAdd, elWa, lastFocus, cur;
-  var elPrev, elNext, elDots, galImgs = [], galIdx = 0;
+  var elPrev, elNext, elDots, galImgs = [], galIdx = 0, galToken = 0, galCache = {};
 
   function el(html) { var d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -190,9 +190,37 @@
     galShow(0);
   }
 
+  // Red de seguridad: si INNOV_PRODUCTS todavía no trae la galería (respaldo
+  // local products.js, caché vieja o datos aún cargando), buscamos las imágenes
+  // del producto directo en la base y refrescamos el carrusel. Cachea por slug.
+  function applyGal(imgs, token) {
+    if (token !== galToken) return;            // el usuario ya abrió otro producto
+    if (imgs.length > 1 && imgs.length > galImgs.length) galRender(imgs);
+  }
+  function ensureGallery(slug, token) {
+    if (!slug) return;
+    if (galCache[slug]) { applyGal(galCache[slug], token); return; }
+    var cfg = window.INNOV_SB;
+    if (!cfg || !cfg.url || !cfg.anonKey) return;
+    fetch(cfg.url + '/rest/v1/productos?select=imagen,producto_imagenes(url,orden)&slug=eq.' + encodeURIComponent(slug),
+      { headers: { apikey: cfg.anonKey, Authorization: 'Bearer ' + cfg.anonKey, 'Accept-Profile': cfg.schema } })
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (j) {
+        var p = j && j[0]; if (!p) return;
+        var extra = (p.producto_imagenes || []).slice()
+          .sort(function (a, b) { return (a.orden || 0) - (b.orden || 0); })
+          .map(function (x) { return x.url; });
+        var imgs = [p.imagen].concat(extra).filter(Boolean);
+        galCache[slug] = imgs;
+        applyGal(imgs, token);
+      })
+      .catch(function () {});
+  }
+
   function open(prod) {
     if (!overlay) build();
     cur = prod || {};
+    var token = ++galToken;
     lastFocus = document.activeElement;
     // Galería del producto: usamos cur.imgs si vino; si no, la buscamos en el
     // catálogo global por id/slug; como último recurso, la imagen suelta.
@@ -206,6 +234,7 @@
     if (!imgs || !imgs.length) imgs = cur.img ? [cur.img] : [];
     elImg.alt = cur.name || '';
     galRender(imgs);
+    if (imgs.length <= 1 && cur.id) ensureGallery(cur.id, token);
     set(elEye, CATNOMBRE[cur.cat] || '');
     elName.textContent = cur.name || '';
     set(elSub, cur.sub || '');
