@@ -319,9 +319,15 @@
     descripcion:c.descEs||null, descripcion_en:c.descEn||null, imagen:c.img||null,
     orden:c.order||0, activa:c.active!==false, destacada:!!c.featured }; }
 
-  function prodDeBD(r, porId){ return { id:r.id, slug:r.slug, name:r.nombre,
-    cat:(porId[r.categoria_id]||{}).slug||'', sub:r.subtitulo, subcat:r.subcat||'', img:r.imagen,
-    linea:r.linea, order:r.orden }; }
+  function prodDeBD(r, porId){
+    // Galería: portada (r.imagen) + imágenes adicionales ordenadas.
+    var extra = (r.producto_imagenes||[]).slice()
+      .sort(function(a,b){ return (a.orden||0)-(b.orden||0); })
+      .map(function(x){ return x.url; });
+    return { id:r.id, slug:r.slug, name:r.nombre,
+      cat:(porId[r.categoria_id]||{}).slug||'', sub:r.subtitulo, subcat:r.subcat||'', img:r.imagen,
+      imgs:[r.imagen].concat(extra).filter(Boolean),
+      linea:r.linea, order:r.orden }; }
   function prodABD(p, porSlug){ return { slug:p.slug||p.id, nombre:p.name,
     categoria_id:(porSlug[p.cat]||{}).id||null, subtitulo:p.sub||null, subcat:p.subcat||null,
     imagen:p.img||null, linea:p.linea||'decor', orden:p.order||0 }; }
@@ -330,7 +336,7 @@
   async function cargarDatos(){
     var [cs,ps,ts,cfg,ch] = await Promise.all([
       sb.from('categorias').select('*').eq('eliminada',false).order('orden'),
-      sb.from('productos').select('*').eq('eliminado',false).order('orden'),
+      sb.from('productos').select('*, producto_imagenes(url,orden)').eq('eliminado',false).order('orden'),
       sb.from('textos').select('*').order('orden'),
       sb.from('configuracion').select('*'),
       sb.from('coleccion_home').select('*').order('orden')
@@ -427,6 +433,61 @@
       }catch(e){ est.innerHTML='<div class="error">No se pudo subir: '+esc(e.message)+'</div>'; }
       this.value='';
     });
+  }
+
+  /* Editor de galería: lista de imágenes de un producto. La primera es la
+     portada (la que se ve en el catálogo); el resto se muestran como carrusel
+     en la ficha. Permite subir archivo, pegar dirección, reordenar y quitar. */
+  function miniImg(u){ return u ? '<img src="'+esc(u)+'" alt="" style="max-height:120px;border-radius:8px;border:1px solid var(--borde)">' : ''; }
+  function galeriaEditor(contId, urls){
+    var cont=$(contId);
+    var lista = (urls && urls.length) ? urls.slice() : [''];
+    function render(){
+      cont.innerHTML = lista.map(function(u,i){
+        return '<div class="galrow" style="border:1px solid var(--borde);border-radius:9px;padding:11px;margin-bottom:9px;background:#fff">'+
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px">'+
+            '<span style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:'+(i===0?'#9C7A50':'#B39257')+'">'+(i===0?'★ Portada':'Imagen '+(i+1))+'</span>'+
+            '<span style="flex:1"></span>'+
+            '<button type="button" class="btn btn-s btn-mini" data-gal-up="'+i+'" '+(i===0?'disabled':'')+' title="Subir">↑</button>'+
+            '<button type="button" class="btn btn-s btn-mini" data-gal-down="'+i+'" '+(i===lista.length-1?'disabled':'')+' title="Bajar">↓</button>'+
+            '<button type="button" class="btn btn-d btn-mini" data-gal-del="'+i+'" '+(lista.length<=1?'disabled':'')+' title="Quitar">✕</button>'+
+          '</div>'+
+          '<input type="text" class="gal-url" data-i="'+i+'" value="'+esc(u)+'" placeholder="Subí un archivo o pegá una dirección" style="width:100%">'+
+          '<input type="file" class="gal-file" data-i="'+i+'" accept="image/*" style="margin-top:7px;font-size:12.5px">'+
+          '<div class="gal-estado" data-i="'+i+'"></div>'+
+          '<div class="gal-prev" data-i="'+i+'" style="margin-top:9px">'+miniImg(u)+'</div>'+
+        '</div>';
+      }).join('') + '<button type="button" class="btn btn-s" data-gal-add style="margin-top:2px">+ Agregar otra imagen</button>';
+    }
+    render();
+    cont.addEventListener('click', function(e){
+      var b=e.target.closest('button'); if(!b) return;
+      if(b.hasAttribute('data-gal-add')){ lista.push(''); render(); return; }
+      var i;
+      if(b.dataset.galDel!=null){ i=+b.dataset.galDel; lista.splice(i,1); if(!lista.length) lista=['']; render(); }
+      else if(b.dataset.galUp!=null){ i=+b.dataset.galUp; if(i>0){ var t=lista[i-1]; lista[i-1]=lista[i]; lista[i]=t; render(); } }
+      else if(b.dataset.galDown!=null){ i=+b.dataset.galDown; if(i<lista.length-1){ var t2=lista[i+1]; lista[i+1]=lista[i]; lista[i]=t2; render(); } }
+    });
+    cont.addEventListener('input', function(e){
+      var t=e.target; if(!t.classList.contains('gal-url')) return;
+      var i=+t.dataset.i; lista[i]=t.value.trim();
+      var prev=cont.querySelector('.gal-prev[data-i="'+i+'"]'); if(prev) prev.innerHTML=miniImg(lista[i]);
+    });
+    cont.addEventListener('change', async function(e){
+      var f=e.target; if(!f.classList.contains('gal-file')) return;
+      var file=f.files[0]; if(!file) return;
+      var i=+f.dataset.i, est=cont.querySelector('.gal-estado[data-i="'+i+'"]');
+      if(file.size > 8*1024*1024){ if(est) est.innerHTML='<div class="error">La imagen supera 8 MB. Comprimila un poco.</div>'; f.value=''; return; }
+      if(est) est.innerHTML='<div class="ayuda">Subiendo imagen…</div>';
+      try{
+        var url=await subirImagen(file); lista[i]=url;
+        if(est) est.innerHTML='<div class="ayuda" style="color:#3F6B45">Imagen subida ✓</div>';
+        var ui=cont.querySelector('.gal-url[data-i="'+i+'"]'); if(ui) ui.value=url;
+        var prev=cont.querySelector('.gal-prev[data-i="'+i+'"]'); if(prev) prev.innerHTML=miniImg(url);
+      }catch(err){ if(est) est.innerHTML='<div class="error">No se pudo subir: '+esc(err.message)+'</div>'; }
+      f.value='';
+    });
+    return { get:function(){ return lista.map(function(u){ return (u||'').trim(); }).filter(Boolean); } };
   }
 
   async function conError(promesa, exito){
@@ -771,7 +832,8 @@
       subs.map(function(s){ return '<option value="'+esc(s.slug)+'"'+(s.slug===selected?' selected':'')+'>'+esc(s.name)+'</option>'; }).join('');
   }
   function formProd(p){
-    var nuevo=!p; p=p||{id:'',name:'',cat:(S.cats[0]||{}).id||'',sub:'',subcat:'',img:'',linea:'decor'};
+    var nuevo=!p; p=p||{id:'',name:'',cat:(S.cats[0]||{}).id||'',sub:'',subcat:'',img:'',imgs:[],linea:'decor'};
+    var galEd;
     abrirModal(nuevo?'Nuevo producto':'Editar producto',
       '<div class="campo"><label for="p-name">Nombre *</label><input type="text" id="p-name" value="'+esc(p.name)+'" required></div>'+
       '<div class="fila">'+
@@ -784,30 +846,48 @@
         '</select></div></div>'+
       '<div class="campo"><label for="p-subcat">Sub-sección</label><select id="p-subcat"></select><div class="ayuda">Dónde aparece dentro de la categoría (en la tienda). "Automática" la deduce del subtítulo o el nombre.</div></div>'+
       '<div class="campo"><label for="p-sub">Subtítulo</label><input type="text" id="p-sub" value="'+esc(p.sub||'')+'" placeholder="Ej. Colección Floral"></div>'+
-      '<div class="campo"><label for="p-img">Imagen *</label>'+
-        '<input type="text" id="p-img" value="'+esc(p.img||'')+'" placeholder="Subí un archivo o pegá una dirección">'+
-        '<div class="ayuda">O elegí una imagen de tu computadora:</div>'+
-        '<input type="file" id="p-file" accept="image/*" style="margin-top:7px;font-size:12.5px">'+
-        '<div id="p-estado"></div><div id="p-prev" style="margin-top:10px"></div></div>'+
+      '<div class="campo"><label>Imágenes *</label>'+
+        '<div class="ayuda" style="margin-bottom:8px">La primera es la portada (se ve en el catálogo). Podés agregar más, reordenarlas y quitarlas; en la ficha del producto se muestran como carrusel.</div>'+
+        '<div id="p-gal"></div></div>'+
       '<div id="p-err"></div>',
       async function(){
-        var name=$('#p-name').value.trim(), img=$('#p-img').value.trim();
+        var name=$('#p-name').value.trim(), imgs=galEd?galEd.get():[];
         if(!name){ $('#p-err').innerHTML='<div class="error">El nombre es obligatorio.</div>'; return false; }
-        if(!img){ $('#p-err').innerHTML='<div class="error">La imagen es obligatoria.</div>'; return false; }
+        if(!imgs.length){ $('#p-err').innerHTML='<div class="error">Agregá al menos una imagen.</div>'; return false; }
         var slug=nuevo?slugify(name):p.slug, base=slug, k=2;
         while(nuevo && S.products.some(function(x){return x.slug===slug;})){ slug=base+'-'+(k++); }
         var porSlug={}; S.cats.forEach(function(c){ porSlug[c.slug]=c; });
         var fila=prodABD({ slug:slug, name:name, cat:$('#p-cat').value, sub:$('#p-sub').value.trim(),
                            subcat:($('#p-subcat')?$('#p-subcat').value:''),
-                           img:img, linea:$('#p-linea').value, order:p.order||0 }, porSlug);
-        var r = nuevo ? await sb.from('productos').insert(fila)
-                      : await sb.from('productos').update(fila).eq('id',p.id);
-        if(r.error){ $('#p-err').innerHTML='<div class="error">'+esc(r.error.message)+'</div>'; return false; }
+                           img:imgs[0], linea:$('#p-linea').value, order:p.order||0 }, porSlug);
+        var prodId;
+        if(nuevo){
+          var r = await sb.from('productos').insert(fila);
+          if(r.error){ $('#p-err').innerHTML='<div class="error">'+esc(r.error.message)+'</div>'; return false; }
+          // Recuperamos el id recién creado por su slug (único), sin depender de
+          // que el proxy devuelva la fila insertada.
+          var q = await sb.from('productos').select('id').eq('slug',slug).maybeSingle();
+          if(q.error || !q.data){ $('#p-err').innerHTML='<div class="error">No se pudo recuperar el producto recién creado'+(q.error?': '+esc(q.error.message):'')+'.</div>'; return false; }
+          prodId = q.data.id;
+        } else {
+          var r2 = await sb.from('productos').update(fila).eq('id',p.id);
+          if(r2.error){ $('#p-err').innerHTML='<div class="error">'+esc(r2.error.message)+'</div>'; return false; }
+          prodId = p.id;
+        }
+        // Sincronizar la galería: borramos las imágenes adicionales anteriores y
+        // reinsertamos las actuales (todas menos la portada) en su nuevo orden.
+        var rd = await sb.from('producto_imagenes').delete().eq('producto_id', prodId);
+        if(rd.error){ $('#p-err').innerHTML='<div class="error">'+esc(rd.error.message)+'</div>'; return false; }
+        var extras = imgs.slice(1).map(function(u,idx){ return { producto_id:prodId, url:u, orden:idx }; });
+        if(extras.length){
+          var ri = await sb.from('producto_imagenes').insert(extras);
+          if(ri.error){ $('#p-err').innerHTML='<div class="error">'+esc(ri.error.message)+'</div>'; return false; }
+        }
         await cargarDatos(); pintarTodo();
         aviso(nuevo?'Producto creado':'Producto actualizado'); return true;
       },
       function(){
-        campoImagen('#p-img','#p-file','#p-prev','#p-estado');
+        galEd = galeriaEditor('#p-gal', p.imgs && p.imgs.length ? p.imgs : (p.img?[p.img]:[]));
         pintarSubcat($('#p-cat').value, p.subcat||'');
         $('#p-cat').addEventListener('change', function(){ pintarSubcat(this.value, ''); });
       });

@@ -73,9 +73,15 @@
                  descEs: c.descripcion, descEn: c.descripcion_en, img: c.imagen };
       }),
       products: prods.map(function (p) {
+        // Galería: la portada (p.imagen) primero, luego las imágenes adicionales
+        // ordenadas por su campo "orden".
+        var extra = (p.producto_imagenes || []).slice()
+          .sort(function (a, b) { return (a.orden || 0) - (b.orden || 0); })
+          .map(function (x) { return x.url; });
+        var imgs = [p.imagen].concat(extra).filter(Boolean);
         return { id: p.slug, slug: p.slug, name: p.nombre,
                  cat: (porId[p.categoria_id] || {}).slug || '',
-                 sub: p.subtitulo, img: p.imagen, linea: p.linea || 'decor',
+                 sub: p.subtitulo, img: p.imagen, imgs: imgs, linea: p.linea || 'decor',
                  subcat: p.subcat || '', desc: p.descripcion || '', precio: p.precio };
       }),
       content: {
@@ -112,7 +118,7 @@
     }
     return Promise.all([
       pedir('categorias?select=*&eliminada=eq.false&order=orden'),
-      pedir('productos?select=*&eliminado=eq.false&order=orden'),
+      pedir('productos?select=*,producto_imagenes(url,orden)&eliminado=eq.false&order=orden'),
       pedir('textos?select=clave,es,en'),
       pedir('configuracion?select=clave,valor'),
       pedir('coleccion_home?select=*&order=orden')

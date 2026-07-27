@@ -17,7 +17,16 @@
     'transition:transform .3s cubic-bezier(.22,.61,.36,1);}' +
     '.ipm-overlay.on .ipm-panel{transform:none;}' +
     '.ipm-media{position:relative;background:#EFE7D8;min-height:360px;}' +
-    '.ipm-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}' +
+    '.ipm-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;padding:18px;box-sizing:border-box;}' +
+    '.ipm-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:40px;height:40px;border-radius:50%;' +
+    'border:none;background:rgba(247,241,230,.9);color:#4B3621;font-size:24px;line-height:1;cursor:pointer;' +
+    'display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(60,44,28,.22);transition:background .25s;}' +
+    '.ipm-nav:hover{background:#E7D6B8;}' +
+    '.ipm-prev{left:12px;}.ipm-next{right:12px;}' +
+    '.ipm-dots{position:absolute;left:0;right:0;bottom:12px;z-index:3;display:flex;gap:7px;justify-content:center;}' +
+    '.ipm-dot{width:8px;height:8px;border-radius:50%;border:none;padding:0;background:rgba(75,54,33,.28);cursor:pointer;' +
+    'transition:background .25s,transform .25s;}' +
+    '.ipm-dot.on{background:#4B3621;transform:scale(1.25);}' +
     '.ipm-info{padding:clamp(26px,4vw,46px);overflow-y:auto;display:flex;flex-direction:column;}' +
     '.ipm-eye{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#9C7A50;margin-bottom:14px;}' +
     '.ipm-name{font-family:"Cormorant Garamond",serif;font-weight:400;font-size:clamp(28px,3.4vw,42px);' +
@@ -56,6 +65,7 @@
   };
 
   var overlay, elImg, elEye, elName, elSub, elDesc, elPrice, elNote, elAromas, elAdd, elWa, lastFocus, cur;
+  var elPrev, elNext, elDots, galImgs = [], galIdx = 0;
 
   function el(html) { var d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -66,7 +76,12 @@
       '<div class="ipm-overlay" role="dialog" aria-modal="true" aria-label="Detalle del producto">' +
       '<div class="ipm-panel">' +
       '  <button type="button" class="ipm-close" aria-label="Cerrar">&times;</button>' +
-      '  <div class="ipm-media"><img alt=""></div>' +
+      '  <div class="ipm-media">' +
+      '    <img alt="">' +
+      '    <button type="button" class="ipm-nav ipm-prev" aria-label="Imagen anterior">&lsaquo;</button>' +
+      '    <button type="button" class="ipm-nav ipm-next" aria-label="Imagen siguiente">&rsaquo;</button>' +
+      '    <div class="ipm-dots"></div>' +
+      '  </div>' +
       '  <div class="ipm-info">' +
       '    <div class="ipm-eye"></div>' +
       '    <h2 class="ipm-name"></h2>' +
@@ -83,6 +98,8 @@
       '</div></div>');
     document.body.appendChild(overlay);
     elImg = overlay.querySelector('.ipm-media img');
+    elPrev = overlay.querySelector('.ipm-prev'); elNext = overlay.querySelector('.ipm-next');
+    elDots = overlay.querySelector('.ipm-dots');
     elEye = overlay.querySelector('.ipm-eye'); elName = overlay.querySelector('.ipm-name');
     elSub = overlay.querySelector('.ipm-sub'); elDesc = overlay.querySelector('.ipm-desc');
     elPrice = overlay.querySelector('.ipm-price'); elNote = overlay.querySelector('.ipm-note');
@@ -92,7 +109,18 @@
     overlay.querySelector('.ipm-close').addEventListener('click', close);
     overlay.addEventListener('mousedown', function (e) { if (e.target === overlay) close(); });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && overlay.classList.contains('on')) close();
+      if (!overlay.classList.contains('on')) return;
+      if (e.key === 'Escape') { close(); return; }
+      if (galImgs.length > 1 && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+        galShow(galIdx + (e.key === 'ArrowRight' ? 1 : -1));
+      }
+    });
+    // Carrusel de imágenes del producto (flechas + puntitos).
+    elPrev.addEventListener('click', function () { galShow(galIdx - 1); });
+    elNext.addEventListener('click', function () { galShow(galIdx + 1); });
+    elDots.addEventListener('click', function (e) {
+      var d = e.target.closest('.ipm-dot'); if (!d) return;
+      var k = [].indexOf.call(elDots.children, d); if (k >= 0) galShow(k);
     });
     // Trampa de foco simple (Tab cicla entre los controles del modal).
     overlay.addEventListener('keydown', function (e) {
@@ -141,11 +169,43 @@
 
   function set(node, txt) { node.textContent = txt || ''; node.style.display = txt ? '' : 'none'; }
 
+  // ---- Carrusel ----
+  function galShow(i) {
+    if (!galImgs.length) return;
+    galIdx = (i + galImgs.length) % galImgs.length;
+    elImg.src = galImgs[galIdx];
+    var dots = elDots.children;
+    for (var k = 0; k < dots.length; k++) dots[k].classList.toggle('on', k === galIdx);
+  }
+  function galRender(imgs) {
+    galImgs = (imgs || []).filter(Boolean);
+    galIdx = 0;
+    var multi = galImgs.length > 1;
+    elPrev.style.display = multi ? '' : 'none';
+    elNext.style.display = multi ? '' : 'none';
+    elDots.style.display = multi ? '' : 'none';
+    elDots.innerHTML = multi
+      ? galImgs.map(function (_, k) { return '<button type="button" class="ipm-dot" aria-label="Imagen ' + (k + 1) + '"></button>'; }).join('')
+      : '';
+    galShow(0);
+  }
+
   function open(prod) {
     if (!overlay) build();
     cur = prod || {};
     lastFocus = document.activeElement;
-    elImg.src = cur.img || ''; elImg.alt = cur.name || '';
+    // Galería del producto: usamos cur.imgs si vino; si no, la buscamos en el
+    // catálogo global por id/slug; como último recurso, la imagen suelta.
+    var imgs = cur.imgs;
+    if ((!imgs || !imgs.length) && cur.id && window.INNOV_PRODUCTS) {
+      var full = window.INNOV_PRODUCTS.filter(function (p) {
+        return String(p.id) === String(cur.id) || String(p.slug) === String(cur.id);
+      })[0];
+      if (full) imgs = full.imgs;
+    }
+    if (!imgs || !imgs.length) imgs = cur.img ? [cur.img] : [];
+    elImg.alt = cur.name || '';
+    galRender(imgs);
     set(elEye, CATNOMBRE[cur.cat] || '');
     elName.textContent = cur.name || '';
     set(elSub, cur.sub || '');
