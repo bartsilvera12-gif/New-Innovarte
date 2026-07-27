@@ -49,6 +49,10 @@
         return true;
       }).sort(function (a, b) { return (a.orden || 0) - (b.orden || 0); });
     };
+    // Avisa a los componentes (catálogo, home…) que llegaron datos frescos, para
+    // que se re-rendericen — p. ej. las miniaturas de la tarjeta, que dependen de
+    // p.imgs y podían quedar sin dibujar si los datos llegaban después del render.
+    try { document.dispatchEvent(new Event('innov:data')); } catch (e) {}
     return true;
   }
 

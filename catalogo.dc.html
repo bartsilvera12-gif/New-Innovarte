@@ -10,7 +10,7 @@
 <meta property="og:description" content="Velas, aromas para el hogar, cerámicas decorativas y regalos, hechos a mano.">
 <meta property="og:type" content="website">
 <script src="supabase-config.js?v=2"></script>
-<script src="datos-remotos.js?v=6"></script>
+<script src="datos-remotos.js?v=7"></script>
 </head>
 <body>
 <x-dc>
@@ -176,6 +176,7 @@ class Component extends DCLogic {
     if(!window.INNOV_CATMAP){ if((this._t=(this._t||0)+1)<100){ setTimeout(()=>this.componentDidMount(),40); } return; }
     if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
     if(!this._langBound){ this._langBound=true; document.addEventListener('innov:lang', ()=>this.forceUpdate()); }
+    if(!this._dataBound){ this._dataBound=true; document.addEventListener('innov:data', ()=>this.forceUpdate()); }
     this.paintCrumbs(); this.syncChips();
     this.forceUpdate();
     this.openDeepLinkProduct();
