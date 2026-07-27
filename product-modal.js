@@ -16,16 +16,8 @@
     'grid-template-columns:1fr 1fr;transform:translateY(16px) scale(.98);' +
     'transition:transform .3s cubic-bezier(.22,.61,.36,1);}' +
     '.ipm-overlay.on .ipm-panel{transform:none;}' +
-    '.ipm-media{position:relative;background:#EFE7D8;min-height:360px;display:flex;}' +
-    '.ipm-stage{position:relative;flex:1 1 auto;min-width:0;}' +
-    '.ipm-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;padding:18px;box-sizing:border-box;}' +
-    '.ipm-thumbs{flex:0 0 auto;display:none;flex-direction:column;gap:8px;padding:14px 6px 14px 12px;overflow:auto;scrollbar-width:none;-ms-overflow-style:none;}' +
-    '.ipm-thumbs::-webkit-scrollbar{display:none;}' +
-    '.ipm-thumbs.on{display:flex;}' +
-    '.ipm-thumb{width:54px;height:54px;flex:0 0 auto;border-radius:8px;overflow:hidden;border:2px solid transparent;background:#F7F1E6;cursor:pointer;padding:0;box-shadow:0 3px 10px rgba(60,44,28,.16);transition:border-color .25s ease,transform .2s ease;}' +
-    '.ipm-thumb img{width:100%;height:100%;object-fit:cover;display:block;}' +
-    '.ipm-thumb.on{border-color:#4B3621;}' +
-    '.ipm-thumb:hover{transform:translateY(-1px);}' +
+    '.ipm-media{position:relative;background:#EFE7D8;min-height:360px;}' +
+    '.ipm-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;padding:18px;box-sizing:border-box;}' +
     '.ipm-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:40px;height:40px;border-radius:50%;' +
     'border:none;background:rgba(247,241,230,.9);color:#4B3621;font-size:24px;line-height:1;cursor:pointer;' +
     'display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(60,44,28,.22);transition:background .25s;}' +
@@ -64,10 +56,7 @@
     'transition:background .3s;}' +
     '.ipm-close:hover{background:#E7D6B8;}' +
     '@media (max-width:720px){.ipm-panel{grid-template-columns:1fr;max-height:92vh;overflow-y:auto;}' +
-    '.ipm-media{min-height:0;flex-direction:column-reverse;}' +
-    '.ipm-stage{aspect-ratio:4/3;width:100%;}' +
-    '.ipm-thumbs.on{flex-direction:row;padding:8px 12px 12px;overflow-x:auto;}' +
-    '.ipm-thumb{width:48px;height:48px;}}' +
+    '.ipm-media{min-height:0;aspect-ratio:4/3;}}' +
     '@media (prefers-reduced-motion:reduce){.ipm-overlay,.ipm-overlay .ipm-panel{transition:none;}}';
 
   var CATNOMBRE = {
@@ -83,7 +72,7 @@
   function catNombre(cat) { return (enOn() && CATNOMBRE_EN[cat]) ? CATNOMBRE_EN[cat] : (CATNOMBRE[cat] || ''); }
 
   var overlay, elImg, elEye, elName, elSub, elDesc, elPrice, elNote, elAromas, elAdd, elWa, lastFocus, cur;
-  var elPrev, elNext, elDots, elThumbs, elStage, galImgs = [], galIdx = 0, galToken = 0, galCache = {};
+  var elPrev, elNext, elDots, galImgs = [], galIdx = 0, galToken = 0, galCache = {};
 
   function el(html) { var d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -95,13 +84,10 @@
       '<div class="ipm-panel">' +
       '  <button type="button" class="ipm-close" aria-label="Cerrar">&times;</button>' +
       '  <div class="ipm-media">' +
-      '    <div class="ipm-thumbs" aria-label="Miniaturas"></div>' +
-      '    <div class="ipm-stage">' +
-      '      <img alt="">' +
-      '      <button type="button" class="ipm-nav ipm-prev" aria-label="Imagen anterior">&lsaquo;</button>' +
-      '      <button type="button" class="ipm-nav ipm-next" aria-label="Imagen siguiente">&rsaquo;</button>' +
-      '      <div class="ipm-dots"></div>' +
-      '    </div>' +
+      '    <img alt="">' +
+      '    <button type="button" class="ipm-nav ipm-prev" aria-label="Imagen anterior">&lsaquo;</button>' +
+      '    <button type="button" class="ipm-nav ipm-next" aria-label="Imagen siguiente">&rsaquo;</button>' +
+      '    <div class="ipm-dots"></div>' +
       '  </div>' +
       '  <div class="ipm-info">' +
       '    <div class="ipm-eye"></div>' +
@@ -121,7 +107,6 @@
     elImg = overlay.querySelector('.ipm-media img');
     elPrev = overlay.querySelector('.ipm-prev'); elNext = overlay.querySelector('.ipm-next');
     elDots = overlay.querySelector('.ipm-dots');
-    elThumbs = overlay.querySelector('.ipm-thumbs'); elStage = overlay.querySelector('.ipm-stage');
     elEye = overlay.querySelector('.ipm-eye'); elName = overlay.querySelector('.ipm-name');
     elSub = overlay.querySelector('.ipm-sub'); elDesc = overlay.querySelector('.ipm-desc');
     elPrice = overlay.querySelector('.ipm-price'); elNote = overlay.querySelector('.ipm-note');
@@ -143,10 +128,6 @@
     elDots.addEventListener('click', function (e) {
       var d = e.target.closest('.ipm-dot'); if (!d) return;
       var k = [].indexOf.call(elDots.children, d); if (k >= 0) galShow(k);
-    });
-    elThumbs.addEventListener('click', function (e) {
-      var b = e.target.closest('.ipm-thumb'); if (!b) return;
-      var k = parseInt(b.getAttribute('data-k'), 10); if (k >= 0) galShow(k);
     });
     // Trampa de foco simple (Tab cicla entre los controles del modal).
     overlay.addEventListener('keydown', function (e) {
@@ -200,9 +181,8 @@
     if (!galImgs.length) return;
     galIdx = (i + galImgs.length) % galImgs.length;
     elImg.src = galImgs[galIdx];
-    var th = elThumbs.children;
-    for (var k = 0; k < th.length; k++) th[k].classList.toggle('on', k === galIdx);
-    if (th[galIdx] && th[galIdx].scrollIntoView) { try { th[galIdx].scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) {} }
+    var dots = elDots.children;
+    for (var k = 0; k < dots.length; k++) dots[k].classList.toggle('on', k === galIdx);
   }
   function galRender(imgs) {
     galImgs = (imgs || []).filter(Boolean);
@@ -210,10 +190,9 @@
     var multi = galImgs.length > 1;
     elPrev.style.display = multi ? '' : 'none';
     elNext.style.display = multi ? '' : 'none';
-    elDots.style.display = 'none';   // las miniaturas reemplazan a los puntitos
-    elThumbs.classList.toggle('on', multi);
-    elThumbs.innerHTML = multi
-      ? galImgs.map(function (src, k) { return '<button type="button" class="ipm-thumb" data-k="' + k + '" aria-label="Imagen ' + (k + 1) + '"><img src="' + esc(src) + '" alt="" loading="lazy"></button>'; }).join('')
+    elDots.style.display = multi ? '' : 'none';
+    elDots.innerHTML = multi
+      ? galImgs.map(function (_, k) { return '<button type="button" class="ipm-dot" aria-label="Imagen ' + (k + 1) + '"></button>'; }).join('')
       : '';
     galShow(0);
   }
