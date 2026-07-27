@@ -484,6 +484,36 @@ insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imag
 values ('bandeja-flores-suculentas-verde', 'Bandeja de Suculentas', (select id from new_innovarte.categorias where slug='velas'), 'Velas suculentas y cactus · verde', 'uploads/bandeja-flores-suculentas-verde.jpg', 'decor', 69)
 on conflict (slug) do nothing;
 
+-- Cerámicas Decorativas (bandejas, cuencos, floreros y piezas)
+insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
+select v.slug, v.nombre, (select id from new_innovarte.categorias where slug='ceramica'), v.subtitulo, v.imagen, 'decor', v.orden
+from (values
+  ('ceramica-bandeja-rectangular','Bandeja Rectangular','Cerámica · marmolada','uploads/ceramica-bandeja-rectangular.jpg',1),
+  ('ceramica-bandeja-perlas','Bandeja Redonda con Perlas','Cerámica · borde de perlas','uploads/ceramica-bandeja-perlas.jpg',2),
+  ('ceramica-bandeja-barroca','Bandeja Barroca','Cerámica · borde dorado','uploads/ceramica-bandeja-barroca.jpg',3),
+  ('ceramica-bandeja-dorada','Bandeja Rectangular Dorada','Cerámica · vetas doradas','uploads/ceramica-bandeja-dorada.jpg',4),
+  ('ceramica-bandeja-triangular','Bandeja Triangular','Cerámica · marmolada','uploads/ceramica-bandeja-triangular.jpg',5),
+  ('ceramica-bandeja-ovalada','Bandeja Ovalada','Cerámica · tonos pastel','uploads/ceramica-bandeja-ovalada.jpg',6),
+  ('ceramica-cuenco-petalos','Cuenco Pétalos','Cerámica · marmolada','uploads/ceramica-cuenco-petalos.jpg',10),
+  ('ceramica-cuenco-flor','Cuenco Flor','Cerámica · vetas doradas','uploads/ceramica-cuenco-flor.jpg',11),
+  ('ceramica-cuenco-venera','Cuenco Concha Venera','Cerámica · forma de concha','uploads/ceramica-cuenco-venera.jpg',12),
+  ('ceramica-cuenco-corazon','Cuenco Corazón','Cerámica · colores pastel','uploads/ceramica-cuenco-corazon.jpg',13),
+  ('ceramica-cuenco-flor-petalos','Cuenco Flor Pétalos','Cerámica · colores pastel','uploads/ceramica-cuenco-flor-petalos.jpg',14),
+  ('ceramica-cuenco-redondo','Cuenco Redondo','Cerámica · tonos pastel','uploads/ceramica-cuenco-redondo.jpg',15),
+  ('ceramica-cuenco-estrella','Cuenco Estrella','Cerámica · tonos pastel','uploads/ceramica-cuenco-estrella.jpg',16),
+  ('ceramica-cuenco-caracol','Cuenco Caracol','Cerámica · forma de caracol','uploads/ceramica-cuenco-caracol.jpg',17),
+  ('ceramica-cuenco-concha','Cuenco Concha','Cerámica · forma de caracol','uploads/ceramica-cuenco-concha.jpg',18),
+  ('ceramica-cuenco-esfera','Cuenco Esfera','Cerámica · acabado mate','uploads/ceramica-cuenco-esfera.jpg',19),
+  ('ceramica-florero-rostro','Florero Rostro','Cerámica · escultórico','uploads/ceramica-florero-rostro.jpg',20),
+  ('ceramica-florero-rostro-sereno','Florero Rostro Sereno','Cerámica · escultórico','uploads/ceramica-florero-rostro-sereno.jpg',21),
+  ('ceramica-pieza-arco','Arco Decorativo','Cerámica · texturada','uploads/ceramica-pieza-arco.jpg',30),
+  ('ceramica-pieza-compotera','Compotera Zigzag','Cerámica · con pie','uploads/ceramica-pieza-compotera.jpg',31),
+  ('ceramica-pieza-jabonera-ondas','Jabonera Ondas','Cerámica · en ondas','uploads/ceramica-pieza-jabonera-ondas.jpg',32),
+  ('ceramica-pieza-joyero','Joyero Diamante','Cerámica · con tapa','uploads/ceramica-pieza-joyero.jpg',33),
+  ('ceramica-pieza-panuelera','Pañuelera Marmolada','Cerámica · porta pañuelos','uploads/ceramica-pieza-panuelera.jpg',34)
+) as v(slug,nombre,subtitulo,imagen,orden)
+on conflict (slug) do nothing;
+
 -- Bouquet (arreglos de velas flor)
 insert into new_innovarte.productos (slug, nombre, categoria_id, subtitulo, imagen, linea, orden)
 values ('bouquet-crema-corazon', 'Bouquet Crema con Corazón', (select id from new_innovarte.categorias where slug='velas'), 'Arreglo en caja', 'uploads/bouquet-crema-corazon.jpg', 'decor', 1)

@@ -188,6 +188,34 @@
     L('bandeja-flores-festoneada-marfil','Bandeja Festoneada Marfil',      'velas', 'Velas capullo marfil · bowl festoneado', 'bandeja-flores-festoneada-marfil.jpg'),
     L('bandeja-flores-suculentas-verde', 'Bandeja de Suculentas',          'velas', 'Velas suculentas y cactus · verde',      'bandeja-flores-suculentas-verde.jpg'),
 
+    // Cerámicas Decorativas — Bandejas
+    L('ceramica-bandeja-rectangular', 'Bandeja Rectangular',        'ceramica', 'Cerámica · marmolada',        'ceramica-bandeja-rectangular.jpg'),
+    L('ceramica-bandeja-perlas',      'Bandeja Redonda con Perlas', 'ceramica', 'Cerámica · borde de perlas',  'ceramica-bandeja-perlas.jpg'),
+    L('ceramica-bandeja-barroca',     'Bandeja Barroca',            'ceramica', 'Cerámica · borde dorado',     'ceramica-bandeja-barroca.jpg'),
+    L('ceramica-bandeja-dorada',      'Bandeja Rectangular Dorada', 'ceramica', 'Cerámica · vetas doradas',    'ceramica-bandeja-dorada.jpg'),
+    L('ceramica-bandeja-triangular',  'Bandeja Triangular',         'ceramica', 'Cerámica · marmolada',        'ceramica-bandeja-triangular.jpg'),
+    L('ceramica-bandeja-ovalada',     'Bandeja Ovalada',            'ceramica', 'Cerámica · tonos pastel',     'ceramica-bandeja-ovalada.jpg'),
+    // Cerámicas Decorativas — Cuencos
+    L('ceramica-cuenco-petalos',      'Cuenco Pétalos',             'ceramica', 'Cerámica · marmolada',        'ceramica-cuenco-petalos.jpg'),
+    L('ceramica-cuenco-flor',         'Cuenco Flor',                'ceramica', 'Cerámica · vetas doradas',    'ceramica-cuenco-flor.jpg'),
+    L('ceramica-cuenco-venera',       'Cuenco Concha Venera',       'ceramica', 'Cerámica · forma de concha',  'ceramica-cuenco-venera.jpg'),
+    L('ceramica-cuenco-corazon',      'Cuenco Corazón',             'ceramica', 'Cerámica · colores pastel',   'ceramica-cuenco-corazon.jpg'),
+    L('ceramica-cuenco-flor-petalos', 'Cuenco Flor Pétalos',        'ceramica', 'Cerámica · colores pastel',   'ceramica-cuenco-flor-petalos.jpg'),
+    L('ceramica-cuenco-redondo',      'Cuenco Redondo',             'ceramica', 'Cerámica · tonos pastel',     'ceramica-cuenco-redondo.jpg'),
+    L('ceramica-cuenco-estrella',     'Cuenco Estrella',            'ceramica', 'Cerámica · tonos pastel',     'ceramica-cuenco-estrella.jpg'),
+    L('ceramica-cuenco-caracol',      'Cuenco Caracol',             'ceramica', 'Cerámica · forma de caracol', 'ceramica-cuenco-caracol.jpg'),
+    L('ceramica-cuenco-concha',       'Cuenco Concha',              'ceramica', 'Cerámica · forma de caracol', 'ceramica-cuenco-concha.jpg'),
+    L('ceramica-cuenco-esfera',       'Cuenco Esfera',              'ceramica', 'Cerámica · acabado mate',     'ceramica-cuenco-esfera.jpg'),
+    // Cerámicas Decorativas — Floreros
+    L('ceramica-florero-rostro',        'Florero Rostro',           'ceramica', 'Cerámica · escultórico',      'ceramica-florero-rostro.jpg'),
+    L('ceramica-florero-rostro-sereno', 'Florero Rostro Sereno',    'ceramica', 'Cerámica · escultórico',      'ceramica-florero-rostro-sereno.jpg'),
+    // Cerámicas Decorativas — Piezas Decorativas
+    L('ceramica-pieza-arco',           'Arco Decorativo',           'ceramica', 'Cerámica · texturada',        'ceramica-pieza-arco.jpg'),
+    L('ceramica-pieza-compotera',      'Compotera Zigzag',          'ceramica', 'Cerámica · con pie',          'ceramica-pieza-compotera.jpg'),
+    L('ceramica-pieza-jabonera-ondas', 'Jabonera Ondas',            'ceramica', 'Cerámica · en ondas',         'ceramica-pieza-jabonera-ondas.jpg'),
+    L('ceramica-pieza-joyero',         'Joyero Diamante',           'ceramica', 'Cerámica · con tapa',         'ceramica-pieza-joyero.jpg'),
+    L('ceramica-pieza-panuelera',      'Pañuelera Marmolada',       'ceramica', 'Cerámica · porta pañuelos',   'ceramica-pieza-panuelera.jpg'),
+
     // Velas (colección artesanal previa)
     L('iv-flores-bandeja',   'Flores en Bandeja',        'velas', 'Colección Floral',    'WhatsApp Image 2026-07-20 at 13.32.07.jpeg'),
     // Aromatizadores
