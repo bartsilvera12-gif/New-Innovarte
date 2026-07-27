@@ -40,6 +40,11 @@
   .prodcard:hover .pm img { transform:scale(1.06); }
   .addbtn { transition:all .4s ease; }
   .addbtn:hover { background:#E7D6B8 !important; color:#4B3621 !important; border-color:#E7D6B8 !important; letter-spacing:.24em !important; }
+  .card-thumbs { display:flex; gap:7px; margin-top:11px; flex-wrap:wrap; }
+  .card-thumb { width:42px; height:42px; flex:0 0 auto; border-radius:7px; overflow:hidden; border:1.5px solid transparent; background:#F7F1E6; cursor:pointer; padding:0; transition:border-color .25s ease, transform .2s ease; }
+  .card-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+  .card-thumb.on { border-color:#4B3621; }
+  .card-thumb:hover { border-color:#C8A96A; transform:translateY(-1px); }
 
   /* Breadcrumbs */
   .crumbs { max-width:1320px; margin:0 auto; padding:20px 40px 0; }
@@ -139,6 +144,13 @@
           <sc-for list="{{ g.products }}" as="p" hint-placeholder-count="8">
             <div class="prodcard" style="display:flex; flex-direction:column;">
               <button type="button" class="pm" onClick="{{ openDetail }}" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" data-sub="{{ p.sub }}" data-desc="{{ p.desc }}" data-precio="{{ p.precio }}" data-cat="{{ p.cat }}" aria-label="Ver detalle de {{ p.name }}" style="aspect-ratio:1; overflow:hidden; background:#F7F1E6; border:none; padding:0; margin:0; width:100%; display:block; cursor:pointer;"><img src="{{ p.img }}" alt="{{ p.name }}" loading="lazy" style="width:100%; height:100%; object-fit:cover;"></button>
+              <sc-if value="{{ p.hasThumbs }}">
+                <div class="card-thumbs">
+                  <sc-for list="{{ p.thumbs }}" as="t" hint-placeholder-count="0">
+                    <button type="button" class="card-thumb" data-img="{{ t }}" onClick="{{ setCardImg }}" aria-label="Ver imagen"><img src="{{ t }}" alt="" loading="lazy"></button>
+                  </sc-for>
+                </div>
+              </sc-if>
               <button type="button" onClick="{{ openDetail }}" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" data-sub="{{ p.sub }}" data-desc="{{ p.desc }}" data-precio="{{ p.precio }}" data-cat="{{ p.cat }}" style="text-align:left; background:none; border:none; padding:0; margin:15px 0 0; cursor:pointer; font-family:'Cormorant Garamond',serif; font-size:22px; color:#4B3621;">{{ p.name }}</button>
               <div style="color:#7A6754; font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-top:4px;">{{ p.sub }}</div>
               <button class="addbtn" data-id="{{ p.id }}" data-name="{{ p.name }}" data-img="{{ p.img }}" onClick="{{ addToCart }}" style="margin-top:14px; background:#FFFDF7; border:1px solid rgba(200,169,106,.35); color:#4B3621; padding:12px 0; font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; border-radius:40px;" data-i18n="add">Añadir</button>
@@ -261,6 +273,22 @@ class Component extends DCLogic {
     return a; // 'novedades' = orden de la base (orden)
   }
 
+  /* Prepara los productos para la tarjeta: suma las miniaturas (imágenes
+     adicionales) cuando el producto tiene más de una imagen. */
+  cards(list){
+    return (list||[]).map(function(p){
+      var g = (p.imgs && p.imgs.length>1) ? p.imgs : [];
+      return Object.assign({}, p, { thumbs:g, hasThumbs:g.length>0 });
+    });
+  }
+
+  /* Click en una miniatura de la tarjeta: cambia la foto principal de ESA tarjeta. */
+  setCardImg=(e)=>{
+    var b=e.currentTarget, card=b.closest('.prodcard'); if(!card) return;
+    var img=card.querySelector('.pm img'); if(img) img.src=b.getAttribute('data-img');
+    card.querySelectorAll('.card-thumb').forEach(function(t){ t.classList.toggle('on', t===b); });
+  }
+
   addToCart=(e)=>{
     var b=e.currentTarget;
     if(window.InnovCart){ InnovCart.add(b.getAttribute('data-id'), b.getAttribute('data-name'), b.getAttribute('data-img')); InnovCart.openCart(); }
@@ -276,7 +304,7 @@ class Component extends DCLogic {
   }
 
   renderVals(){
-    var H={ setSub:this.setSub, setSort:this.setSort, addToCart:this.addToCart, openDetail:this.openDetail };
+    var H={ setSub:this.setSub, setSort:this.setSort, addToCart:this.addToCart, openDetail:this.openDetail, setCardImg:this.setCardImg };
     var catmap=window.INNOV_CATMAP, tax=window.INNOV_TAX||[];
     if(!catmap){ return Object.assign({ hasBanner:false, plainHeader:true, title:'Tienda', subtitle:'', subchips:[], groups:[], empty:false }, H); }
     var all=(window.INNOV_PRODUCTS||[]).filter(p=>(p.linea||'decor')==='decor');
@@ -288,7 +316,7 @@ class Component extends DCLogic {
       var res=this.sortList(all.filter(p=>((p.name||'')+' '+(p.sub||'')).toLowerCase().indexOf(q)>=0));
       return Object.assign({ hasBanner:false, plainHeader:true, title:this.tr('cat_results','Resultados'),
         subtitle:'“'+st.q+'” · '+res.length+' '+(res.length===1?this.tr('cat_prod_one','producto'):this.tr('cat_prod_many','productos')),
-        subchips:[], groups:[{ title:'', products:res }], empty:res.length===0 }, H);
+        subchips:[], groups:[{ title:'', products:this.cards(res) }], empty:res.length===0 }, H);
     }
 
     // --- Categoría ---
@@ -299,7 +327,7 @@ class Component extends DCLogic {
       prods=this.sortList(prods);
       var chips=[{slug:'all',name:this.tr('chip_all','Todo')}].concat((cd.subs||[]).map(function(s){return {slug:s.slug,name:self.nom(s)};}));
       return Object.assign({ hasBanner:true, plainHeader:false, bannerImg:m.img, bannerVideo:m.video||'', noBannerVideo:!m.video, title:this.nom(cd), subtitle:(window.INNOV_desc?window.INNOV_desc(cd):(cd.desc||'')),
-        subchips:chips, groups:[{ title:'', products:prods }], empty:prods.length===0 }, H);
+        subchips:chips, groups:[{ title:'', products:this.cards(prods) }], empty:prods.length===0 }, H);
     }
 
     // --- Tienda (todo): agrupado por categoría nueva ---
@@ -307,7 +335,7 @@ class Component extends DCLogic {
     tax.forEach(function(c){
       var mm=catmap[c.slug]; if(!mm || !mm.dbcats.length) return;
       var ps=all.filter(p=>mm.dbcats.indexOf(p.cat)>=0);
-      if(ps.length) groups.push({ title:self.nom(c), href:'catalogo.dc.html?cat='+c.slug, more:self.tr('more_cat','Ver categoría →'), products:ps.slice(0,8) });
+      if(ps.length) groups.push({ title:self.nom(c), href:'catalogo.dc.html?cat='+c.slug, more:self.tr('more_cat','Ver categoría →'), products:self.cards(ps.slice(0,8)) });
     });
     var total=groups.reduce((n,g)=>n+g.products.length,0);
     return Object.assign({ hasBanner:false, plainHeader:true, title:this.tr('shop_title','Tienda'), subtitle:this.tr('shop_sub','Explorá velas, aromas para el hogar, cerámicas y regalos — hechos a mano.'),
