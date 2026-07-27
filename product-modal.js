@@ -63,6 +63,13 @@
     velas: 'Velas', aromas: 'Aromas para el Hogar', aromatizadores: 'Aromas para el Hogar',
     ceramicas: 'Cerámicas Decorativas', ceramica: 'Cerámicas Decorativas', kits: 'Kits y Regalos'
   };
+  var CATNOMBRE_EN = {
+    velas: 'Candles', aromas: 'Home Fragrance', aromatizadores: 'Home Fragrance',
+    ceramicas: 'Decorative Ceramics', ceramica: 'Decorative Ceramics', kits: 'Gifts & Kits'
+  };
+  function T(k, es) { return (window.InnovI18N && InnovI18N.t) ? InnovI18N.t(k, es) : es; }
+  function enOn() { return !!(window.InnovI18N && InnovI18N.lang === 'en'); }
+  function catNombre(cat) { return (enOn() && CATNOMBRE_EN[cat]) ? CATNOMBRE_EN[cat] : (CATNOMBRE[cat] || ''); }
 
   var overlay, elImg, elEye, elName, elSub, elDesc, elPrice, elNote, elAromas, elAdd, elWa, lastFocus, cur;
   var elPrev, elNext, elDots, galImgs = [], galIdx = 0, galToken = 0, galCache = {};
@@ -145,7 +152,7 @@
       elAromas.querySelectorAll('.ipm-chip').forEach(function (c) { c.classList.remove('on'); c.setAttribute('aria-pressed', 'false'); });
       if (!was) { chip.classList.add('on'); chip.setAttribute('aria-pressed', 'true'); cur.aroma = chip.getAttribute('data-aroma') || ''; }
       else { cur.aroma = ''; }
-      elAdd.textContent = cur.aroma ? ('Añadir · ' + cur.aroma) : 'Añadir al carrito';
+      elAdd.textContent = cur.aroma ? ((enOn() ? 'Add' : 'Añadir') + ' · ' + cur.aroma) : T('modal_add', 'Añadir al carrito');
       elWa.href = waLink(cur.name, cur.aroma, cur.id);
     });
   }
@@ -235,22 +242,23 @@
     elImg.alt = cur.name || '';
     galRender(imgs);
     if (imgs.length <= 1 && cur.id) ensureGallery(cur.id, token);
-    set(elEye, CATNOMBRE[cur.cat] || '');
+    set(elEye, catNombre(cur.cat));
     elName.textContent = cur.name || '';
     set(elSub, cur.sub || '');
     set(elDesc, (cur.desc || '').trim());
     var precio = fmtPrecio(cur.precio);
     set(elPrice, precio);
-    set(elNote, precio ? '' : 'Consultá precio y disponibilidad por WhatsApp o agregando al carrito.');
+    set(elNote, precio ? '' : T('modal_note', 'Consultá precio y disponibilidad por WhatsApp o agregando al carrito.'));
     // Aromas disponibles (solo aromatizadores). La lista es editable desde el panel
     // y puede variar según la temporada; por eso se muestra la nota aclaratoria.
     var ar = (window.INNOV_CONTENT && window.INNOV_CONTENT.aromas) || window.INNOV_AROMAS || null;
     var esAroma = (cur.cat === 'aromatizadores' || cur.cat === 'aromas');
     cur.aroma = '';
-    elAdd.textContent = 'Añadir al carrito';
+    elAdd.textContent = T('modal_add', 'Añadir al carrito');
+    elWa.textContent = T('modal_wa', 'Consultar por WhatsApp');
     if (esAroma && ar && ar.items && ar.items.length) {
       elAromas.innerHTML =
-        '<div class="ipm-aromas-h">Elegí tu aroma</div>' +
+        '<div class="ipm-aromas-h">' + esc(T('modal_aroma_h', 'Elegí tu aroma')) + '</div>' +
         '<div class="ipm-aromas-chips">' +
           ar.items.map(function (a) { return '<button type="button" class="ipm-chip" data-aroma="' + esc(a) + '" aria-pressed="false">' + esc(a) + '</button>'; }).join('') +
         '</div>' +

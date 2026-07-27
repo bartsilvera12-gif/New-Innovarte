@@ -22,36 +22,62 @@ window.INNOV_waLink = function (texto) {
    filtrado:  catalogo.dc.html?cat=<slug>            (categoría completa)
               catalogo.dc.html?cat=<slug>&sub=<sub>  (subcategoría)          */
 window.INNOV_TAX = [
-  { slug:'velas', name:'Velas', desc:'Velas artesanales de cera de soja.', subs:[
-    { slug:'recipiente',  name:'Velas en recipiente' },
-    { slug:'decorativas', name:'Velas decorativas' },
-    { slug:'souvenir',    name:'Souvenir' },
-    { slug:'bouquets',    name:'Bouquets de velas' },
-    { slug:'especiales',  name:'Ediciones especiales' }
+  { slug:'velas', name:'Velas', en:'Candles', desc:'Velas artesanales de cera de soja.', enDesc:'Handcrafted soy wax candles.', subs:[
+    { slug:'recipiente',  name:'Velas en recipiente',  en:'Container candles' },
+    { slug:'decorativas', name:'Velas decorativas',    en:'Decorative candles' },
+    { slug:'souvenir',    name:'Souvenir',             en:'Party favors' },
+    { slug:'bouquets',    name:'Bouquets de velas',    en:'Candle bouquets' },
+    { slug:'especiales',  name:'Ediciones especiales', en:'Special editions' }
   ]},
-  { slug:'aromas', name:'Aromas para el Hogar', desc:'Fragancia para cada ambiente.', subs:[
-    { slug:'home-spray',           name:'Home Spray' },
-    { slug:'spray-textil',         name:'Spray Textil' },
-    { slug:'difusores-varillas',   name:'Difusores de Varillas' },
-    { slug:'difusores-auto',       name:'Difusores para Auto' },
-    { slug:'wax-melts',            name:'Wax Melts' },
-    { slug:'hornitos',             name:'Hornitos' },
-    { slug:'difusores-electricos', name:'Difusores Eléctricos' }
+  { slug:'aromas', name:'Aromas para el Hogar', en:'Home Fragrance', desc:'Fragancia para cada ambiente.', enDesc:'Fragrance for every room.', subs:[
+    { slug:'home-spray',           name:'Home Spray',            en:'Home Spray' },
+    { slug:'spray-textil',         name:'Spray Textil',          en:'Textile Spray' },
+    { slug:'difusores-varillas',   name:'Difusores de Varillas', en:'Reed Diffusers' },
+    { slug:'difusores-auto',       name:'Difusores para Auto',   en:'Car Diffusers' },
+    { slug:'wax-melts',            name:'Wax Melts',             en:'Wax Melts' },
+    { slug:'hornitos',             name:'Hornitos',              en:'Wax Warmers' },
+    { slug:'difusores-electricos', name:'Difusores Eléctricos',  en:'Electric Diffusers' }
   ]},
-  { slug:'ceramicas', name:'Cerámicas Decorativas', desc:'Piezas decorativas hechas a mano.', subs:[
-    { slug:'bandejas',   name:'Bandejas' },
-    { slug:'cuencos',    name:'Cuencos' },
-    { slug:'floreros',   name:'Floreros' },
-    { slug:'portavelas', name:'Portavelas' },
-    { slug:'piezas',     name:'Piezas Decorativas' }
+  { slug:'ceramicas', name:'Cerámicas Decorativas', en:'Decorative Ceramics', desc:'Piezas decorativas hechas a mano.', enDesc:'Handmade decorative pieces.', subs:[
+    { slug:'bandejas',   name:'Bandejas',           en:'Trays' },
+    { slug:'cuencos',    name:'Cuencos',            en:'Bowls' },
+    { slug:'floreros',   name:'Floreros',           en:'Vases' },
+    { slug:'portavelas', name:'Portavelas',         en:'Candle holders' },
+    { slug:'piezas',     name:'Piezas Decorativas', en:'Decorative pieces' }
   ]},
-  { slug:'kits', name:'Kits y Regalos', desc:'Regalos listos y personalizados.', subs:[
-    { slug:'kits-velas',             name:'Kits de velas' },
-    { slug:'kits-aromas',            name:'Kits de aromas' },
-    { slug:'kits-ceramica',          name:'Kits de cerámica' },
-    { slug:'regalos-personalizados', name:'Regalos personalizados' }
+  { slug:'kits', name:'Kits y Regalos', en:'Gifts & Kits', desc:'Regalos listos y personalizados.', enDesc:'Ready-made and custom gifts.', subs:[
+    { slug:'kits-velas',             name:'Kits de velas',          en:'Candle kits' },
+    { slug:'kits-aromas',            name:'Kits de aromas',         en:'Fragrance kits' },
+    { slug:'kits-ceramica',          name:'Kits de cerámica',       en:'Ceramic kits' },
+    { slug:'regalos-personalizados', name:'Regalos personalizados', en:'Custom gifts' }
   ]}
 ];
+
+/* Diccionario slug→inglés armado desde la taxonomía por defecto. Sirve para que
+   las subcategorías conserven su traducción aunque el panel (INNOV_SUBS_DB) las
+   reemplace por objetos sin campo `en`. */
+window.INNOV_EN_BY_SLUG = (function () {
+  var m = {};
+  (window.INNOV_TAX || []).forEach(function (c) {
+    if (c.en) m[c.slug] = c.en;
+    (c.subs || []).forEach(function (s) { if (s.en) m[s.slug] = s.en; });
+  });
+  return m;
+})();
+
+/* Nombre / descripción de una categoría o subcategoría según el idioma actual
+   (cae al español si no hay traducción). La usan SiteNav, el catálogo y la home. */
+window.INNOV_nom = function (item) {
+  if (!item) return '';
+  if (window.InnovI18N && InnovI18N.lang === 'en') {
+    return item.en || (window.INNOV_EN_BY_SLUG || {})[item.slug] || item.name || '';
+  }
+  return item.name || '';
+};
+window.INNOV_desc = function (item) {
+  if (!item) return '';
+  return (window.InnovI18N && InnovI18N.lang === 'en' && item.enDesc) ? item.enDesc : (item.desc || '');
+};
 
 /* Enlaces del menú que no son categorías de tienda (se mantienen a pedido). */
 window.INNOV_NAV_EXTRA = [

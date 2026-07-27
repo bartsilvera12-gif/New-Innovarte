@@ -22,6 +22,13 @@ window.InnovI18N = {
     occ_bday: "Birthdays", occ_wed: "Weddings", occ_event: "Events", occ_corp: "Corporate", occ_dates: "Special dates",
     pers_wa: "Request a custom gift",
     catpg_eye2: "Collection", sort_by: "Sort", sort_new: "Newest", sort_az: "Name A–Z", cat_empty_cta: "View full shop",
+    crumb_home: "Home", crumb_shop: "Shop", crumb_search: "Search", chip_all: "All",
+    cat_results: "Results", cat_prod_one: "product", cat_prod_many: "products",
+    shop_title: "Shop", shop_sub: "Explore candles, home fragrance, ceramics and gifts — handmade.",
+    more_cat: "View category →", view_all: "View all →",
+    modal_note: "Check price and availability on WhatsApp or by adding to cart.",
+    modal_aroma_h: "Choose your scent", modal_add: "Add to cart", modal_wa: "Ask on WhatsApp",
+    modal_aroma_nota_fb: "Available scents may vary by season. Ask us for current availability on WhatsApp.",
 
     hero_eye: "Artisan design for the home",
     hero_h1: "We inspire homes with<br>design, scent &amp; art", hero_h1b: "We inspire homes with design, scent and art",
@@ -101,6 +108,7 @@ window.InnovI18N = {
     gal_follow: "Follow on Instagram"
   },
   apply: function (lang) {
+    var changed = (this.lang !== lang);
     this.lang = lang;
     try { localStorage.setItem('innov_lang', lang); } catch (e) {}
     var self = this;
@@ -123,6 +131,10 @@ window.InnovI18N = {
       var pair = el.getAttribute('data-i18n-ph').split('|');
       el.setAttribute('placeholder', lang === 'en' ? pair[1] : pair[0]);
     });
+    // Aviso para el contenido generado por JS (nav, catálogo, modal): que se
+    // re-renderice con el idioma nuevo. Solo cuando el idioma REALMENTE cambia,
+    // para no entrar en bucle con los componentes que re-aplican i18n al render.
+    if (changed) { try { document.dispatchEvent(new CustomEvent('innov:lang', { detail: lang })); } catch (e) {} }
   },
   toggle: function () { this.apply(this.lang === 'es' ? 'en' : 'es'); },
   t: function (k, es) {

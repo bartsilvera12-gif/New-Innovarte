@@ -11,9 +11,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="site-config.js?v=9"></script>
+<script src="site-config.js?v=10"></script>
 <script src="cart-store.js"></script>
-<script src="i18n.js"></script>
+<script src="i18n.js?v=3"></script>
 <style>
   .innav a { font-family:'Jost',sans-serif; }
   .ann-inner { display:block; text-align:center; font-size:11.5px; letter-spacing:.26em; padding:11px 20px; }
@@ -279,11 +279,12 @@ class Component extends DCLogic {
   componentDidUpdate(){ this.sync(); if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang); }
 
   esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  tr(k,es){ return (window.InnovI18N&&InnovI18N.t)?InnovI18N.t(k,es):es; }
+  nom(it){ return window.INNOV_nom?window.INNOV_nom(it):((it&&it.name)||''); }
   caretSvg(){ return '<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>'; }
 
   /* Construye el menú de escritorio y el acordeón móvil desde site-config.js. */
   buildMenus(){
-    if(this._menusBuilt) return;
     // site-config.js llega por el <helmet> y puede cargar despues del mount:
     // reintentamos hasta que INNOV_TAX este disponible.
     if(!(window.INNOV_TAX && window.INNOV_TAX.length)){
@@ -291,8 +292,15 @@ class Component extends DCLogic {
       if(this._menuTries<80) setTimeout(()=>this.buildMenus(), 40);
       return;
     }
-    this._menusBuilt=true;
-    const tax=window.INNOV_TAX||[], extra=window.INNOV_NAV_EXTRA||[], esc=this.esc.bind(this);
+    // Re-pintar el menú al cambiar de idioma (los nombres salen de INNOV_TAX).
+    if(!this._langBound){ this._langBound=true; document.addEventListener('innov:lang', ()=>this.paintMenus()); }
+    this.paintMenus();
+  }
+
+  /* Pinta el menú de escritorio y el acordeón móvil en el idioma actual.
+     Re-ejecutable: se vuelve a llamar al cambiar de idioma. */
+  paintMenus(){
+    const tax=window.INNOV_TAX||[], extra=window.INNOV_NAV_EXTRA||[], esc=this.esc.bind(this), self=this;
 
     // --- Escritorio ---
     const d=document.querySelector('[data-desktop-menu]');
@@ -300,10 +308,10 @@ class Component extends DCLogic {
       let html='<a class="navlink" href="index.html" data-i18n="nav_home">Inicio</a>';
       tax.forEach(c=>{
         html+='<div class="nav-item">'+
-          '<a class="navlink" href="catalogo.dc.html?cat='+esc(c.slug)+'">'+esc(c.name)+this.caretSvg()+'</a>'+
+          '<a class="navlink" href="catalogo.dc.html?cat='+esc(c.slug)+'">'+esc(self.nom(c))+this.caretSvg()+'</a>'+
           '<div class="dropdown">'+
-            c.subs.map(s=>'<a href="catalogo.dc.html?cat='+esc(c.slug)+'&sub='+esc(s.slug)+'">'+esc(s.name)+'</a>').join('')+
-            '<a class="dd-all" href="catalogo.dc.html?cat='+esc(c.slug)+'">Ver todo →</a>'+
+            c.subs.map(s=>'<a href="catalogo.dc.html?cat='+esc(c.slug)+'&sub='+esc(s.slug)+'">'+esc(self.nom(s))+'</a>').join('')+
+            '<a class="dd-all" href="catalogo.dc.html?cat='+esc(c.slug)+'">'+esc(self.tr('view_all','Ver todo →'))+'</a>'+
           '</div></div>';
       });
       extra.forEach(e=>{ html+='<a class="navlink" href="'+esc(e.href)+'"'+(e.i18n?' data-i18n="'+esc(e.i18n)+'"':'')+'>'+esc(e.name)+'</a>'; });
@@ -316,10 +324,10 @@ class Component extends DCLogic {
       let html='<a class="mp-link" href="index.html" data-i18n="nav_home">Inicio</a>';
       tax.forEach(c=>{
         html+='<div class="acc">'+
-          '<button class="acc-head" type="button" data-acc>'+esc(c.name)+this.caretSvg()+'</button>'+
+          '<button class="acc-head" type="button" data-acc>'+esc(self.nom(c))+this.caretSvg()+'</button>'+
           '<div class="acc-body"><div class="acc-body-inner">'+
-            c.subs.map(s=>'<a href="catalogo.dc.html?cat='+esc(c.slug)+'&sub='+esc(s.slug)+'">'+esc(s.name)+'</a>').join('')+
-            '<a class="acc-all" href="catalogo.dc.html?cat='+esc(c.slug)+'">Ver todo</a>'+
+            c.subs.map(s=>'<a href="catalogo.dc.html?cat='+esc(c.slug)+'&sub='+esc(s.slug)+'">'+esc(self.nom(s))+'</a>').join('')+
+            '<a class="acc-all" href="catalogo.dc.html?cat='+esc(c.slug)+'">'+esc(self.tr('view_all','Ver todo →'))+'</a>'+
           '</div></div></div>';
       });
       extra.forEach(e=>{ html+='<a class="mp-link" href="'+esc(e.href)+'"'+(e.i18n?' data-i18n="'+esc(e.i18n)+'"':'')+'>'+esc(e.name)+'</a>'; });
@@ -333,7 +341,8 @@ class Component extends DCLogic {
       });
     }
     // Enlaces de WhatsApp (misma config; ya cargó con INNOV_TAX).
-    var waTxt='¡Hola! Quiero hacer una consulta sobre sus productos.';
+    var enWa=(window.InnovI18N&&InnovI18N.lang==='en');
+    var waTxt=enWa?'Hello! I have a question about your products.':'¡Hola! Quiero hacer una consulta sobre sus productos.';
     var waHref=(window.INNOV_waLink ? window.INNOV_waLink(waTxt) : '#');
     document.querySelectorAll('[data-wa-link]').forEach(function(a){ a.setAttribute('href', waHref); });
     if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
