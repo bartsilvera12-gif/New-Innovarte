@@ -12,7 +12,7 @@
    ============================================================================ */
 (function () {
   var CFG    = window.INNOV_SB || {};
-  var CACHE  = 'innov_datos_v1';
+  var CACHE  = 'innov_datos_v2';   // v2: incluye la galería de imágenes por producto
   var LIMITE = 2500;                 // ms máximos de espera
   var arrancado = false;
 
@@ -135,6 +135,10 @@
   if (hayCache) {
     arrancar();                                   // apertura instantánea
     traer().then(function (d) {                   // y refresco en segundo plano
+      // Volcamos también los datos frescos en memoria: así el modal y demás
+      // ayudantes ven lo último (p. ej. la galería de imágenes) sin necesidad
+      // de recargar la página una segunda vez.
+      aplicar(d);
       try { sessionStorage.setItem(CACHE, JSON.stringify(d)); } catch (e) {}
     }).catch(function () {});
     return;
