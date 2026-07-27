@@ -70,6 +70,19 @@
   .search-form input:focus { border-color:#C8A96A; }
   @media (prefers-reduced-motion: reduce) { .search-bar { transition:none !important; } }
 
+  /* Buscador inteligente (dropdown de sugerencias, estilo instantáneo) */
+  .ss-box { position:fixed; z-index:200; background:#FFFDF7; border:1px solid rgba(200,169,106,.35); border-radius:12px; box-shadow:0 26px 50px -20px rgba(75,54,33,.5); padding:8px; max-height:min(440px,70vh); overflow-y:auto; }
+  .ss-item { display:flex; gap:12px; align-items:center; width:100%; text-align:left; background:none; border:none; padding:9px 10px; border-radius:8px; cursor:pointer; font-family:'Jost',sans-serif; transition:background .2s ease; }
+  .ss-item:hover, .ss-item.on { background:#F3EEE6; }
+  .ss-thumb { width:46px; height:46px; border-radius:6px; overflow:hidden; flex-shrink:0; background:#F7F1E6; }
+  .ss-thumb img { width:100%; height:100%; object-fit:cover; }
+  .ss-txt { display:flex; flex-direction:column; min-width:0; }
+  .ss-name { font-family:'Cormorant Garamond',serif; font-size:17px; color:#4B3621; line-height:1.15; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ss-cat { font-size:11px; letter-spacing:.06em; color:#9C7A50; text-transform:uppercase; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ss-all { display:block; text-align:center; padding:12px; margin-top:4px; border-top:1px solid rgba(200,169,106,.2); color:#9C7A50; font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; }
+  .ss-all:hover { color:#4B3621; }
+  .ss-empty { padding:22px; text-align:center; color:#7A6754; font-size:13.5px; font-weight:300; }
+
   /* --- Barra fija que se achica al desplazar --- */
   /* Evita que el scroll-anchoring del navegador reajuste el scroll cuando la
      barra cambia de altura al encoger — eso realimentaba el parpadeo. */
@@ -180,7 +193,7 @@
     </div>
     <div class="mp-scroll">
       <form class="mp-search" data-search-form action="catalogo.dc.html" method="get" role="search">
-        <input type="search" name="q" placeholder="Buscar…" aria-label="Buscar productos">
+        <input type="search" name="q" data-search-input placeholder="Buscar…" aria-label="Buscar productos">
         <button type="submit" class="icon-btn" style="background:none; border:1px solid rgba(200,169,106,.4); border-radius:22px; padding:0 14px; cursor:pointer; color:#4B3621;" aria-label="Buscar">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
         </button>
@@ -258,6 +271,7 @@ class Component extends DCLogic {
 
     this.buildMenus();
     this.wireExtras();
+    this.setupSmartSearch();
 
     this._shrunk=false;
     this._onNavScroll=()=>{
@@ -365,6 +379,94 @@ class Component extends DCLogic {
     });
     // Cerrar el buscador con Escape.
     document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && bar) bar.classList.remove('open'); });
+  }
+
+  /* Buscador inteligente: sugerencias instantáneas con foto mientras se escribe.
+     Un único dropdown (posición fija) que sirve al buscador de escritorio y al móvil.
+     Enter con una sugerencia marcada abre ese producto; Enter sin marcar va a la
+     página de resultados (?q=). Al hacer click en una sugerencia abre el modal. */
+  setupSmartSearch(){
+    if(this._ssWired) return; this._ssWired=true;
+    var esc=this.esc;
+    var box=document.createElement('div');
+    box.className='ss-box'; box.setAttribute('role','listbox'); box.style.display='none';
+    document.body.appendChild(box);
+    var active=-1, curInput=null;
+    var CAT={ velas:'Velas', aromatizadores:'Aromas para el Hogar', ceramica:'Cerámicas Decorativas', kits:'Kits y Regalos' };
+
+    function norm(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+    function buscar(q){
+      q=norm(q).trim(); if(q.length<2) return [];
+      var terms=q.split(/\s+/);
+      var prods=(window.INNOV_PRODUCTS||[]).filter(function(p){ return (p.linea||'decor')==='decor'; });
+      var out=[];
+      prods.forEach(function(p){
+        var hay=norm((p.name||'')+' '+(p.sub||'')+' '+(CAT[p.cat]||p.cat||''));
+        if(terms.every(function(t){ return hay.indexOf(t)>=0; })){
+          var nm=norm(p.name||'');
+          out.push({ p:p, score: nm.indexOf(q)===0?0:(nm.indexOf(q)>=0?1:2) });
+        }
+      });
+      out.sort(function(a,b){ return a.score-b.score; });
+      return out.slice(0,7).map(function(x){ return x.p; });
+    }
+    function hide(){ box.style.display='none'; active=-1; }
+    function position(input){
+      var r=input.getBoundingClientRect(), w=Math.max(r.width,260);
+      var left=Math.max(12, Math.min(r.left, window.innerWidth-w-12));
+      box.style.left=left+'px'; box.style.top=(r.bottom+6)+'px'; box.style.width=w+'px';
+    }
+    function render(list, q){
+      if(!list.length){ box.innerHTML='<div class="ss-empty">Sin resultados para “'+esc(q)+'”</div>'; return; }
+      box.innerHTML=list.map(function(p){
+        var cat=CAT[p.cat]||p.cat||'';
+        return '<button type="button" class="ss-item" data-slug="'+esc(p.id)+'" role="option">'+
+          '<span class="ss-thumb"><img src="'+esc(p.img)+'" alt="" loading="lazy"></span>'+
+          '<span class="ss-txt"><span class="ss-name">'+esc(p.name)+'</span>'+
+          '<span class="ss-cat">'+esc(cat)+(p.sub?' · '+esc(p.sub):'')+'</span></span>'+
+        '</button>';
+      }).join('')+'<a class="ss-all" href="catalogo.dc.html?q='+encodeURIComponent(q)+'">Ver todos los resultados →</a>';
+    }
+    function abrir(slug){
+      var p=(window.INNOV_PRODUCTS||[]).filter(function(x){ return String(x.id)===slug; })[0];
+      hide();
+      if(p && window.InnovProductModal){ InnovProductModal.open({ id:p.id, name:p.name, img:p.img, sub:p.sub, desc:p.desc, precio:p.precio, cat:p.cat }); }
+      else { location.href='catalogo.dc.html?producto='+encodeURIComponent(slug); }
+    }
+    function highlight(){
+      var items=box.querySelectorAll('.ss-item');
+      items.forEach(function(it,i){ it.classList.toggle('on', i===active); });
+      if(active>=0 && items[active]) items[active].scrollIntoView({ block:'nearest' });
+    }
+
+    box.addEventListener('mousedown', function(e){
+      var all=e.target.closest('.ss-all');
+      if(all){ e.preventDefault(); location.href=all.getAttribute('href'); return; }
+      var it=e.target.closest('.ss-item'); if(!it) return;
+      e.preventDefault(); abrir(it.getAttribute('data-slug'));
+    });
+
+    Array.prototype.slice.call(document.querySelectorAll('[data-search-input]')).forEach(function(input){
+      var t=null;
+      function run(){
+        if(norm(input.value).trim().length<2){ hide(); return; }
+        active=-1; curInput=input;
+        render(buscar(input.value), input.value.trim()); position(input); box.style.display='block';
+      }
+      input.addEventListener('input', function(){ clearTimeout(t); t=setTimeout(run,110); });
+      input.addEventListener('focus', function(){ if(input.value.trim().length>=2) run(); });
+      input.addEventListener('blur', function(){ setTimeout(hide,150); });
+      input.addEventListener('keydown', function(e){
+        if(box.style.display==='none') return;
+        var items=box.querySelectorAll('.ss-item');
+        if(e.key==='ArrowDown'){ e.preventDefault(); active=Math.min(active+1, items.length-1); highlight(); }
+        else if(e.key==='ArrowUp'){ e.preventDefault(); active=Math.max(active-1,-1); highlight(); }
+        else if(e.key==='Enter'){ if(active>=0 && items[active]){ e.preventDefault(); abrir(items[active].getAttribute('data-slug')); } }
+        else if(e.key==='Escape'){ hide(); }
+      });
+    });
+    window.addEventListener('scroll', function(){ if(box.style.display!=='none' && curInput) position(curInput); }, { passive:true });
+    window.addEventListener('resize', function(){ if(box.style.display!=='none' && curInput) position(curInput); });
   }
 
   sync(){
