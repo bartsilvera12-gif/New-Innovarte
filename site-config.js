@@ -118,7 +118,7 @@ window.INNOV_CATMAP = {
   aromas: {
     dbcats: ['aromatizadores'],
     img: 'uploads/difusor-varillas-natural.jpg',
-    video: 'uploads/innovarte_home_spray_7s.mp4',   // banner animado (autoplay/loop); img queda de fallback
+    // video: 'uploads/innovarte_home_spray_7s.mp4',   // OCULTO a pedido — descomentar para reactivar el banner animado
     sub: function (p) {
       if (p && p.subcat) return p.subcat;   // sub-sección elegida en el panel manda
       var s = String(p.slug || p.id || ''), t = (s + ' ' + (p.sub || '')).toLowerCase();
