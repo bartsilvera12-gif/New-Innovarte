@@ -54,7 +54,7 @@
         href: 'catalogo.dc.html#aromatizadores' },
 
       { id: 'ceramica', order: 3, active: true,
-        title: 'Cerámica', subtitle: 'Piezas decorativas hechas a mano',
+        title: 'Cerámica Decorativa', subtitle: 'Piezas decorativas hechas a mano',
         video: U + 'WhatsApp Video 2026-07-20 at 13.32.11.mp4', videoMobile: '',
         poster: U + 'WhatsApp Image 2026-07-20 at 13.32.07.jpeg',
         href: 'catalogo.dc.html#ceramica' },
