@@ -12,7 +12,7 @@
    ============================================================================ */
 (function () {
   var CFG    = window.INNOV_SB || {};
-  var CACHE  = 'innov_datos_v2';   // v2: incluye la galería de imágenes por producto
+  var CACHE  = 'innov_datos_v3';   // v3: fuerza recarga (nuevos productos de Kits y Regalos)
   var LIMITE = 2500;                 // ms máximos de espera
   var arrancado = false;
 

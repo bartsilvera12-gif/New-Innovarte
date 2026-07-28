@@ -45,7 +45,7 @@ window.INNOV_TAX = [
     { slug:'portavelas', name:'Portavelas',         en:'Candle holders' },
     { slug:'piezas',     name:'Piezas Decorativas', en:'Decorative pieces' }
   ]},
-  { slug:'kits', name:'Kits y Regalos', en:'Gifts & Kits', desc:'Regalos listos y personalizados.', enDesc:'Ready-made and custom gifts.', subs:[
+  { slug:'kits', name:'Kit Decorativo', en:'Decorative Kit', desc:'Regalos listos y personalizados.', enDesc:'Ready-made and custom gifts.', subs:[
     { slug:'kits-velas',             name:'Kits de velas',          en:'Candle kits' },
     { slug:'kits-aromas',            name:'Kits de aromas',         en:'Fragrance kits' },
     { slug:'kits-ceramica',          name:'Kits de cerámica',       en:'Ceramic kits' },
