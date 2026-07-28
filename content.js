@@ -60,7 +60,7 @@
         href: 'catalogo.dc.html#ceramica' },
 
       { id: 'concreto', order: 4, active: true,
-        title: 'Concreto decorativo', subtitle: 'Diseño sobrio para tu hogar',
+        title: 'Kits de Regalos', subtitle: 'Diseño sobrio para tu hogar',
         video: U + 'WhatsApp Video 2026-07-20 at 13.32.13.mp4', videoMobile: '',
         poster: U + 'WhatsApp Image 2026-07-20 at 13.32.02.jpeg',
         href: 'catalogo.dc.html#concreto' }
