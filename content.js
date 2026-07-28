@@ -55,7 +55,7 @@
 
       { id: 'ceramica', order: 3, active: true,
         title: 'Cerámica Decorativa', subtitle: 'Piezas decorativas hechas a mano',
-        video: U + 'WhatsApp Video 2026-07-20 at 13.32.11.mp4', videoMobile: '',
+        video: U + 'WhatsApp Video 2026-07-20 at 13.32.13.mp4', videoMobile: '',
         poster: U + 'WhatsApp Image 2026-07-20 at 13.32.07.jpeg',
         href: 'catalogo.dc.html#ceramica' },
 
