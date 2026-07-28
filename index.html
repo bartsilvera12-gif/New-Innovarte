@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="responsive.css">
 <script src="cart-store.js?v=3"></script>
 <script src="product-modal.js?v=8"></script>
-<script src="i18n.js?v=3"></script>
+<script src="i18n.js?v=4"></script>
 <script src="image-slot.js"></script>
 <script src="products.js?v=3"></script>
 <script src="content.js?v=8"></script>
@@ -344,6 +344,9 @@ class Component extends DCLogic {
     this.initColeccion();
     this.initAboutVideo();
     if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
+    // Al cambiar de idioma, re-renderizamos para traducir el contenido dinámico
+    // (tarjetas de colección y destacadas), que no pasa por [data-i18n].
+    if(!this._langBound){ this._langBound=true; document.addEventListener('innov:lang', ()=>this.forceUpdate()); }
     this._io = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{ if(e.isIntersecting){ e.target.style.opacity='1'; e.target.style.transform='none'; this._io.unobserve(e.target); } });
     },{ threshold:0.12, rootMargin:'0px 0px -6% 0px' });
@@ -352,6 +355,15 @@ class Component extends DCLogic {
       el.style.transition='opacity 1s cubic-bezier(.22,.61,.36,1) '+((i%4)*0.07)+'s, transform 1s cubic-bezier(.22,.61,.36,1) '+((i%4)*0.07)+'s';
       this._io.observe(el);
     });
+  }
+
+  componentDidUpdate(){
+    // Tras re-renderizar (cambio de idioma), retraducimos el HTML estático y
+    // reiniciamos los videos, que se enganchan por JS y no por plantilla.
+    if(window.InnovI18N) InnovI18N.apply(InnovI18N.lang);
+    this.initHeroVideo();
+    this.initColeccion();
+    this.initAboutVideo();
   }
 
   initHeroVideo(){
@@ -430,14 +442,27 @@ class Component extends DCLogic {
                   ceramica:'ceramicas', ceramicas:'ceramicas', concreto:'ceramicas', kits:'kits' };
       return 'catalogo.dc.html?cat=' + (m[String(id)] || id);
     };
+    // Idioma actual: para traducir el contenido dinámico (tarjetas de colección y
+    // destacadas) que no pasa por el diccionario [data-i18n].
+    const en = !!(window.InnovI18N && InnovI18N.lang === 'en');
     // Colecciones destacadas → cada una abre la sub-sección de Velas que la representa
     const promos = [
-      { title:'Rosa Serena', desc:'Aroma a rosas, peonías y vainilla suave.', img:'uploads/velas-peonia.jpg', alt:'Velas peonía color crema — Rosa Serena', href:'catalogo.dc.html?cat=velas&sub=decorativas' },
-      { title:'Dulce Amanecer', desc:'Aroma a frutos rojos, jazmín y crema.', img:'uploads/velas-vidrio-flor.jpg', alt:'Vela en recipiente de vidrio color crema — Dulce Amanecer', href:'catalogo.dc.html?cat=velas&sub=velas-en-vidrio' },
-      { title:'Jardín Rosado', desc:'Aroma a flores frescas, bergamota y sándalo.', img:'uploads/bouquet-marfil.jpg', alt:'Bouquet de tulipanes color marfil — Jardín Rosado', href:'catalogo.dc.html?cat=velas&sub=bouquets' }
+      { title:'Rosa Serena', desc: en?'Notes of rose, peony and soft vanilla.':'Aroma a rosas, peonías y vainilla suave.', img:'uploads/velas-peonia.jpg', alt:'Velas peonía color crema — Rosa Serena', href:'catalogo.dc.html?cat=velas&sub=decorativas' },
+      { title:'Dulce Amanecer', desc: en?'Notes of red fruits, jasmine and cream.':'Aroma a frutos rojos, jazmín y crema.', img:'uploads/velas-vidrio-flor.jpg', alt:'Vela en recipiente de vidrio color crema — Dulce Amanecer', href:'catalogo.dc.html?cat=velas&sub=velas-en-vidrio' },
+      { title:'Jardín Rosado', desc: en?'Notes of fresh flowers, bergamot and sandalwood.':'Aroma a flores frescas, bergamota y sándalo.', img:'uploads/bouquet-marfil.jpg', alt:'Bouquet de tulipanes color marfil — Jardín Rosado', href:'catalogo.dc.html?cat=velas&sub=bouquets' }
     ];
     const velas = (window.INNOV_PRODUCTS||[]).filter(p=>p.cat==='velas').slice(0,14);
-    const coleccion = ((window.INNOV_CONTENT&&window.INNOV_CONTENT.coleccion)||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0)).map(function(c){ var isGif=/\.gif$/i.test(c.video||''); return Object.assign({}, c, { href: catUrl(c.id), vpos: (c.id==='velas' ? '85% center' : 'center'), isGif: isGif, notGif: !isGif }); });
+    // Traducción EN de las 4 tarjetas de "Nuestra colección" (por id de tarjeta).
+    var EN_COL = {
+      velas:          { title:'Handcrafted Candles', subtitle:'Hand-sculpted soy wax' },
+      aromas:         { title:'Home Fragrance',      subtitle:'Diffusers, home sprays & textiles' },
+      aromatizadores: { title:'Home Fragrance',      subtitle:'Diffusers, home sprays & textiles' },
+      ceramica:       { title:'Decorative Pieces',   subtitle:'Handmade decorative pieces' },
+      ceramicas:      { title:'Decorative Pieces',   subtitle:'Handmade decorative pieces' },
+      concreto:       { title:'Decorative Kit',      subtitle:'Understated design for your home' },
+      kits:           { title:'Decorative Kit',      subtitle:'Understated design for your home' }
+    };
+    const coleccion = ((window.INNOV_CONTENT&&window.INNOV_CONTENT.coleccion)||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0)).map(function(c){ var isGif=/\.gif$/i.test(c.video||''); var tr=(en&&EN_COL[c.id])||null; return Object.assign({}, c, { title: tr?tr.title:c.title, subtitle: tr?tr.subtitle:c.subtitle, href: catUrl(c.id), vpos: (c.id==='velas' ? '85% center' : 'center'), isGif: isGif, notGif: !isGif }); });
     return { addToCart:this.addToCart, openDetail:this.openDetail, promos, velas, coleccion, prevVel:this.prevVel, nextVel:this.nextVel };
   }
 }

@@ -13,6 +13,7 @@ window.InnovI18N = {
     foot_desc: "Handcrafted soy candles, home fragrance, reed diffusers and decorative ceramic and concrete pieces to transform your home. Handmade between Paraguay and the USA.",
     foot_shop: "Shop", foot_contact: "Contact", foot_made: "Made by Neura", foot_follow: "Follow",
     foot_wa: "Message us on WhatsApp", foot_cats: "Categories", foot_explore: "Explore", foot_hours: "WhatsApp support · Mon–Sat", foot_policies: "Policies & inquiries", foot_pay: "Payments",
+    foot_tag: "Artisan design · Home Decor", foot_wa_us: "WhatsApp USA · +1 (385) 230-9294", foot_countries: "Paraguay & USA", foot_privacy: "Privacy Policy",
     cats_eye: "Explore by category", cats_h: "Four artisan worlds",
     spec_eye: "Limited collections", spec_h: "Special editions", spec_p: "Seasonal launches, limited series and collaborations, available for a limited time. Unique, handmade pieces.", spec_cta: "See editions",
     ben1_t: "Handcrafted", ben1_p: "Every piece is made by hand, one by one, with noble materials.",
