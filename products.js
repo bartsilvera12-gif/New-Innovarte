@@ -216,6 +216,25 @@
     L('ceramica-pieza-joyero',         'Joyero Diamante',           'ceramica', 'Cerámica · con tapa',         'ceramica-pieza-joyero.jpg'),
     L('ceramica-pieza-panuelera',      'Pañuelera Marmolada',       'ceramica', 'Cerámica · porta pañuelos',   'ceramica-pieza-panuelera.jpg'),
 
+    // Kits y Regalos — Kits de aromas (sets de fragancia listos para regalar)
+    L('kit-aromas-difusor-vela-ceramica', 'Set Difusor y Vela en Cerámica', 'kits', 'Kit de aromas · difusor y vela',      'kit-aromas-difusor-vela-ceramica.jpg'),
+    L('kit-aromas-bolsa-regalo',          'Kit de Aromas para Regalo',      'kits', 'Kit de aromas · home spray y difusor', 'kit-aromas-bolsa-regalo.jpg'),
+    L('kit-aromas-flor-jabon',            'Set Flor Difusora y Jabón',      'kits', 'Kit de aromas · flor difusora y jabón','kit-aromas-flor-jabon.jpg'),
+    L('kit-aromas-difusor-homespray',     'Set Difusor y Home Spray',       'kits', 'Kit de aromas · difusor y home spray', 'kit-aromas-difusor-homespray.jpg'),
+    L('kit-aromas-difusor-velas-madera',  'Set Difusor y Velas',            'kits', 'Kit de aromas · difusor y velas',      'kit-aromas-difusor-velas-madera.jpg'),
+    L('kit-aromas-corazon',               'Set Aromas con Bandeja Corazón', 'kits', 'Kit de aromas · difusor, jabón y bandeja','kit-aromas-corazon.jpg'),
+    L('kit-aromas-negro-dorado',          'Set Aromas Negro y Dorado',      'kits', 'Kit de aromas · spray, vela y difusor','kit-aromas-negro-dorado.jpg'),
+    L('kit-aromas-marmol-blanco',         'Set Aromas Mármol Blanco',       'kits', 'Kit de aromas · difusor, vela y jabón', 'kit-aromas-marmol-blanco.jpg'),
+    L('kit-aromas-marmol-completo',       'Set Aromas Mármol Completo',     'kits', 'Kit de aromas · set completo de baño',  'kit-aromas-marmol-completo.jpg'),
+    // Kits y Regalos — Kits de cerámica (sets de piezas decorativas)
+    L('kit-ceramica-blanco-joyero',       'Set Cerámica Blanca',            'kits', 'Kit de cerámica · florero y joyeros',   'kit-ceramica-blanco-joyero.jpg'),
+    L('kit-ceramica-verde-figura',        'Set Cerámica Verde Salvia',      'kits', 'Kit de cerámica · figura y bandeja',    'kit-ceramica-verde-figura.jpg'),
+    L('kit-ceramica-caramelo',            'Set Cerámica Caramelo',          'kits', 'Kit de cerámica · florero, concha y joyero','kit-ceramica-caramelo.jpg'),
+    L('kit-ceramica-crema',               'Set Cerámica Crema',             'kits', 'Kit de cerámica · florero, concha y velas','kit-ceramica-crema.jpg'),
+    L('kit-ceramica-blanco-dorado',       'Set Cerámica Blanco y Dorado',   'kits', 'Kit de cerámica · florero, joyero y vela','kit-ceramica-blanco-dorado.png'),
+    // Kits y Regalos — Regalos personalizados
+    L('kit-regalo-caja-escultura',        'Caja de Regalo Innovarte',       'kits', 'Kit · caja de regalo con bandeja',      'kit-regalo-caja-escultura.jpg'),
+
     // Velas (colección artesanal previa)
     L('iv-flores-bandeja',   'Flores en Bandeja',        'velas', 'Colección Floral',    'WhatsApp Image 2026-07-20 at 13.32.07.jpeg'),
     // Aromatizadores
