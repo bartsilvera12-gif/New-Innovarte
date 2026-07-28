@@ -432,7 +432,7 @@ class Component extends DCLogic {
       { title:'Jardín Rosado', desc:'Aroma a flores frescas, bergamota y sándalo.', img:'uploads/bouquet-marfil.jpg', alt:'Bouquet de tulipanes color marfil — Jardín Rosado', href:'catalogo.dc.html?cat=velas&sub=bouquets' }
     ];
     const velas = (window.INNOV_PRODUCTS||[]).filter(p=>p.cat==='velas').slice(0,14);
-    const coleccion = ((window.INNOV_CONTENT&&window.INNOV_CONTENT.coleccion)||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0)).map(c=>Object.assign({}, c, { href: catUrl(c.id), vpos: (c.id==='velas' ? 'center 62%' : 'center') }));
+    const coleccion = ((window.INNOV_CONTENT&&window.INNOV_CONTENT.coleccion)||[]).filter(c=>c.active!==false).sort((a,b)=>(a.order||0)-(b.order||0)).map(c=>Object.assign({}, c, { href: catUrl(c.id), vpos: (c.id==='velas' ? '85% center' : 'center') }));
     return { addToCart:this.addToCart, openDetail:this.openDetail, promos, velas, coleccion, prevVel:this.prevVel, nextVel:this.nextVel };
   }
 }
