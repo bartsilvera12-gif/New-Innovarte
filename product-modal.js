@@ -42,6 +42,15 @@
     '.ipm-chip:hover{border-color:#C8A96A;}' +
     '.ipm-chip.on{background:#4B3621;color:#fff;border-color:#4B3621;}' +
     '.ipm-aromas-nota{color:#7A6754;font-weight:300;font-size:12.5px;line-height:1.55;margin-top:12px;font-style:italic;}' +
+    '.ipm-colores{margin-top:22px;}' +
+    '.ipm-colores-h{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#9C7A50;margin-bottom:12px;}' +
+    '.ipm-colores-sel{color:#4B3621;font-weight:500;text-transform:none;letter-spacing:0;margin-left:5px;}' +
+    '.ipm-swatches{display:flex;flex-wrap:wrap;gap:12px;}' +
+    '.ipm-swatch{background:none;border:none;padding:0;cursor:pointer;line-height:0;}' +
+    '.ipm-swatch-dot{display:block;width:30px;height:30px;border-radius:50%;border:2px solid rgba(75,54,33,.15);' +
+    'box-shadow:inset 0 0 0 2px #F7F1E6;transition:transform .2s,border-color .2s;}' +
+    '.ipm-swatch:hover .ipm-swatch-dot{border-color:#C8A96A;transform:scale(1.06);}' +
+    '.ipm-swatch.on .ipm-swatch-dot{border-color:#4B3621;transform:scale(1.1);}' +
     '.ipm-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:auto;padding-top:28px;}' +
     '.ipm-btn{flex:1 1 auto;min-width:150px;text-align:center;padding:15px 20px;font-family:"Jost",sans-serif;' +
     'font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;border-radius:3px;' +
@@ -71,7 +80,50 @@
   function enOn() { return !!(window.InnovI18N && InnovI18N.lang === 'en'); }
   function catNombre(cat) { return (enOn() && CATNOMBRE_EN[cat]) ? CATNOMBRE_EN[cat] : (CATNOMBRE[cat] || ''); }
 
-  var overlay, elImg, elEye, elName, elSub, elDesc, elPrice, elNote, elAromas, elAdd, elWa, lastFocus, cur;
+  /* --- Colores disponibles por cerámica --------------------------------------
+     Leídos de la tira "Colores disponibles" de cada foto. Cada pieza lista sus
+     tonos reales; el cliente elige uno y se suma al pedido (carrito + WhatsApp).
+     Los floreros de rostro y la compotera son de un solo color: no llevan tira.
+     Para agregar/quitar un color, editá la lista del slug correspondiente.     */
+  var COLOR_HEX = {
+    'Marmolado Beige': '#dcc7a4', 'Beige Veich Marmolado': '#d3c1a4', 'Veich': '#cdc0ad',
+    'Marmolado Negro': '#8f8f8f', 'Negro Marmolado': '#8f8f8f',
+    'Marmolado Rosa': '#eabecb', 'Marmolado Rosado': '#eabecb', 'Rosado Marmolado': '#eabecb',
+    'Marmolado Dorado': '#e4d3a0', 'Blanco con Bordes Dorados': '#f0e6cb',
+    'Blanco Liso': '#f3efe7', 'Blanco': '#f3efe7', 'Blanco Marmolado': '#e9e5db',
+    'Amarillo Pastel': '#f1e29a', 'Amarillo': '#f1e29a',
+    'Rosa Pastel': '#edb7bf', 'Rosa': '#edb7bf',
+    'Negro Pastel': '#3a3a3a', 'Negro': '#3a3a3a',
+    'Verde Pastel': '#bcd6ac', 'Verde Claro': '#bcd6ac', 'Verde Selva': '#7f9475',
+    'Celeste Pastel': '#bcd0e0', 'Ocre': '#d69a3c'
+  };
+  var CERAMICA_COLORES = {
+    // Bandejas
+    'ceramica-bandeja-rectangular': ['Marmolado Beige', 'Marmolado Negro', 'Marmolado Rosa', 'Marmolado Dorado', 'Blanco Liso'],
+    'ceramica-bandeja-perlas':      ['Marmolado Beige', 'Marmolado Negro', 'Marmolado Rosa', 'Marmolado Dorado', 'Blanco Liso'],
+    'ceramica-bandeja-barroca':     ['Marmolado Beige', 'Marmolado Negro', 'Marmolado Rosa', 'Marmolado Dorado', 'Blanco con Bordes Dorados'],
+    'ceramica-bandeja-dorada':      ['Marmolado Beige', 'Marmolado Negro', 'Marmolado Rosa', 'Marmolado Dorado', 'Blanco con Bordes Dorados'],
+    'ceramica-bandeja-triangular':  ['Blanco Marmolado', 'Rosado Marmolado', 'Negro Marmolado', 'Beige Veich Marmolado'],
+    'ceramica-bandeja-ovalada':     ['Amarillo Pastel', 'Rosa Pastel', 'Negro Pastel', 'Verde Pastel', 'Blanco'],
+    // Cuencos
+    'ceramica-cuenco-petalos':      ['Marmolado Beige', 'Marmolado Negro', 'Marmolado Rosa', 'Marmolado Dorado', 'Blanco Liso'],
+    'ceramica-cuenco-flor':         ['Marmolado Beige', 'Marmolado Rosado', 'Marmolado Negro', 'Blanco Liso'],
+    'ceramica-cuenco-venera':       ['Marmolado Rosado', 'Blanco Marmolado', 'Marmolado Negro', 'Blanco con Bordes Dorados'],
+    'ceramica-cuenco-corazon':      ['Amarillo', 'Rosa', 'Negro', 'Verde Claro', 'Blanco'],
+    'ceramica-cuenco-flor-petalos': ['Amarillo', 'Rosa', 'Negro', 'Verde Claro', 'Blanco'],
+    'ceramica-cuenco-redondo':      ['Amarillo Pastel', 'Rosa Pastel', 'Negro', 'Verde Pastel', 'Blanco'],
+    'ceramica-cuenco-estrella':     ['Blanco', 'Celeste Pastel', 'Rosa Pastel', 'Amarillo Pastel', 'Verde Pastel'],
+    'ceramica-cuenco-caracol':      ['Blanco', 'Celeste Pastel', 'Rosa Pastel', 'Amarillo Pastel', 'Verde Pastel'],
+    'ceramica-cuenco-concha':       ['Blanco', 'Celeste Pastel', 'Rosa Pastel', 'Amarillo Pastel', 'Verde Pastel'],
+    'ceramica-cuenco-esfera':       ['Blanco', 'Veich', 'Negro', 'Verde Selva', 'Ocre'],
+    // Piezas
+    'ceramica-pieza-arco':          ['Marmolado Beige', 'Marmolado Rosado', 'Blanco', 'Marmolado Negro'],
+    'ceramica-pieza-jabonera-ondas':['Amarillo', 'Rosa', 'Negro', 'Verde Claro', 'Blanco'],
+    'ceramica-pieza-joyero':        ['Amarillo Pastel', 'Rosa Pastel', 'Negro Pastel', 'Verde Pastel', 'Blanco'],
+    'ceramica-pieza-panuelera':     ['Marmolado Beige', 'Marmolado Rosa', 'Blanco', 'Marmolado Negro']
+  };
+
+  var overlay, elImg, elEye, elName, elSub, elDesc, elPrice, elNote, elAromas, elColores, elAdd, elWa, lastFocus, cur;
   var elPrev, elNext, elDots, galImgs = [], galIdx = 0, galToken = 0, galCache = {};
 
   function el(html) { var d = document.createElement('div'); d.innerHTML = html; return d.firstElementChild; }
@@ -97,6 +149,7 @@
       '    <div class="ipm-price"></div>' +
       '    <div class="ipm-note"></div>' +
       '    <div class="ipm-aromas" style="display:none"></div>' +
+      '    <div class="ipm-colores" style="display:none"></div>' +
       '    <div class="ipm-actions">' +
       '      <button type="button" class="ipm-btn ipm-btn-fill ipm-add">Añadir al carrito</button>' +
       '      <a class="ipm-btn ipm-btn-ghost ipm-wa" target="_blank" rel="noopener">Consultar por WhatsApp</a>' +
@@ -111,6 +164,7 @@
     elSub = overlay.querySelector('.ipm-sub'); elDesc = overlay.querySelector('.ipm-desc');
     elPrice = overlay.querySelector('.ipm-price'); elNote = overlay.querySelector('.ipm-note');
     elAromas = overlay.querySelector('.ipm-aromas');
+    elColores = overlay.querySelector('.ipm-colores');
     elAdd = overlay.querySelector('.ipm-add'); elWa = overlay.querySelector('.ipm-wa');
 
     overlay.querySelector('.ipm-close').addEventListener('click', close);
@@ -140,7 +194,11 @@
     });
     elAdd.addEventListener('click', function () {
       if (window.InnovCart && cur) {
-        InnovCart.add(cur.id, cur.name, cur.img, { aroma: cur.aroma || '', slug: cur.id, cat: cur.cat });
+        // El color/aroma elegido diferencia la línea del carrito y se ve en el nombre.
+        var variante = cur.color || cur.aroma || '';
+        var lineId = cur.id + (variante ? '::' + variante : '');
+        var nombre = cur.name + (cur.color ? ' — ' + cur.color : '');
+        InnovCart.add(lineId, nombre, cur.img, { aroma: cur.aroma || '', color: cur.color || '', slug: cur.id, cat: cur.cat });
         InnovCart.openCart();
       }
       close();
@@ -153,7 +211,19 @@
       if (!was) { chip.classList.add('on'); chip.setAttribute('aria-pressed', 'true'); cur.aroma = chip.getAttribute('data-aroma') || ''; }
       else { cur.aroma = ''; }
       elAdd.textContent = cur.aroma ? ((enOn() ? 'Add' : 'Añadir') + ' · ' + cur.aroma) : T('modal_add', 'Añadir al carrito');
-      elWa.href = waLink(cur.name, cur.aroma, cur.id);
+      elWa.href = waLink();
+    });
+    // Selección de color (swatches): un color a la vez; volver a tocarlo lo des-selecciona.
+    elColores.addEventListener('click', function (e) {
+      var sw = e.target.closest('.ipm-swatch'); if (!sw) return;
+      var was = sw.classList.contains('on');
+      elColores.querySelectorAll('.ipm-swatch').forEach(function (s) { s.classList.remove('on'); s.setAttribute('aria-pressed', 'false'); });
+      if (!was) { sw.classList.add('on'); sw.setAttribute('aria-pressed', 'true'); cur.color = sw.getAttribute('data-color') || ''; }
+      else { cur.color = ''; }
+      var sel = elColores.querySelector('.ipm-colores-sel');
+      if (sel) sel.textContent = cur.color || (enOn() ? 'Choose a color' : 'Elegí un color');
+      elAdd.textContent = cur.color ? ((enOn() ? 'Add' : 'Añadir') + ' · ' + cur.color) : T('modal_add', 'Añadir al carrito');
+      elWa.href = waLink();
     });
   }
 
@@ -167,9 +237,12 @@
     var origin = (typeof location !== 'undefined' && location.origin) ? location.origin : '';
     return origin + '/catalogo.dc.html?producto=' + encodeURIComponent(slug || '');
   }
-  function waLink(name, aroma, slug) {
-    var msg = '¡Hola! Quiero consultar por: ' + (name || '') +
-      (aroma ? ' (Aroma: ' + aroma + ')' : '') + '\n' + prodLink(slug);
+  function waLink() {
+    var extra = [];
+    if (cur && cur.aroma) extra.push('Aroma: ' + cur.aroma);
+    if (cur && cur.color) extra.push('Color: ' + cur.color);
+    var msg = '¡Hola! Quiero consultar por: ' + ((cur && cur.name) || '') +
+      (extra.length ? ' (' + extra.join(', ') + ')' : '') + '\n' + prodLink(cur && cur.id);
     if (window.INNOV_waLink) return window.INNOV_waLink(msg);
     return 'https://wa.me/' + (window.INNOV_WA || '') + '?text=' + encodeURIComponent(msg);
   }
@@ -268,7 +341,26 @@
       elAromas.style.display = 'none';
       elAromas.innerHTML = '';
     }
-    elWa.href = waLink(cur.name, cur.aroma, cur.id);
+    // Colores disponibles (solo cerámicas con variantes). Se leen por slug (cur.id).
+    var cols = CERAMICA_COLORES[cur.id || cur.slug || ''] || null;
+    cur.color = '';
+    if (cols && cols.length) {
+      elColores.innerHTML =
+        '<div class="ipm-colores-h">' + esc(enOn() ? 'Color' : 'Color') +
+          '<span class="ipm-colores-sel">' + esc(enOn() ? 'Choose a color' : 'Elegí un color') + '</span></div>' +
+        '<div class="ipm-swatches">' +
+          cols.map(function (name) {
+            var hex = COLOR_HEX[name] || '#cccccc';
+            return '<button type="button" class="ipm-swatch" data-color="' + esc(name) + '" title="' + esc(name) + '" aria-label="' + esc(name) + '" aria-pressed="false">' +
+              '<span class="ipm-swatch-dot" style="background:' + hex + '"></span></button>';
+          }).join('') +
+        '</div>';
+      elColores.style.display = '';
+    } else {
+      elColores.style.display = 'none';
+      elColores.innerHTML = '';
+    }
+    elWa.href = waLink();
     overlay.classList.add('on');
     document.documentElement.style.overflow = 'hidden';
     setTimeout(function () { try { overlay.querySelector('.ipm-close').focus(); } catch (e) {} }, 30);
