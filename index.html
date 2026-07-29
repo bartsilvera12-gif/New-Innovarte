@@ -439,7 +439,7 @@ class Component extends DCLogic {
     // el filtro del catálogo. Mapea el id de la card a la categoría real.
     const catUrl = (id) => {
       const m = { velas:'velas', aromas:'aromas', aromatizadores:'aromas',
-                  ceramica:'ceramicas', ceramicas:'ceramicas', concreto:'ceramicas', kits:'kits' };
+                  ceramica:'ceramicas', ceramicas:'ceramicas', concreto:'kits', kits:'kits' };
       return 'catalogo.dc.html?cat=' + (m[String(id)] || id);
     };
     // Idioma actual: para traducir el contenido dinámico (tarjetas de colección y
